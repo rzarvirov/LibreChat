@@ -100,7 +100,6 @@ export default defineConfig({
   ],
   publicDir: './public',
   build: {
-    chunkSizeWarningLimit: 1000,
     sourcemap: process.env.NODE_ENV === 'development',
     outDir: './dist',
     rollupOptions: {
@@ -146,7 +145,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, './src'),
+      '~': path.join(__dirname, 'src/'),
       $fonts: resolve('public/fonts'),
     },
   },
