@@ -105,4 +105,5 @@ auth.json
 uploads/
 
 # owner
-release/
+release/.env
+client/.env
