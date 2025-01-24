@@ -160,6 +160,12 @@ export default function AgentPanel({
         });
       }
 
+      if (!name) {
+        return showToast({
+          message: localize('com_ui_field_required'),
+          status: 'error',
+        });
+      }
       create.mutate({
         name,
         description,

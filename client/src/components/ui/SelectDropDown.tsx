@@ -8,6 +8,7 @@ import {
   ListboxOptions,
 } from '@headlessui/react';
 import type { Option, OptionWithIcon, DropdownValueSetter } from '~/common';
+import { shouldShowProBadge } from '~/data/modelConfig';
 import CheckMark from '~/components/svg/CheckMark';
 import { useMultiSearch } from './MultiSearch';
 import { useLocalize } from '~/hooks';
@@ -208,7 +209,7 @@ function SelectDropDown({
                     </ListboxOption>
                   )}
                   {searchRender}
-                  {options.map((option: string | Option, i: number) => {
+                  {options.map((option, i) => {
                     if (!option) {
                       return null;
                     }
@@ -222,6 +223,8 @@ function SelectDropDown({
                     if (typeof activeValue !== 'string') {
                       activeValue = activeValue?.value ?? '';
                     }
+
+                    const showBadge = shouldShowProBadge(currentValue);
 
                     return (
                       <ListboxOption
@@ -254,6 +257,11 @@ function SelectDropDown({
                               </span>
                             )}
                             {currentLabel}
+                            {showBadge && (
+                              <span className="ml-2 inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                PRO
+                              </span>
+                            )}
                           </span>
                           {currentValue === activeValue && (
                             <span

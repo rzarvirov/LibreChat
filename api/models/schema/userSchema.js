@@ -29,6 +29,11 @@ const { SystemRoles } = require('librechat-data-provider');
  * @property {Date} [expiresAt] - Optional expiration date of the file
  * @property {Date} [createdAt] - Date when the user was created (added by timestamps)
  * @property {Date} [updatedAt] - Date when the user was last updated (added by timestamps)
+ * @property {string} subscriptionTier - The user's subscription tier (FREE, BASIC, PRO, PROPLUS, UNLIMITED)
+ * @property {string} subscriptionStatus - The user's subscription status (ACTIVE, CANCELED, EXPIRED)
+ * @property {boolean} subscriptionCanceled - Whether the subscription is canceled
+ * @property {Date} subscriptionStartDate - When the subscription first started
+ * @property {Date} subscriptionEndDate - Controls access to tier benefits
  */
 
 /** @type {MongooseSchema<MongoSession>} */
@@ -132,8 +137,34 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    subscriptionTier: {
+      type: String,
+      enum: ['FREE', 'BASIC', 'PRO', 'PROPLUS', 'UNLIMITED'],
+      required: true,
+      default: 'FREE',
+    },
+    subscriptionStatus: {
+      type: String,
+      enum: ['ACTIVE', 'CANCELED', 'EXPIRED'],
+      required: true,
+      default: 'EXPIRED',
+    },
+    subscriptionCanceled: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
+    subscriptionStartDate: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
+    subscriptionEndDate: {
+      type: Date,
+      required: true,
+      default: Date.now,
+    },
   },
-
   { timestamps: true },
 );
 

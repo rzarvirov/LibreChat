@@ -264,8 +264,8 @@ const SidePanel = ({
           {interfaceConfig.modelSelect === true && (
             <div
               className={cn(
-                'sticky left-0 right-0 top-0 z-[100] flex h-[52px] flex-wrap items-center justify-center bg-background',
-                isCollapsed ? 'h-[52px]' : 'px-2',
+                'sticky left-0 right-0 top-0 z-[100] flex h-[72px] flex-wrap items-center justify-center bg-background px-6 pt-3.5',
+                isCollapsed ? 'h-[72px] px-4' : '',
               )}
             >
               <Switcher

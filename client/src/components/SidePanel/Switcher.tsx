@@ -8,10 +8,17 @@ export default function Switcher(props: SwitcherProps) {
   if (isAssistantsEndpoint(props.endpoint) && props.endpointKeyProvided) {
     return <AssistantSwitcher {...props} />;
   } else if (isAgentsEndpoint(props.endpoint) && props.endpointKeyProvided) {
-    return <AgentSwitcher {...props} />;
+  // return <AgentSwitcher {...props} />;  - old code, below return was added
+    return (
+      <>
+        <AgentSwitcher {...props} />
+      </>
+    );
   } else if (isAssistantsEndpoint(props.endpoint)) {
     return null;
   }
 
-  return <ModelSwitcher {...props} />;
+  // Old code - keeping for reference, return null replaced it
+  // return <ModelSwitcher {...props} />;
+  return null;
 }
