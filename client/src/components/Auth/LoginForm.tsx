@@ -13,6 +13,7 @@ type TLoginFormProps = {
   setError: Pick<TAuthContext, 'setError'>['setError'];
 };
 
+
 const LoginForm: React.FC<TLoginFormProps> = ({ onSubmit, startupConfig, error, setError }) => {
   const localize = useLocalize();
   const {
