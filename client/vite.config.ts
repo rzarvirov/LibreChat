@@ -145,7 +145,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '~': path.join(__dirname, 'src/'),
+      '~': path.resolve(__dirname, './src'),
       $fonts: resolve('public/fonts'),
     },
   },

@@ -18,9 +18,9 @@
     "declaration": true,
     "declarationDir": "./types",
     "jsx": "preserve",
-    "baseUrl": "..",
+    "baseUrl": ".",
     "paths": {
-      "~/*": ["./client/src/*"],
+      "~/*": ["src/*"],
       "test/*": ["./client/test/*"],
       "*": ["./client/*", "../node_modules/*"],
       "librechat-data-provider/*": ["./packages/data-provider/*"]
