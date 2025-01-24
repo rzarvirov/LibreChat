@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "preserveSymlinks": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -19,9 +18,9 @@
     "declaration": true,
     "declarationDir": "./types",
     "jsx": "preserve",
-    "baseUrl": ".",
+    "baseUrl": "..",
     "paths": {
-      "~/*": ["src/*"],
+      "~/*": ["./client/src/*"],
       "test/*": ["./client/test/*"],
       "*": ["./client/*", "../node_modules/*"],
       "librechat-data-provider/*": ["./packages/data-provider/*"]
