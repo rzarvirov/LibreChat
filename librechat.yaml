@@ -273,3 +273,11 @@ endpoints:
 #   avatarSizeLimit: 2  # Limit for user avatar image size in MB
 # See the Custom Configuration Guide for more information on Assistants Config:
 # https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/assistants_endpoint
+
+endpoints:
+  custom:
+    - name: openAI
+      apiKey: user_provided
+      models:
+        default: ['gpt-4', 'gpt-3.5-turbo']
+        fetch: false
