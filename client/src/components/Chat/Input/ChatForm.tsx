@@ -157,12 +157,13 @@ const ChatForm = ({ index = 0 }) => {
     <form
       onSubmit={methods.handleSubmit((data) => submitMessage(data))}
       className={cn(
-        'mx-auto flex flex-row gap-3 pl-2 transition-all duration-200 last:mb-2',
+        'mx-auto flex flex-row gap-3 px-4 transition-all duration-200 last:mb-2',
+        'mb-4',
         maximizeChatSpace ? 'w-full max-w-full' : 'md:max-w-2xl xl:max-w-3xl',
       )}
     >
       <div className="relative flex h-full flex-1 items-stretch md:flex-col">
-        <div className="flex w-full items-center">
+        <div className="flex w-full items-center px-2">
           {showPlusPopover && !isAssistantsEndpoint(endpoint) && (
             <Mention
               setShowMentionPopover={setShowPlusPopover}
@@ -240,8 +241,8 @@ const ChatForm = ({ index = 0 }) => {
           </div>
           <div
             className={cn(
-              'mb-[5px] ml-[8px] flex flex-col items-end justify-end',
-              isRTL && 'order-first mr-[8px]',
+              'mb-[5px] ml-[12px] flex flex-col items-end justify-end',
+              isRTL && 'order-first mr-[12px]',
             )}
             style={{ alignSelf: 'flex-end' }}
           >

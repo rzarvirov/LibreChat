@@ -226,22 +226,32 @@ export default function AgentConfig({
             avatar={agent?.['avatar'] ?? null}
           />
           <label className={labelClass} htmlFor="name">
-            {localize('com_ui_name')}
+            {localize('com_ui_name')} <span className="text-red-500">*</span>
           </label>
           <Controller
             name="name"
             control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                value={field.value ?? ''}
-                maxLength={256}
-                className={inputClass}
-                id="name"
-                type="text"
-                placeholder={localize('com_agents_name_placeholder')}
-                aria-label="Agent name"
-              />
+            rules={{ required: true, minLength: 1 }}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <input
+                  {...field}
+                  value={field.value ?? ''}
+                  maxLength={256}
+                  className={cn(inputClass, error ? 'border-red-500 border-2' : '')}
+                  id="name"
+                  type="text"
+                  placeholder={localize('com_agents_name_placeholder')}
+                  aria-label="Agent name"
+                  aria-required="true"
+                  aria-invalid={error ? 'true' : 'false'}
+                />
+                {error && (
+                  <span className="text-sm text-red-500 transition duration-300 ease-in-out" role="alert">
+                    {localize('com_ui_field_required')}
+                  </span>
+                )}
+              </>
             )}
           />
           <Controller
@@ -337,17 +347,16 @@ export default function AgentConfig({
             </div>
           </button>
         </div>
-        {(codeEnabled || fileSearchEnabled) && (
+        {/* Commenting out capabilities section */}
+        {/* {(codeEnabled || fileSearchEnabled) && (
           <div className="mb-4 flex w-full flex-col items-start gap-3">
             <label className="text-token-text-primary block font-medium">
               {localize('com_assistants_capabilities')}
             </label>
-            {/* Code Execution */}
             {codeEnabled && <CodeForm agent_id={agent_id} files={code_files} />}
-            {/* File Search */}
             {fileSearchEnabled && <FileSearch agent_id={agent_id} files={knowledge_files} />}
           </div>
-        )}
+        )} */}
         {/* Agent Tools & Actions */}
         <div className="mb-4">
           <label className={labelClass}>
@@ -389,7 +398,8 @@ export default function AgentConfig({
                   </div>
                 </button>
               )}
-              {(actionsEnabled ?? false) && (
+              {/* Commenting out Add Actions button */}
+              {/* {(actionsEnabled ?? false) && (
                 <button
                   type="button"
                   disabled={!agent_id}
@@ -401,7 +411,7 @@ export default function AgentConfig({
                     {localize('com_assistants_add_actions')}
                   </div>
                 </button>
-              )}
+              )} */}
             </div>
           </div>
         </div>

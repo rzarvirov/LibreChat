@@ -5,6 +5,7 @@ import type { Option } from '~/common';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils/';
 import { useMultiSearch } from './MultiSearch';
+import { shouldShowProBadge } from '~/data/modelConfig';
 
 type SelectDropDownProps = {
   id?: string;
@@ -52,6 +53,9 @@ function SelectDropDownPop({
   const hasSearchRender = Boolean(searchRender);
   const options = hasSearchRender ? filteredValues : availableValues;
 
+  const currentValue = typeof value !== 'string' && value ? value.label ?? '' : value ?? '';
+  const showBadge = shouldShowProBadge(String(currentValue));
+
   return (
     <Root>
       <div className={'flex items-center justify-center gap-2 '}>
@@ -70,7 +74,7 @@ function SelectDropDownPop({
               {showLabel && (
                 <label className="block text-xs text-gray-700 dark:text-gray-500 ">{title}</label>
               )}
-              <span className="inline-flex w-full ">
+              <span className="inline-flex w-full items-center gap-1.5">
                 <span
                   className={cn(
                     'flex h-6 items-center gap-1  text-sm text-gray-800 dark:text-white',
@@ -81,8 +85,13 @@ function SelectDropDownPop({
                   {/* {!showLabel && !emptyTitle && (
                     <span className="text-xs text-gray-700 dark:text-gray-500">{title}:</span>
                   )} */}
-                  {typeof value !== 'string' && value ? value.label ?? '' : value ?? ''}
+                  {currentValue}
                 </span>
+                {showBadge && (
+                  <span className="shrink-0 rounded-md bg-amber-100/60 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
+                    PRO
+                  </span>
+                )}
               </span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <svg
@@ -114,6 +123,8 @@ function SelectDropDownPop({
             >
               {searchRender}
               {options.map((option) => {
+                const optionValue = typeof option !== 'string' ? option.label ?? '' : option;
+                const showOptionBadge = shouldShowProBadge(String(optionValue));
                 return (
                   <MenuItem
                     key={option}
@@ -121,6 +132,8 @@ function SelectDropDownPop({
                     value={option}
                     selected={!!(value && value === option)}
                     onClick={() => setValue(option)}
+                    badge={showOptionBadge ? 'PRO' : undefined}
+                    badgeClassName="shrink-0 rounded-md bg-amber-100/60 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200"
                   />
                 );
               })}

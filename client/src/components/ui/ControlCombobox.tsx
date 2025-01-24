@@ -3,6 +3,7 @@ import { matchSorter } from 'match-sorter';
 import { startTransition, useMemo, useState, useEffect, useRef, memo } from 'react';
 import { cn } from '~/utils';
 import type { OptionWithIcon } from '~/common';
+import { shouldShowProBadge } from '~/data/modelConfig';
 import { Search } from 'lucide-react';
 
 interface ControlComboboxProps {
@@ -45,8 +46,10 @@ function ControlCombobox({
     }
   }, [isCollapsed]);
 
+  const showSelectedBadge = shouldShowProBadge(selectedValue);
+
   return (
-    <div className="flex w-full items-center justify-center px-1">
+    <div className="flex w-full items-center justify-center">
       <Ariakit.ComboboxProvider
         resetValueOnHide
         setValue={(value) => {
@@ -60,21 +63,28 @@ function ControlCombobox({
           <Ariakit.Select
             ref={buttonRef}
             className={cn(
-              'flex items-center justify-center gap-2 rounded-full bg-surface-secondary',
+              'flex items-center justify-center gap-2 bg-surface-secondary',
               'text-text-primary hover:bg-surface-tertiary',
               'border border-border-light',
-              isCollapsed ? 'h-10 w-10' : 'h-10 w-full rounded-md px-3 py-2 text-sm',
+              isCollapsed ? 'h-16 w-16 rounded-lg' : 'h-16 w-full rounded-lg px-4',
             )}
           >
             {SelectIcon != null && (
-              <div className="assistant-item flex h-5 w-5 items-center justify-center overflow-hidden rounded-full">
+              <div className="assistant-item flex h-4 w-4 items-center justify-center overflow-hidden rounded-full">
                 {SelectIcon}
               </div>
             )}
             {!isCollapsed && (
-              <span className="flex-grow truncate text-left">
-                {displayValue ?? selectPlaceholder}
-              </span>
+              <div className="flex flex-grow items-center gap-2">
+                <span className="truncate text-left">
+                  {displayValue ?? selectPlaceholder}
+                </span>
+                {showSelectedBadge && (
+                  <span className="z-50 ml-2 inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
+                    PRO
+                  </span>
+                )}
+              </div>
             )}
           </Ariakit.Select>
           <Ariakit.SelectPopover
@@ -94,26 +104,36 @@ function ControlCombobox({
               </div>
             </div>
             <Ariakit.ComboboxList className="max-h-[50vh] overflow-auto">
-              {matches.map((item) => (
-                <Ariakit.SelectItem
-                  key={item.value}
-                  value={`${item.value ?? ''}`}
-                  aria-label={`${item.label ?? item.value ?? ''}`}
-                  className={cn(
-                    'flex cursor-pointer items-center px-3 py-2 text-sm',
-                    'text-text-primary hover:bg-surface-tertiary',
-                    'data-[active-item]:bg-surface-tertiary',
-                  )}
-                  render={<Ariakit.ComboboxItem />}
-                >
-                  {item.icon != null && (
-                    <div className="assistant-item mr-2 flex h-5 w-5 items-center justify-center overflow-hidden rounded-full">
-                      {item.icon}
+              {matches.map((item) => {
+                const showBadge = shouldShowProBadge(String(item.value ?? ''));
+                return (
+                  <Ariakit.SelectItem
+                    key={item.value}
+                    value={`${item.value ?? ''}`}
+                    aria-label={`${item.label ?? item.value ?? ''}`}
+                    className={cn(
+                      'group relative flex cursor-pointer items-center justify-between px-3 py-2 text-sm',
+                      'text-text-primary hover:bg-surface-tertiary',
+                      'data-[active-item]:bg-surface-tertiary',
+                    )}
+                    render={<Ariakit.ComboboxItem />}
+                  >
+                    <div className="flex items-center gap-2">
+                      {item.icon != null && (
+                        <div className="assistant-item mr-2 flex h-5 w-5 items-center justify-center overflow-hidden rounded-full">
+                          {item.icon}
+                        </div>
+                      )}
+                      <span className="truncate">{item.label}</span>
                     </div>
-                  )}
-                  <span className="flex-grow truncate text-left">{item.label}</span>
-                </Ariakit.SelectItem>
-              ))}
+                    {showBadge && (
+                      <span className="z-50 ml-2 inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
+                        PRO
+                      </span>
+                    )}
+                  </Ariakit.SelectItem>
+                );
+              })}
             </Ariakit.ComboboxList>
           </Ariakit.SelectPopover>
         </Ariakit.SelectProvider>

@@ -93,6 +93,7 @@ const librechat: Record<string, SettingDefinition> = {
     placeholderCode: true,
     optionType: 'conversation',
   },
+  /* Commenting out maxContextTokens setting
   maxContextTokens: {
     key: 'maxContextTokens',
     label: 'com_endpoint_context_tokens',
@@ -106,6 +107,7 @@ const librechat: Record<string, SettingDefinition> = {
     optionType: 'model',
     columnSpan: 2,
   },
+  */
   resendFiles: {
     key: 'resendFiles',
     label: 'com_endpoint_plug_resend_files',
@@ -189,6 +191,7 @@ const openAIParams: Record<string, SettingDefinition> = {
     optionType: 'model',
     columnSpan: 4,
   },
+  /* Commenting out max_tokens setting
   max_tokens: {
     key: 'max_tokens',
     label: 'com_endpoint_max_output_tokens',
@@ -202,6 +205,7 @@ const openAIParams: Record<string, SettingDefinition> = {
     optionType: 'model',
     columnSpan: 2,
   },
+  */
 };
 
 const anthropic: Record<string, SettingDefinition> = {
@@ -355,8 +359,9 @@ const meta: Record<string, SettingDefinition> = {
 const openAI: SettingsConfiguration = [
   openAIParams.chatGptLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
-  openAIParams.max_tokens,
+  */
   openAIParams.temperature,
   openAIParams.top_p,
   openAIParams.frequency_penalty,
@@ -370,11 +375,12 @@ const openAICol1: SettingsConfiguration = [
   baseDefinitions.model as SettingDefinition,
   openAIParams.chatGptLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
 ];
 
 const openAICol2: SettingsConfiguration = [
-  openAIParams.max_tokens,
   openAIParams.temperature,
   openAIParams.top_p,
   openAIParams.frequency_penalty,
@@ -387,7 +393,9 @@ const openAICol2: SettingsConfiguration = [
 const anthropicConfig: SettingsConfiguration = [
   librechat.modelLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
   anthropic.maxOutputTokens,
   anthropic.temperature,
   anthropic.topP,
@@ -400,11 +408,15 @@ const anthropicCol1: SettingsConfiguration = [
   baseDefinitions.model as SettingDefinition,
   librechat.modelLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
+  librechat.maxContextTokens,
+  */
 ];
 
 const anthropicCol2: SettingsConfiguration = [
-  librechat.maxContextTokens,
+  /* Commenting out maxContextTokens setting
   anthropic.maxOutputTokens,
+  */
   anthropic.temperature,
   anthropic.topP,
   anthropic.topK,
@@ -415,7 +427,9 @@ const anthropicCol2: SettingsConfiguration = [
 const bedrockAnthropic: SettingsConfiguration = [
   librechat.modelLabel,
   bedrock.system,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
   bedrock.maxTokens,
   bedrock.temperature,
   bedrock.topP,
@@ -428,7 +442,9 @@ const bedrockAnthropic: SettingsConfiguration = [
 const bedrockMistral: SettingsConfiguration = [
   librechat.modelLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
   bedrock.maxTokens,
   mistral.temperature,
   mistral.topP,
@@ -439,7 +455,9 @@ const bedrockMistral: SettingsConfiguration = [
 const bedrockCohere: SettingsConfiguration = [
   librechat.modelLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
   bedrock.maxTokens,
   cohere.temperature,
   cohere.topP,
@@ -450,7 +468,9 @@ const bedrockCohere: SettingsConfiguration = [
 const bedrockGeneral: SettingsConfiguration = [
   librechat.modelLabel,
   librechat.promptPrefix,
+  /* Commenting out maxContextTokens setting
   librechat.maxContextTokens,
+  */
   meta.temperature,
   meta.topP,
   bedrock.region,
@@ -465,7 +485,9 @@ const bedrockAnthropicCol1: SettingsConfiguration = [
 ];
 
 const bedrockAnthropicCol2: SettingsConfiguration = [
-  librechat.maxContextTokens,
+  /* Commenting out maxContextTokens setting
+  anthropic.maxOutputTokens,
+  */
   bedrock.maxTokens,
   bedrock.temperature,
   bedrock.topP,
@@ -481,8 +503,9 @@ const bedrockMistralCol1: SettingsConfiguration = [
 ];
 
 const bedrockMistralCol2: SettingsConfiguration = [
-  librechat.maxContextTokens,
+  /* Commenting out maxContextTokens setting
   bedrock.maxTokens,
+  */
   mistral.temperature,
   mistral.topP,
   bedrock.region,
@@ -496,8 +519,9 @@ const bedrockCohereCol1: SettingsConfiguration = [
 ];
 
 const bedrockCohereCol2: SettingsConfiguration = [
-  librechat.maxContextTokens,
+  /* Commenting out maxContextTokens setting
   bedrock.maxTokens,
+  */
   cohere.temperature,
   cohere.topP,
   bedrock.region,
@@ -511,7 +535,9 @@ const bedrockGeneralCol1: SettingsConfiguration = [
 ];
 
 const bedrockGeneralCol2: SettingsConfiguration = [
-  librechat.maxContextTokens,
+  /* Commenting out maxContextTokens setting
+  anthropic.maxOutputTokens,
+  */
   meta.temperature,
   meta.topP,
   bedrock.region,

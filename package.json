@@ -127,5 +127,11 @@
       "admin/",
       "packages/"
     ]
+  },
+  "dependencies": {
+    "mongodb": "^6.12.0",
+    "react-hot-toast": "^2.5.1",
+    "react-lucid": "^0.0.1",
+    "stripe": "^17.5.0"
   }
 }

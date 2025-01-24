@@ -14,6 +14,7 @@ const models = require('./models');
 const convos = require('./convos');
 const config = require('./config');
 const agents = require('./agents');
+const { mainRouter: stripe, webhookRouter: stripeWebhook } = require('./stripe');
 const roles = require('./roles');
 const oauth = require('./oauth');
 const files = require('./files');
@@ -37,6 +38,8 @@ module.exports = {
   oauth,
   files,
   share,
+  stripe,
+  stripeWebhook,
   agents,
   bedrock,
   convos,

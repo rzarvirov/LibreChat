@@ -47,6 +47,10 @@ const startServer = async () => {
   /* Middleware */
   app.use(noIndex);
   app.use(errorController);
+
+  // Register Stripe webhook route before body parsers
+  app.use('/api/stripe/webhook', routes.stripeWebhook);
+  
   app.use(express.json({ limit: '3mb' }));
   app.use(mongoSanitize());
   app.use(express.urlencoded({ extended: true, limit: '3mb' }));
@@ -108,8 +112,18 @@ const startServer = async () => {
   app.use('/api/agents', routes.agents);
   app.use('/api/banner', routes.banner);
   app.use('/api/bedrock', routes.bedrock);
+  app.use('/api/stripe', routes.stripe);
 
   app.use('/api/tags', routes.tags);
+
+  // Stripe subscription redirect handlers
+  app.get('/subscription/success', (req, res) => {
+    res.redirect('/#/subscription/success');
+  });
+
+  app.get('/subscription/cancel', (req, res) => {
+    res.redirect('/#/subscription/cancel');
+  });
 
   app.use((req, res) => {
     res.set({

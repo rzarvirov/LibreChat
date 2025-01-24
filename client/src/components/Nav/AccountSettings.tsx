@@ -1,29 +1,63 @@
 import { useRecoilState } from 'recoil';
 import * as Select from '@ariakit/react/select';
 import { Fragment, useState, memo } from 'react';
-import { FileText, LogOut } from 'lucide-react';
+import { FileText, LogOut, Coins } from 'lucide-react';
 import { useGetUserBalance, useGetStartupConfig } from 'librechat-data-provider/react-query';
 import { LinkIcon, GearIcon, DropdownMenuSeparator } from '~/components';
 import FilesView from '~/components/Chat/Input/Files/FilesView';
+import SubscriptionManagePopup from '~/components/Subscription/SubscriptionManagePopup';
+import SubscriptionPopup from '~/components/Subscription/SubscriptionPopup';
+import TokenBubble from '~/components/Common/TokenBubble';
 import { useAuthContext } from '~/hooks/AuthContext';
 import useAvatar from '~/hooks/Messages/useAvatar';
 import { UserIcon } from '~/components/svg';
 import { useLocalize } from '~/hooks';
 import Settings from './Settings';
 import store from '~/store';
+import TierBadge from '~/components/Subscription/TierBadge';
+
+interface ExtendedUser {
+  subscriptionTier?: string;
+  subscriptionStatus?: string;
+  subscriptionEndDate?: string;
+  subscriptionCanceled?: boolean;
+}
 
 function AccountSettings() {
   const localize = useLocalize();
   const { user, isAuthenticated, logout } = useAuthContext();
+  const extendedUser = user as ExtendedUser;
   const { data: startupConfig } = useGetStartupConfig();
   const balanceQuery = useGetUserBalance({
     enabled: !!isAuthenticated && startupConfig?.checkBalance,
   });
   const [showSettings, setShowSettings] = useState(false);
   const [showFiles, setShowFiles] = useRecoilState(store.showFiles);
+  const [showSubscriptionManage, setShowSubscriptionManage] = useState(false);
+  const [showSubscriptionPlans, setShowSubscriptionPlans] = useState(false);
+  const [showTokenInfo, setShowTokenInfo] = useState(false);
+  const [tokenBubblePosition, setTokenBubblePosition] = useState({ x: 0, y: 0 });
 
   const avatarSrc = useAvatar(user);
   const name = user?.avatar ?? user?.username ?? '';
+
+  const handleSubscriptionClick = () => {
+    if (extendedUser?.subscriptionTier === 'FREE') {
+      setShowSubscriptionPlans(true);
+    } else {
+      setShowSubscriptionManage(true);
+    }
+  };
+
+  const handleTokenIconClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setTokenBubblePosition({
+      x: rect.left + rect.width / 2,
+      y: rect.top
+    });
+    setShowTokenInfo(!showTokenInfo);
+  };
 
   return (
     <Select.SelectProvider>
@@ -57,10 +91,13 @@ function AccountSettings() {
           </div>
         </div>
         <div
-          className="mt-2 grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary"
+          className="mt-2 grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary flex items-center gap-2"
           style={{ marginTop: '0', marginLeft: '0' }}
         >
-          {user?.name ?? user?.username ?? localize('com_nav_user')}
+          <span>{user?.name ?? user?.username ?? localize('com_nav_user')}</span>
+          {extendedUser?.subscriptionTier && (
+            <TierBadge tier={extendedUser.subscriptionTier} onClick={handleSubscriptionClick} />
+          )}
         </div>
       </Select.Select>
       <Select.SelectPopover
@@ -79,8 +116,23 @@ function AccountSettings() {
           balanceQuery.data != null &&
           !isNaN(parseFloat(balanceQuery.data)) && (
           <>
-            <div className="text-token-text-secondary ml-3 mr-2 py-2 text-sm" role="note">
-              {`Balance: ${parseFloat(balanceQuery.data).toFixed(2)}`}
+            <div 
+              className="text-token-text-secondary ml-3 mr-2 py-2 text-sm cursor-pointer hover:text-token-text-primary group flex items-center gap-2 relative" 
+              role="note"
+              onClick={handleSubscriptionClick}
+            >
+              <div 
+                onClick={handleTokenIconClick}
+                className="cursor-help"
+              >
+                <Coins className="w-4 h-4 text-yellow-500" />
+              </div>
+              <span className="underline underline-offset-2">
+                {localize('com_subscription_balance')}: {parseFloat(balanceQuery.data).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+              </span>
+              {extendedUser?.subscriptionTier && (
+                <TierBadge tier={extendedUser.subscriptionTier} onClick={handleSubscriptionClick} />
+              )}
             </div>
             <DropdownMenuSeparator />
           </>
@@ -124,6 +176,30 @@ function AccountSettings() {
       </Select.SelectPopover>
       {showFiles && <FilesView open={showFiles} onOpenChange={setShowFiles} />}
       {showSettings && <Settings open={showSettings} onOpenChange={setShowSettings} />}
+      {showSubscriptionManage && (
+        <SubscriptionManagePopup
+          isOpen={showSubscriptionManage}
+          onClose={() => setShowSubscriptionManage(false)}
+          subscriptionData={{
+            tier: extendedUser?.subscriptionTier || 'FREE',
+            status: extendedUser?.subscriptionStatus,
+            balance: parseFloat(balanceQuery.data || '0'),
+            endDate: extendedUser?.subscriptionEndDate || new Date().toISOString(),
+            canceled: extendedUser?.subscriptionCanceled,
+          }}
+        />
+      )}
+      {showSubscriptionPlans && (
+        <SubscriptionPopup
+          isOpen={showSubscriptionPlans}
+          onClose={() => setShowSubscriptionPlans(false)}
+        />
+      )}
+      <TokenBubble 
+        isOpen={showTokenInfo} 
+        onClose={() => setShowTokenInfo(false)}
+        anchorPosition={tokenBubblePosition}
+      />
     </Select.SelectProvider>
   );
 }

@@ -111,13 +111,14 @@ export default function useSideNavLinks({
       });
     }
 
-    links.push({
-      title: 'com_sidepanel_attach_files',
-      label: '',
-      icon: AttachmentIcon,
-      id: 'files',
-      Component: FilesPanel,
-    });
+    // hide files panel for now
+    // links.push({
+    //   title: 'com_sidepanel_attach_files',
+    //   label: '',
+    //   icon: AttachmentIcon,
+    //   id: 'files',
+    //   Component: FilesPanel,
+    // });
 
     if (hasAccessToBookmarks) {
       links.push({

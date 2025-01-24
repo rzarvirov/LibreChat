@@ -25,7 +25,7 @@ export default function Nav({ links, isCollapsed, resize, defaultActive }: NavPr
         <div className="flex h-full min-h-0 flex-col">
           <div className="flex h-full min-h-0 flex-col opacity-100 transition-opacity">
             <div className="scrollbar-trigger relative h-full w-full flex-1 items-start border-white/20">
-              <div className="flex h-full w-full flex-col gap-1 px-3 pb-3.5 group-[[data-collapsed=true]]:items-center group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
+              <div className="flex h-full w-full flex-col gap-4 px-6 pt-6 pb-3.5 group-[[data-collapsed=true]]:items-center group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-4">
                 {links.map((link, index) => {
                   const variant = getVariant(link);
                   return isCollapsed ? (
@@ -37,6 +37,7 @@ export default function Nav({ links, isCollapsed, resize, defaultActive }: NavPr
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-16 w-16 rounded-lg"
                           onClick={(e) => {
                             if (link.onClick) {
                               link.onClick(e);
@@ -66,7 +67,7 @@ export default function Nav({ links, isCollapsed, resize, defaultActive }: NavPr
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-full justify-start bg-transparent text-text-secondary data-[state=open]:bg-surface-secondary data-[state=open]:text-text-primary"
+                              className="h-16 w-full justify-start rounded-lg bg-transparent text-text-secondary data-[state=open]:bg-surface-secondary data-[state=open]:text-text-primary"
                               onClick={(e) => {
                                 if (link.onClick) {
                                   link.onClick(e);

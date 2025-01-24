@@ -13,7 +13,8 @@ type MenuItemProps = {
   icon?: React.ReactNode;
   className?: string;
   textClassName?: string;
-  // hoverContent?: string;
+  badge?: string;
+  badgeClassName?: string;
 } & Record<string, unknown>;
 
 const MenuItem: FC<MenuItemProps> = ({
@@ -28,6 +29,8 @@ const MenuItem: FC<MenuItemProps> = ({
   textClassName = '',
   children,
   onClick,
+  badge,
+  badgeClassName,
   ...rest
 }) => {
   return (
@@ -55,12 +58,17 @@ const MenuItem: FC<MenuItemProps> = ({
     >
       <div className="flex grow items-center justify-between gap-2">
         <div>
-          <div className={cn('flex items-center gap-1 ')}>
+          <div className={cn('flex items-center gap-1.5')}>
             {icon != null ? icon : null}
             <div className={cn('truncate', textClassName)}>
               {title}
               <div className="text-token-text-tertiary">{description}</div>
             </div>
+            {badge && (
+              <span className={cn(badgeClassName)}>
+                {badge}
+              </span>
+            )}
           </div>
         </div>
         <div className="flex items-center gap-2">
