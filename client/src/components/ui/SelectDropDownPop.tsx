@@ -5,7 +5,8 @@ import type { Option } from '~/common';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils/';
 import { useMultiSearch } from './MultiSearch';
-import { shouldShowProBadge } from '~/data/modelConfig';
+import { shouldShowProBadge, getModelDisplayName } from '~/data/modelConfig';
+import ProBadge, { proBadgeStyles } from './ProBadge';
 
 type SelectDropDownProps = {
   id?: string;
@@ -85,13 +86,9 @@ function SelectDropDownPop({
                   {/* {!showLabel && !emptyTitle && (
                     <span className="text-xs text-gray-700 dark:text-gray-500">{title}:</span>
                   )} */}
-                  {currentValue}
+                  {getModelDisplayName(currentValue)}
                 </span>
-                {showBadge && (
-                  <span className="shrink-0 rounded-md bg-amber-100/60 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
-                    PRO
-                  </span>
-                )}
+                {showBadge && <ProBadge className="ml-2" />}
               </span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2">
                 <svg
@@ -128,12 +125,12 @@ function SelectDropDownPop({
                 return (
                   <MenuItem
                     key={option}
-                    title={option}
+                    title={typeof option === 'string' ? getModelDisplayName(option) : getModelDisplayName(option.label ?? '')}
                     value={option}
                     selected={!!(value && value === option)}
                     onClick={() => setValue(option)}
                     badge={showOptionBadge ? 'PRO' : undefined}
-                    badgeClassName="shrink-0 rounded-md bg-amber-100/60 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200"
+                    badgeClassName={showOptionBadge ? proBadgeStyles : undefined}
                   />
                 );
               })}

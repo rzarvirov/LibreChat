@@ -12,6 +12,7 @@ interface ModelConfig {
     features: ModelFeatures;
     provider: string;
     description: string;
+    shortName: string;
   };
 }
 
@@ -19,43 +20,59 @@ export const modelConfig: ModelConfig = {
   // OpenAI Models
   'gpt-4o-mini': {
     provider: 'OpenAI',
+    shortName: 'ChatGPT 4o Mini',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
-      imageSupport: false,
+      imageSupport: true,
       intelligence: 'high',
       contextWindow: 128000,
     },
     description: 'Fast and efficient GPT-4 model optimized for quick responses',
   },
-  'gpt-4o': {
+  'chatgpt-4o-latest': {
     provider: 'OpenAI',
+    shortName: 'ChatGPT 4o',
     features: {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
-      imageSupport: false,
-      intelligence: 'very high',
-      contextWindow: 128000,
-    },
-    description: 'Powerful GPT-4 model with high accuracy and reasoning capabilities',
-  },
-  'gpt-4-vision-preview': {
-    provider: 'OpenAI',
-    features: {
-      speed: 'medium',
-      tiers: ['PROPLUS'],
       imageSupport: true,
       intelligence: 'very high',
       contextWindow: 128000,
     },
-    description: 'GPT-4 model with vision capabilities for image analysis and understanding',
+    description: 'Latest GPT-4 model with advanced capabilities',
   },
-  'gpt-4-turbo-preview': {
+  'o1-mini': {
     provider: 'OpenAI',
+    shortName: 'ChatGPT o1 Mini',
     features: {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      intelligence: 'high',
+      contextWindow: 128000,
+    },
+    description: 'Fast and efficient O1 model optimized for quick responses',
+  },
+  'o1': {
+    provider: 'OpenAI',
+    shortName: 'ChatGPT o1',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 128000,
+    },
+    description: 'Powerful O1 model with high accuracy and reasoning capabilities',
+  },
+  'gpt-4-turbo': {
+    provider: 'OpenAI',
+    shortName: 'ChatGPT GPT-4 Turbo',
+    features: {
+      speed: 'fast',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
     },
@@ -63,6 +80,7 @@ export const modelConfig: ModelConfig = {
   },
   'gpt-3.5-turbo': {
     provider: 'OpenAI',
+    shortName: 'ChatGPT GPT-3.5',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
@@ -72,43 +90,11 @@ export const modelConfig: ModelConfig = {
     },
     description: 'Fast and reliable model for general-purpose chat and text generation',
   },
-  'gpt-3.5-turbo-16k': {
-    provider: 'OpenAI',
-    features: {
-      speed: 'fast',
-      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
-      imageSupport: false,
-      intelligence: 'medium',
-      contextWindow: 16384,
-    },
-    description: 'GPT-3.5 model with extended context window for longer conversations',
-  },
 
   // Anthropic Models
-  'claude-3-opus-20240229': {
+  'claude-3-5-haiku-latest': {
     provider: 'Anthropic',
-    features: {
-      speed: 'medium',
-      tiers: ['PROPLUS'],
-      imageSupport: true,
-      intelligence: 'very high',
-      contextWindow: 200000,
-    },
-    description: 'Most capable Claude model with highest reasoning and analysis capabilities',
-  },
-  'claude-3-sonnet-20240229': {
-    provider: 'Anthropic',
-    features: {
-      speed: 'fast',
-      tiers: ['PRO', 'PROPLUS'],
-      imageSupport: true,
-      intelligence: 'high',
-      contextWindow: 200000,
-    },
-    description: 'Balanced Claude model optimized for both performance and speed',
-  },
-  'claude-3-haiku-20240307': {
-    provider: 'Anthropic',
+    shortName: 'Claude 3.5 Haiku',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
@@ -118,132 +104,269 @@ export const modelConfig: ModelConfig = {
     },
     description: 'Fastest Claude model optimized for quick responses',
   },
-  'claude-2.1': {
+  'claude-3-5-sonnet-latest': {
     provider: 'Anthropic',
-    features: {
-      speed: 'medium',
-      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
-      imageSupport: false,
-      intelligence: 'high',
-      contextWindow: 100000,
-    },
-    description: 'Previous generation Claude model with strong reasoning capabilities',
-  },
-  'claude-instant-1': {
-    provider: 'Anthropic',
+    shortName: 'Claude 3.5 Sonnet',
     features: {
       speed: 'fast',
-      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
-      imageSupport: false,
-      intelligence: 'medium',
-      contextWindow: 100000,
+      tiers: ['BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'high',
+      contextWindow: 200000,
     },
-    description: 'Fast, cost-effective Claude model for simpler tasks',
+    description: 'Balanced Claude model optimized for both performance and speed',
+  },
+  'claude-3-opus-latest': {
+    provider: 'Anthropic',
+    shortName: 'Claude 3 Opus',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'very high',
+      contextWindow: 200000,
+    },
+    description: 'Most capable Claude model with highest reasoning and analysis capabilities',
   },
 
   // Google Models
-  'gemini-1.5-pro-latest': {
+  'gemini-1.5-pro': {
     provider: 'Google',
+    shortName: 'Gemini 1.5 Pro',
     features: {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
-      intelligence: 'high',
+      intelligence: 'very high',
       contextWindow: 1000000,
     },
     description: 'Latest Gemini Pro model with advanced capabilities and massive context window',
   },
-  'gemini-1.0-pro': {
+  'gemini-1.5-flash': {
     provider: 'Google',
+    shortName: 'Gemini 1.5 Flash',
+    features: {
+      speed: 'fast',
+      tiers: ['BASIC','PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'high',
+      contextWindow: 1000000,
+    },
+    description: 'Ultra-fast Gemini model optimized for quick responses',
+  },
+  'gemini-1.5-flash-8b': {
+    provider: 'Google',
+    shortName: 'Gemini 1.5 Flash 8B',
+    features: {
+      speed: 'fast',
+      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'medium',
+      contextWindow: 1000000,
+    },
+    description: 'Lightweight and fast Gemini model for efficient processing',
+  },
+  'gemini-2.0-flash-exp': {
+    provider: 'Google',
+    shortName: 'Gemini 2.0',
+    features: {
+      speed: 'fast',
+      tiers: ['PRO','PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 1000000,
+    },
+    description: 'Experimental next-gen Gemini model with enhanced speed and capabilities',
+  },
+
+  // Groq Models
+  'gemma2-9b-it': {
+    provider: 'Groq',
+    shortName: 'Gemma 2 9B',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
       intelligence: 'medium',
-      contextWindow: 32000,
+      contextWindow: 8192,
     },
-    description: 'Standard Gemini model for general-purpose use',
+    description: 'Fast and efficient Google Gemma 2 model optimized by Groq',
   },
-  'gemini-pro-vision': {
-    provider: 'Google',
+  'llama-3.3-70b-versatile': {
+    provider: 'Groq',
+    shortName: 'Llama 3.3 70B',
     features: {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
-      imageSupport: true,
-      intelligence: 'high',
-      contextWindow: 32000,
-    },
-    description: 'Gemini model specialized in image understanding and analysis',
-  },
-  'gemini-2.0-flash-exp': {
-    provider: 'Google',
-    features: {
-      speed: 'fast',
-      tiers: ['PROPLUS'],
-      imageSupport: true,
+      imageSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
+      maxTokens: 32768,
     },
-    description: 'Experimental Gemini model focused on ultra-fast responses',
+    description: 'Most capable Llama 3.3 model with massive context window and high output capacity',
   },
-
-  // Groq Models
-  'llama3-70b-8192': {
+  'llama-3.1-8b-instant': {
     provider: 'Groq',
+    shortName: 'Llama 3.1 8B',
     features: {
       speed: 'fast',
-      tiers: ['PRO', 'PROPLUS'],
+      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'medium',
+      contextWindow: 128000,
+      maxTokens: 8192,
+    },
+    description: 'Fast and efficient Llama 3.1 model optimized for quick responses',
+  },
+  'llama-guard-3-8b': {
+    provider: 'Groq',
+    shortName: 'Llama Guard',
+    features: {
+      speed: 'fast',
+      tiers: ['BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
       intelligence: 'high',
       contextWindow: 8192,
     },
-    description: 'Ultra-fast Llama 3 70B model optimized by Groq',
+    description: 'Specialized Llama model focused on safe and controlled responses',
   },
-  'mixtral-8x7b-32768': {
+  'llama3-70b-8192': {
     provider: 'Groq',
+    shortName: 'Llama 3 70B',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'very high',
+      contextWindow: 8192,
+    },
+    description: 'Powerful Llama 3 70B model with high reasoning capabilities',
+  },
+  'llama3-8b-8192': {
+    provider: 'Groq',
+    shortName: 'Llama 3 8B',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
       intelligence: 'medium',
-      contextWindow: 32768,
+      contextWindow: 8192,
     },
-    description: 'Fast Mixtral model with good balance of speed and capabilities',
+    description: 'Fast and efficient Llama 3 8B model for general use',
   },
 
   // Mistral Models
-  'mistral-medium': {
+  'mistral-small-latest': {
     provider: 'Mistral',
+    shortName: 'Mistral Small',
+    features: {
+      speed: 'fast',
+      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'medium',
+      contextWindow: 32000,
+    },
+    description: 'Fast and efficient model for general use',
+  },
+  'mistral-large-latest': {
+    provider: 'Mistral',
+    shortName: 'Mistral Large',
     features: {
       speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'very high',
+      contextWindow: 32000,
+    },
+    description: 'Most capable Mistral model with advanced reasoning',
+  },
+  'pixtral-large-latest': {
+    provider: 'Mistral',
+    shortName: 'Pixtral Large',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 32000,
+    },
+    description: 'Vision-capable model for image understanding and analysis',
+  },
+  'codestral-latest': {
+    provider: 'Mistral',
+    shortName: 'Codestral',
+    features: {
+      speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
       intelligence: 'high',
       contextWindow: 32000,
     },
-    description: 'Most capable Mistral model with advanced reasoning',
+    description: 'Specialized model optimized for code understanding and generation',
   },
-  'mistral-small': {
+  'pixtral-12b-2409': {
     provider: 'Mistral',
+    shortName: 'Pixtral 12B',
+    features: {
+      speed: 'fast',
+      tiers: ['FREE','BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'high',
+      contextWindow: 32000,
+    },
+    description: 'Efficient vision model balancing speed and capabilities',
+  },
+
+  // DeepSeek Models
+  'deepseek-chat': {
+    provider: 'Deepseek',
+    shortName: 'DeepSeek Chat V3',
     features: {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
-      intelligence: 'medium',
+      intelligence: 'high',
       contextWindow: 32000,
     },
-    description: 'Balanced Mistral model for general use',
+    description: 'Fast and versatile model for general chat and text generation',
   },
-  'mistral-tiny': {
-    provider: 'Mistral',
+  'deepseek-reasoner': {
+    provider: 'Deepseek',
+    shortName: 'DeepSeek Reasoner R1',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: false,
+      intelligence: 'very high',
+      contextWindow: 32000,
+    },
+    description: 'Advanced model optimized for complex reasoning and analysis',
+  },
+
+  // XAI Models
+  'grok-2-latest': {
+    provider: 'XAI',
+    shortName: 'Grok 2',
     features: {
       speed: 'fast',
-      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
+      tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
-      intelligence: 'basic',
-      contextWindow: 32000,
+      intelligence: 'very high',
+      contextWindow: 128000,
     },
-    description: 'Fast and efficient Mistral model for simple tasks',
+    description: 'Latest Grok 2 model with advanced reasoning and real-time knowledge',
+  },
+  'grok-2-vision-latest': {
+    provider: 'XAI',
+    shortName: 'Grok 2 Vision',
+    features: {
+      speed: 'medium',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 128000,
+    },
+    description: 'Grok 2 model with vision capabilities for image understanding and analysis',
   },
 };
 
@@ -294,4 +417,12 @@ export const shouldShowProBadge = (modelName: string): boolean => {
   const model = modelConfig[modelName];
   // Show PRO badge if model is not available in FREE or BASIC tiers
   return !model.features.tiers.includes('FREE') && !model.features.tiers.includes('BASIC');
+};
+
+// Helper function to get the display name for a model
+export const getModelDisplayName = (modelName: string): string => {
+  if (!modelConfig[modelName]) {
+    return modelName;
+  }
+  return modelConfig[modelName].shortName;
 }; 
