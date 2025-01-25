@@ -8,11 +8,12 @@ import {
   ListboxOptions,
 } from '@headlessui/react';
 import type { Option, OptionWithIcon, DropdownValueSetter } from '~/common';
-import { shouldShowProBadge } from '~/data/modelConfig';
+import { shouldShowProBadge, getModelDisplayName } from '~/data/modelConfig';
 import CheckMark from '~/components/svg/CheckMark';
 import { useMultiSearch } from './MultiSearch';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils/';
+import ProBadge from './ProBadge';
 
 type SelectDropDownProps = {
   id?: string;
@@ -160,7 +161,7 @@ function SelectDropDown({
                         return value.label ?? '';
                       }
 
-                      return value;
+                      return getModelDisplayName(value);
                     })()}
                   </span>
                 </span>
@@ -256,12 +257,8 @@ function SelectDropDown({
                                 {currentIcon}
                               </span>
                             )}
-                            {currentLabel}
-                            {showBadge && (
-                              <span className="ml-2 inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                                PRO
-                              </span>
-                            )}
+                            {currentLabel ? getModelDisplayName(currentLabel) : ''}
+                            {showBadge && <ProBadge className="ml-2" />}
                           </span>
                           {currentValue === activeValue && (
                             <span

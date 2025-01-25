@@ -3,8 +3,9 @@ import { matchSorter } from 'match-sorter';
 import { startTransition, useMemo, useState, useEffect, useRef, memo } from 'react';
 import { cn } from '~/utils';
 import type { OptionWithIcon } from '~/common';
-import { shouldShowProBadge } from '~/data/modelConfig';
+import { shouldShowProBadge, getModelDisplayName } from '~/data/modelConfig';
 import { Search } from 'lucide-react';
+import ProBadge from './ProBadge';
 
 interface ControlComboboxProps {
   selectedValue: string;
@@ -77,13 +78,9 @@ function ControlCombobox({
             {!isCollapsed && (
               <div className="flex flex-grow items-center gap-2">
                 <span className="truncate text-left">
-                  {displayValue ?? selectPlaceholder}
+                  {displayValue ? getModelDisplayName(displayValue) : selectPlaceholder}
                 </span>
-                {showSelectedBadge && (
-                  <span className="z-50 ml-2 inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
-                    PRO
-                  </span>
-                )}
+                {showSelectedBadge && <ProBadge className="z-50 ml-2" />}
               </div>
             )}
           </Ariakit.Select>
@@ -124,13 +121,9 @@ function ControlCombobox({
                           {item.icon}
                         </div>
                       )}
-                      <span className="truncate">{item.label}</span>
+                      <span className="truncate">{item.label ? getModelDisplayName(item.label) : ''}</span>
                     </div>
-                    {showBadge && (
-                      <span className="z-50 ml-2 inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">
-                        PRO
-                      </span>
-                    )}
+                    {showBadge && <ProBadge className="z-50 ml-2" />}
                   </Ariakit.SelectItem>
                 );
               })}
