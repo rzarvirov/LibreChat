@@ -16,17 +16,17 @@ const SUBSCRIPTION_STATUS = {
 const STRIPE_PRODUCT_MAPPING = {
   [process.env.STRIPE_PRICE_BASIC_EN]: {
     tier: SUBSCRIPTION_TIERS.BASIC,
-    tokenCredits: 5000,
+    tokenCredits: 350000,
     durationMonths: 1,
   },
   [process.env.STRIPE_PRICE_PRO_EN]: {
     tier: SUBSCRIPTION_TIERS.PRO,
-    tokenCredits: 25000,
+    tokenCredits: 1000000,
     durationMonths: 1,
   },
   [process.env.STRIPE_PRICE_PROPLUS_EN]: {
     tier: SUBSCRIPTION_TIERS.PROPLUS,
-    tokenCredits: 100000,
+    tokenCredits: 3000000,
     durationMonths: 1,
   },
   // Add other product mappings here as needed

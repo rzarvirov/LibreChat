@@ -196,7 +196,7 @@ import {
     };
   
     const getIntelligenceIcon = (level: string) => {
-      const isHighlighted = ['high', 'very high'].includes(level);
+      const isHighlighted = level === 'high' || level === 'very high';
       return (
         <Brain 
           className={cn(
@@ -235,7 +235,7 @@ import {
         icon: <ImageIcon className="h-full w-full text-blue-500 dark:text-blue-400" />,
       }] : []),
       {
-        title: `${localize('com_model_features_intelligence')}: ${localize(`com_model_features_intelligence_${features.intelligence}`)}`,
+        title: `${localize('com_model_features_intelligence')}: ${localize(`com_model_features_intelligence_${features.intelligence.replace(' ', '_')}`)}`,
         icon: getIntelligenceIcon(features.intelligence),
       },
       {
@@ -243,7 +243,7 @@ import {
         icon: getContextIcon(features.contextWindow),
       },
       {
-        title: localize(`com_model_features_speed_${features.speed}`),
+        title: `${localize('com_model_features_speed')}: ${localize(`com_model_features_speed_${features.speed}`)}`,
         icon: getSpeedIcon(features.speed),
       },
     ];
@@ -266,7 +266,7 @@ import {
             mouseX.set(Infinity);
           }}
           className={cn(
-            'mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-4 dark:bg-neutral-900',
+            'mx-auto flex w-fit gap-4 rounded-2xl bg-gray-50 px-12 dark:bg-neutral-900',
             'items-end pb-3',
             className
           )}

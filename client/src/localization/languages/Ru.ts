@@ -829,7 +829,8 @@ export default {
   com_ui_upload_invalid_var:
     'Недопустимый файл. Загружаемое изображение не должно превышать {0} МБ',
 
-  com_ui_latest_footer: 'Искусственный интеллект для каждого',
+  com_ui_latest_footer: 'Все AI-чаты в одном месте.',
+  com_ui_loading: 'Загрузка...',
 
   com_ui_read_aloud: 'Прочитать вслух',
 
@@ -838,8 +839,6 @@ export default {
   com_assistants_max_starters_reached: 'Достигнуто максимальное количество начальных подсказок',
 
   com_ui_all_proper: 'Все',
-
-  com_ui_loading: 'Загрузка...',
 
   com_ui_revoke_keys: 'Отозвать ключи',
 
@@ -1247,9 +1246,9 @@ export default {
   com_subscription_change_plan: 'Изменить план',
   com_subscription_status: 'Статус',
   com_subscription_token_credits: '{0} токенов',
-  com_subscription_basic_tokens: '5 000',
-  com_subscription_pro_tokens: '25 000',
-  com_subscription_proplus_tokens: '100 000',
+  com_subscription_basic_tokens: '350 000',
+  com_subscription_pro_tokens: '1 000 000',
+  com_subscription_proplus_tokens: '3 000 000',
   com_subscription_canceling: 'Отмена подписки',
   com_subscription_active_until: 'Ваш план {0} будет активен до {1}. После этой даты ваша учетная запись вернется к плану FREE.',
   com_subscription_keep: 'Сохранить подписку',
@@ -1275,7 +1274,7 @@ export default {
   com_model_features_speed_fast: 'Быстрая',
   com_model_features_speed_medium: 'Средняя', 
   com_model_features_speed_slow: 'Медленная',
-  com_model_features_image_support: 'Визуальный анализ',
+  com_model_features_image_support: 'Анализ изображений',
   com_model_features_intelligence: 'Интеллект',
   com_model_features_intelligence_basic: 'Базовый',
   com_model_features_intelligence_medium: 'Средний',
