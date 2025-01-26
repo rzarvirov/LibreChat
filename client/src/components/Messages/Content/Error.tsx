@@ -54,28 +54,24 @@ const errorMessages = {
     const { info } = json;
     return localize('com_error_input_length', info);
   },
-  [ViolationTypes.BAN]:
-    'Your account has been temporarily banned due to violations of our service.',
-  invalid_api_key:
-    'Invalid API key. Please check your API key and try again. You can do this by clicking on the model logo in the left corner of the textbox and selecting "Set Token" for the current selected endpoint. Thank you for your understanding.',
-  insufficient_quota:
-    'We apologize for any inconvenience caused. The default API key has reached its limit. To continue using this service, please set up your own API key. You can do this by clicking on the model logo in the left corner of the textbox and selecting "Set Token" for the current selected endpoint. Thank you for your understanding.',
-  concurrent: (json: TConcurrent) => {
+  [ViolationTypes.BAN]: 'com_error_ban',
+  invalid_api_key: 'com_error_invalid_api_key',
+  insufficient_quota: 'com_error_insufficient_quota',
+  concurrent: (json: TConcurrent, localize: LocalizeFunction) => {
     const { limit } = json;
     const plural = limit > 1 ? 's' : '';
-    return `Only ${limit} message${plural} at a time. Please allow any other responses to complete before sending another message, or wait one minute.`;
+    return localize('com_error_concurrent', String(limit), plural);
   },
-  message_limit: (json: TMessageLimit) => {
+  message_limit: (json: TMessageLimit, localize: LocalizeFunction) => {
     const { max, windowInMinutes } = json;
     const plural = max > 1 ? 's' : '';
-    return `You hit the message limit. You have a cap of ${max} message${plural} per ${
-      windowInMinutes > 1 ? `${windowInMinutes} minutes` : 'minute'
-    }.`;
+    const timeframe = windowInMinutes > 1 ? `${windowInMinutes} minutes` : 'minute';
+    return localize('com_error_message_limit', String(max), plural, timeframe);
   },
   token_balance: (json: TTokenBalance) => {
     const { balance, tokenCost, promptTokens, generations } = json;
     const localize = useLocalize();
-    const message = localize('com_error_insufficient_funds', 
+    const message = localize('com_error_token_balance', 
       String(balance), 
       String(promptTokens), 
       String(tokenCost)
@@ -106,7 +102,7 @@ const Error = ({ text }: { text: string }) => {
   const localize = useLocalize();
   const jsonString = extractJson(text);
   const errorMessage = text.length > 512 && !jsonString ? text.slice(0, 512) + '...' : text;
-  const defaultResponse = `Something went wrong. Here's the specific error message we encountered: ${errorMessage}`;
+  const defaultResponse = localize('com_error_default', errorMessage);
 
   if (!isJson(jsonString)) {
     return defaultResponse;
@@ -121,7 +117,7 @@ const Error = ({ text }: { text: string }) => {
   } else if (keyExists && keyExists.startsWith(localizedErrorPrefix)) {
     return localize(errorMessages[errorKey]);
   } else if (keyExists) {
-    return errorMessages[errorKey];
+    return localize(errorMessages[errorKey]);
   } else {
     return defaultResponse;
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Root, Trigger, Content, Portal } from '@radix-ui/react-popover';
 import MenuItem from '~/components/Chat/Menus/UI/MenuItem';
 import type { Option } from '~/common';
@@ -31,6 +31,7 @@ function SelectDropDownPop({
   showLabel = true,
   emptyTitle = false,
 }: SelectDropDownProps) {
+  const [open, setOpen] = useState(false);
   const localize = useLocalize();
   const transitionProps = { className: 'top-full mt-3' };
   if (showAbove) {
@@ -58,7 +59,7 @@ function SelectDropDownPop({
   const showBadge = shouldShowProBadge(String(currentValue));
 
   return (
-    <Root>
+    <Root open={open} onOpenChange={setOpen}>
       <div className={'flex items-center justify-center gap-2 '}>
         <div className={'relative w-full'}>
           <Trigger asChild>
@@ -128,7 +129,10 @@ function SelectDropDownPop({
                     title={typeof option === 'string' ? getModelDisplayName(option) : getModelDisplayName(option.label ?? '')}
                     value={option}
                     selected={!!(value && value === option)}
-                    onClick={() => setValue(option)}
+                    onClick={() => {
+                      setValue(option);
+                      setOpen(false);
+                    }}
                     badge={showOptionBadge ? 'PRO' : undefined}
                     badgeClassName={showOptionBadge ? proBadgeStyles : undefined}
                   />
