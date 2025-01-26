@@ -28,9 +28,15 @@ function ModelInfo({ model }: { model: string }) {
   const description = modelData.descriptions?.[lang] || modelData.description;
 
   return (
-    <div className="mt-6 max-w-2xl px-6 flex flex-col items-center gap-4">
-      <p className="text-center text-sm text-gray-500 dark:text-gray-400">{description}</p>
-      <ModelDock features={modelData.features} />
+    <div className="mt-6 max-w-2xl px-6 flex flex-col items-center">
+      <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+        {description}
+      </p>
+      <div className="h-32 w-full relative mt-4">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+          <ModelDock features={modelData.features} />
+        </div>
+      </div>
     </div>
   );
 }

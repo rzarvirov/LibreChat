@@ -249,7 +249,7 @@ const SubscriptionManagePopup: FC<SubscriptionManagePopupProps> = ({ isOpen, onC
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 dark:text-gray-300">{localize('com_subscription_balance')}:</span>
-            <span className="font-semibold text-gray-900 dark:text-white">{subscriptionData.balance.toFixed(2)}</span>
+            <span className="font-semibold text-gray-900 dark:text-white">{Math.floor(subscriptionData.balance)}</span>
           </div>
           {subscriptionData.canceled ? (
             <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">

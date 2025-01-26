@@ -4,6 +4,8 @@ import { HelpCircle } from 'lucide-react';
 import useLocalize from '~/hooks/useLocalize';
 import { useAuthContext } from '~/hooks/AuthContext';
 import TokenBubble from '~/components/Common/TokenBubble';
+import { useRecoilValue } from 'recoil';
+import store from '~/store';
 
 interface SubscriptionPopupProps {
   isOpen: boolean;
@@ -26,6 +28,7 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showTokenInfo, setShowTokenInfo] = useState(false);
   const [tokenBubblePosition, setTokenBubblePosition] = useState({ x: 0, y: 0 });
+  const lang = useRecoilValue(store.lang);
 
   if (!isOpen) return null;
 
@@ -106,15 +109,18 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
       return;
     }
 
-    if (onPlanSelect) {
-      await onPlanSelect(priceId);
-      return;
-    }
-
     console.log('Requesting subscription with price ID:', priceId);
     setError(null);
     setIsLoading(true);
+
     try {
+      if (onPlanSelect) {
+        await onPlanSelect(priceId);
+        // Close the popup on successful plan change
+        onClose();
+        return;
+      }
+
       const response = await fetch('/api/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
@@ -137,8 +143,8 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
         throw new Error('No checkout URL received');
       }
     } catch (error) {
-      console.error('Error creating checkout session:', error);
-      setError(error instanceof Error ? error.message : 'Failed to start checkout process');
+      console.error('Error handling subscription:', error);
+      setError(error instanceof Error ? error.message : 'Failed to process subscription request');
     } finally {
       setIsLoading(false);
     }
@@ -212,8 +218,25 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
                 onClick={() => tier.priceId && handleSubscribe(tier.priceId)}
                 disabled={!tier.priceId || isLoading}
               >
-                {isLoading ? 'Loading...' : localize('com_subscription_subscribe')}
+                {isLoading ? localize('com_ui_loading') : localize('com_subscription_subscribe')}
               </button>
+              {lang === 'ru-RU' && (
+                <div className="text-center mt-2">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">или</span>
+                  <a
+                    href={tier.name === localize('com_subscription_basic') 
+                      ? 'https://boosty.to/aibuddy/purchase/1572086?ssource=DIRECT&share=subscription_link'
+                      : tier.name === localize('com_subscription_pro')
+                      ? 'https://boosty.to/aibuddy/purchase/1628030?ssource=DIRECT&share=subscription_link'
+                      : 'https://boosty.to/aibuddy/purchase/1572088?ssource=DIRECT&share=subscription_link'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block mt-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 underline transition-colors"
+                  >
+                    Подписаться через Boosty
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </div>

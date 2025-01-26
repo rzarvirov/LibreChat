@@ -64,7 +64,7 @@ function AccountSettings() {
       <Select.Select
         aria-label={localize('com_nav_account_settings')}
         data-testid="nav-user"
-        className="mt-text-sm flex h-auto w-full items-center gap-2 rounded-xl p-2 text-sm transition-all duration-200 ease-in-out hover:bg-accent"
+        className="mt-text-sm flex h-auto w-full items-center gap-2 rounded-xl p-2 text-sm transition-colors duration-200 hover:bg-surface-hover"
       >
         <div className="-ml-0.9 -mt-0.8 h-8 w-8 flex-shrink-0">
           <div className="relative flex">
@@ -91,15 +91,36 @@ function AccountSettings() {
           </div>
         </div>
         <div
-          className="mt-2 grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary flex items-center gap-2"
+          className="mt-2 grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary"
           style={{ marginTop: '0', marginLeft: '0' }}
         >
-          <span>{user?.name ?? user?.username ?? localize('com_nav_user')}</span>
-          {extendedUser?.subscriptionTier && (
-            <TierBadge tier={extendedUser.subscriptionTier} onClick={handleSubscriptionClick} />
-          )}
+          <div className="flex items-center gap-2">
+            <span>{user?.name ?? user?.username ?? localize('com_nav_user')}</span>
+            {extendedUser?.subscriptionTier && (
+              <TierBadge tier={extendedUser.subscriptionTier} onClick={handleSubscriptionClick} />
+            )}
+          </div>
         </div>
       </Select.Select>
+      {startupConfig?.checkBalance === true &&
+        balanceQuery.data != null &&
+        !isNaN(parseFloat(balanceQuery.data)) && (
+          <div 
+            className="flex w-full cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm text-token-text-secondary transition-colors duration-200 hover:bg-surface-hover hover:text-text-primary" 
+            role="button"
+            onClick={handleSubscriptionClick}
+          >
+            <div 
+              onClick={handleTokenIconClick}
+              className="cursor-help rounded-lg p-1 hover:bg-surface-tertiary"
+            >
+              <Coins className="w-4 h-4 text-yellow-500" />
+            </div>
+            <span className="underline-offset-2">
+              {localize('com_subscription_balance')}: {parseFloat(balanceQuery.data).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+            </span>
+          </div>
+        )}
       <Select.SelectPopover
         className="popover-ui w-[235px]"
         style={{
@@ -112,31 +133,6 @@ function AccountSettings() {
           {user?.email ?? localize('com_nav_user')}
         </div>
         <DropdownMenuSeparator />
-        {startupConfig?.checkBalance === true &&
-          balanceQuery.data != null &&
-          !isNaN(parseFloat(balanceQuery.data)) && (
-          <>
-            <div 
-              className="text-token-text-secondary ml-3 mr-2 py-2 text-sm cursor-pointer hover:text-token-text-primary group flex items-center gap-2 relative" 
-              role="note"
-              onClick={handleSubscriptionClick}
-            >
-              <div 
-                onClick={handleTokenIconClick}
-                className="cursor-help"
-              >
-                <Coins className="w-4 h-4 text-yellow-500" />
-              </div>
-              <span className="underline underline-offset-2">
-                {localize('com_subscription_balance')}: {parseFloat(balanceQuery.data).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-              </span>
-              {extendedUser?.subscriptionTier && (
-                <TierBadge tier={extendedUser.subscriptionTier} onClick={handleSubscriptionClick} />
-              )}
-            </div>
-            <DropdownMenuSeparator />
-          </>
-        )}
         <Select.SelectItem
           value=""
           onClick={() => setShowFiles(true)}

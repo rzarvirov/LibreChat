@@ -143,12 +143,13 @@ const ChatForm = ({ index = 0 }) => {
   const endpointSupportsFiles: boolean = supportsFiles[endpointType ?? endpoint ?? ''] ?? false;
   const isUploadDisabled: boolean = endpointFileConfig?.disabled ?? false;
 
+  const [uploadActive, setUploadActive] = useState(false);
+
   const baseClasses = cn(
     'md:py-3.5 m-0 w-full resize-none bg-surface-tertiary py-[13px] placeholder-black/50 dark:placeholder-white/50 [&:has(textarea:focus)]:shadow-[0_2px_6px_rgba(0,0,0,.05)]',
     isCollapsed ? 'max-h-[52px]' : 'max-h-[65vh] md:max-h-[75vh]',
   );
 
-  const uploadActive = endpointSupportsFiles && !isUploadDisabled;
   const speechClass = isRTL
     ? `pr-${uploadActive ? '12' : '4'} pl-12`
     : `pl-${uploadActive ? '12' : '4'} pr-12`;
@@ -184,7 +185,10 @@ const ChatForm = ({ index = 0 }) => {
           <PromptsCommand index={index} textAreaRef={textAreaRef} submitPrompt={submitPrompt} />
           <div className="transitional-all relative flex w-full flex-grow flex-col overflow-hidden rounded-3xl bg-surface-tertiary text-text-primary duration-200">
             <TextareaHeader addedConvo={addedConvo} setAddedConvo={setAddedConvo} />
-            <FileFormWrapper disableInputs={disableInputs}>
+            <FileFormWrapper 
+              disableInputs={disableInputs}
+              onUploadActiveChange={setUploadActive}
+            >
               {endpoint && (
                 <>
                   <CollapseChat
