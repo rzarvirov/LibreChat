@@ -7,6 +7,7 @@ import {
   VerifyEmail,
   ApiErrorWatcher,
 } from '~/components/Auth';
+import { PrivacyPolicy, PrivacyPolicyRu } from '~/components/Privacy';
 import { AuthContextProvider } from '~/hooks/AuthContext';
 import StartupLayout from './Layouts/Startup';
 import LoginLayout from './Layouts/Login';
@@ -27,6 +28,14 @@ export const router = createBrowserRouter([
   {
     path: 'share/:shareId',
     element: <ShareRoute />,
+  },
+  {
+    path: 'privacy-policy',
+    element: <PrivacyPolicy />,
+  },
+  {
+    path: 'privacy-policy-ru',
+    element: <PrivacyPolicyRu />,
   },
   {
     path: '/',

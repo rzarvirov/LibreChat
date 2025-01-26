@@ -12,6 +12,9 @@ interface ModelConfig {
     features: ModelFeatures;
     provider: string;
     description: string;
+    descriptions?: {
+      [key: string]: string;
+    };
     shortName: string;
   };
 }
@@ -29,6 +32,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Fast and efficient GPT-4 model optimized for quick responses',
+    descriptions: {
+      'ru-RU': 'Умная и динамичная версия GPT-4, созданная для моментальных и точных ответов'
+    }
   },
   'chatgpt-4o-latest': {
     provider: 'OpenAI',
@@ -41,6 +47,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Latest GPT-4 model with advanced capabilities',
+    descriptions: {
+      'ru-RU': 'Новейшая модель GPT-4 с продвинутыми возможностями и глубоким пониманием контекста'
+    }
   },
   'o1-mini': {
     provider: 'OpenAI',
@@ -53,6 +62,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Fast and efficient O1 model optimized for quick responses',
+    descriptions: {
+      'ru-RU': 'Быстрая и эффективная модель O1, оптимизированная для мгновенных и точных ответов'
+    }
   },
   'o1': {
     provider: 'OpenAI',
@@ -65,6 +77,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Powerful O1 model with high accuracy and reasoning capabilities',
+    descriptions: {
+      'ru-RU': 'Мощная модель O1 с высокой точностью и превосходными аналитическими способностями'
+    }
   },
   'gpt-4-turbo': {
     provider: 'OpenAI',
@@ -77,6 +92,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Latest GPT-4 Turbo model with improved speed and capabilities',
+    descriptions: {
+      'ru-RU': 'Последняя версия GPT-4 Turbo с улучшенной скоростью и расширенными возможностями'
+    }
   },
   'gpt-3.5-turbo': {
     provider: 'OpenAI',
@@ -89,6 +107,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 4096,
     },
     description: 'Fast and reliable model for general-purpose chat and text generation',
+    descriptions: {
+      'ru-RU': 'Быстрая и надёжная модель для широкого спектра задач и генерации текста'
+    }
   },
 
   // Anthropic Models
@@ -103,6 +124,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 200000,
     },
     description: 'Fastest Claude model optimized for quick responses',
+    descriptions: {
+      'ru-RU': 'Самая быстрая модель Claude, оптимизированная для молниеносных ответов'
+    }
   },
   'claude-3-5-sonnet-latest': {
     provider: 'Anthropic',
@@ -115,6 +139,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 200000,
     },
     description: 'Balanced Claude model optimized for both performance and speed',
+    descriptions: {
+      'ru-RU': 'Сбалансированная модель Claude, сочетающая высокую производительность и скорость'
+    }
   },
   'claude-3-opus-latest': {
     provider: 'Anthropic',
@@ -127,6 +154,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 200000,
     },
     description: 'Most capable Claude model with highest reasoning and analysis capabilities',
+    descriptions: {
+      'ru-RU': 'Самая мощная модель Claude с непревзойдёнными способностями к рассуждению и анализу'
+    }
   },
 
   // Google Models
@@ -141,6 +171,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 1000000,
     },
     description: 'Latest Gemini Pro model with advanced capabilities and massive context window',
+    descriptions: {
+      'ru-RU': 'Передовая модель Gemini Pro с огромным контекстным окном и продвинутыми возможностями'
+    }
   },
   'gemini-1.5-flash': {
     provider: 'Google',
@@ -153,6 +186,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 1000000,
     },
     description: 'Ultra-fast Gemini model optimized for quick responses',
+    descriptions: {
+      'ru-RU': 'Сверхбыстрая модель Gemini, оптимизированная для мгновенных ответов'
+    }
   },
   'gemini-1.5-flash-8b': {
     provider: 'Google',
@@ -165,6 +201,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 1000000,
     },
     description: 'Lightweight and fast Gemini model for efficient processing',
+    descriptions: {
+      'ru-RU': 'Лёгкая и быстрая модель Gemini для эффективной обработки задач'
+    }
   },
   'gemini-2.0-flash-exp': {
     provider: 'Google',
@@ -177,6 +216,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 1000000,
     },
     description: 'Experimental next-gen Gemini model with enhanced speed and capabilities',
+    descriptions: {
+      'ru-RU': 'Экспериментальная модель нового поколения Gemini с улучшенной скоростью и возможностями'
+    }
   },
 
   // Groq Models
@@ -191,6 +233,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 8192,
     },
     description: 'Fast and efficient Google Gemma 2 model optimized by Groq',
+    descriptions: {
+      'ru-RU': 'Быстрая и эффективная модель Google Gemma 2, оптимизированная Groq для максимальной производительности'
+    }
   },
   'llama-3.3-70b-versatile': {
     provider: 'Groq',
@@ -204,6 +249,9 @@ export const modelConfig: ModelConfig = {
       maxTokens: 32768,
     },
     description: 'Most capable Llama 3.3 model with massive context window and high output capacity',
+    descriptions: {
+      'ru-RU': 'Мощнейшая модель Llama 3.3 с обширным контекстным окном и высокой производительностью'
+    }
   },
   'llama-3.1-8b-instant': {
     provider: 'Groq',
@@ -217,6 +265,9 @@ export const modelConfig: ModelConfig = {
       maxTokens: 8192,
     },
     description: 'Fast and efficient Llama 3.1 model optimized for quick responses',
+    descriptions: {
+      'ru-RU': 'Быстрая и эффективная модель Llama 3.1 для мгновенных ответов'
+    }
   },
   'llama-guard-3-8b': {
     provider: 'Groq',
@@ -229,6 +280,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 8192,
     },
     description: 'Specialized Llama model focused on safe and controlled responses',
+    descriptions: {
+      'ru-RU': 'Специализированная модель Llama с фокусом на безопасности и контроле ответов'
+    }
   },
   'llama3-70b-8192': {
     provider: 'Groq',
@@ -241,6 +295,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 8192,
     },
     description: 'Powerful Llama 3 70B model with high reasoning capabilities',
+    descriptions: {
+      'ru-RU': 'Мощная модель Llama 3 70B с высокими способностями к рассуждению'
+    }
   },
   'llama3-8b-8192': {
     provider: 'Groq',
@@ -253,6 +310,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 8192,
     },
     description: 'Fast and efficient Llama 3 8B model for general use',
+    descriptions: {
+      'ru-RU': 'Быстрая и эффективная модель Llama 3 8B для повседневных задач'
+    }
   },
 
   // Mistral Models
@@ -267,6 +327,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Fast and efficient model for general use',
+    descriptions: {
+      'ru-RU': 'Быстрая и эффективная модель для широкого спектра задач'
+    }
   },
   'mistral-large-latest': {
     provider: 'Mistral',
@@ -279,6 +342,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Most capable Mistral model with advanced reasoning',
+    descriptions: {
+      'ru-RU': 'Самая мощная модель Mistral с продвинутыми возможностями рассуждения'
+    }
   },
   'pixtral-large-latest': {
     provider: 'Mistral',
@@ -291,6 +357,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Vision-capable model for image understanding and analysis',
+    descriptions: {
+      'ru-RU': 'Модель с поддержкой зрения для глубокого анализа и понимания изображений'
+    }
   },
   'codestral-latest': {
     provider: 'Mistral',
@@ -303,6 +372,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Specialized model optimized for code understanding and generation',
+    descriptions: {
+      'ru-RU': 'Специализированная модель для понимания и генерации кода с высокой точностью'
+    }
   },
   'pixtral-12b-2409': {
     provider: 'Mistral',
@@ -315,6 +387,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Efficient vision model balancing speed and capabilities',
+    descriptions: {
+      'ru-RU': 'Эффективная модель с поддержкой зрения, сочетающая скорость и широкие возможности'
+    }
   },
 
   // DeepSeek Models
@@ -329,6 +404,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Fast and versatile model for general chat and text generation',
+    descriptions: {
+      'ru-RU': 'Быстрая и универсальная модель для общения и генерации текста'
+    }
   },
   'deepseek-reasoner': {
     provider: 'Deepseek',
@@ -341,6 +419,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 32000,
     },
     description: 'Advanced model optimized for complex reasoning and analysis',
+    descriptions: {
+      'ru-RU': 'Продвинутая модель для сложного анализа и логических рассуждений'
+    }
   },
 
   // XAI Models
@@ -355,6 +436,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Latest Grok 2 model with advanced reasoning and real-time knowledge',
+    descriptions: {
+      'ru-RU': 'Новейшая модель Grok 2 с продвинутым мышлением и актуальными знаниями'
+    }
   },
   'grok-2-vision-latest': {
     provider: 'XAI',
@@ -367,6 +451,9 @@ export const modelConfig: ModelConfig = {
       contextWindow: 128000,
     },
     description: 'Grok 2 model with vision capabilities for image understanding and analysis',
+    descriptions: {
+      'ru-RU': 'Модель Grok 2 с возможностями зрения для глубокого анализа изображений'
+    }
   },
 };
 

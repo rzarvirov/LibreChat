@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { EModelEndpoint, Constants } from 'librechat-data-provider';
 import { useGetEndpointsQuery, useGetStartupConfig } from 'librechat-data-provider/react-query';
+import { modelConfig } from '~/data/modelConfig';
 import type * as t from 'librechat-data-provider';
 import type { ReactNode } from 'react';
 import { useChatContext, useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
@@ -11,6 +12,28 @@ import { useLocalize, useSubmitMessage } from '~/hooks';
 import { TooltipAnchor } from '~/components/ui';
 import { BirthdayIcon } from '~/components/svg';
 import ConvoStarter from './ConvoStarter';
+import ModelDock from './ModelDock';
+import { useRecoilValue } from 'recoil';
+import store from '~/store';
+
+function ModelInfo({ model }: { model: string }) {
+  const modelData = modelConfig[model];
+  const localize = useLocalize();
+  const lang = useRecoilValue(store.lang);
+
+  if (!modelData) {
+    return null;
+  }
+
+  const description = modelData.descriptions?.[lang] || modelData.description;
+
+  return (
+    <div className="mt-6 max-w-2xl px-6 flex flex-col items-center gap-4">
+      <p className="text-center text-sm text-gray-500 dark:text-gray-400">{description}</p>
+      <ModelDock features={modelData.features} />
+    </div>
+  );
+}
 
 export default function Landing({ Header }: { Header?: ReactNode }) {
   const { conversation } = useChatContext();
@@ -117,15 +140,13 @@ export default function Landing({ Header }: { Header?: ReactNode }) {
             <div className="max-w-md text-center text-sm font-normal text-text-primary ">
               {description ? description : localize('com_nav_welcome_message')}
             </div>
-            {/* <div className="mt-1 flex items-center gap-1 text-token-text-tertiary">
-            <div className="text-sm text-token-text-tertiary">By Daniel Avila</div>
-          </div> */}
           </div>
         ) : (
           <h2 className="mb-5 max-w-[75vh] px-12 text-center text-lg font-medium dark:text-white md:px-0 md:text-2xl">
             {getWelcomeMessage()}
           </h2>
         )}
+        {conversation?.model && <ModelInfo model={conversation.model} />}
         <div className="mt-8 flex flex-wrap justify-center gap-3 px-4">
           {conversation_starters.length > 0 &&
             conversation_starters
