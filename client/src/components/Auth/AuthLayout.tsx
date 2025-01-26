@@ -171,9 +171,9 @@ function AuthLayout({
       </BlinkAnimation>
 
       <div className="w-full md:text-3xl lg:text-4xl sm:text-2xl text-xl flex flex-row items-start justify-start font-normal overflow-hidden p-6 md:p-12 md:pt-14 pt-8">
-        <p className="whitespace-pre-wrap text-center w-full min-h-[3.5em] md:min-h-[2.5em] flex flex-col items-center justify-center">
+        <p className="whitespace-pre-wrap text-center w-full min-h-[2.5em] md:min-h-[2em] flex flex-col items-center justify-center">
           <span className="text-black dark:text-white">{localize('com_ui_typewriter_help_me')}</span>
-          <span className="min-h-[1.75em] md:min-h-[1.25em] flex items-center">
+          <span className="min-h-[1.25em] md:min-h-[1em] flex items-center">
             <Typewriter
               text={[
                 localize('com_ui_typewriter_write_text'),
