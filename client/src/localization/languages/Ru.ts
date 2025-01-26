@@ -166,6 +166,7 @@ export default {
   com_auth_email_max_length: 'Email не может быть длиннее 120 символов',
   com_auth_email_pattern: 'Вы должны ввести действительный адрес электронной почты',
   com_auth_email_address: 'Адрес электронной почты',
+  com_auth_or: 'или',
   com_auth_password: 'Пароль',
   com_auth_password_required: 'Пароль обязателен',
   com_auth_password_min_length: 'Пароль должен содержать не менее 8 символов',

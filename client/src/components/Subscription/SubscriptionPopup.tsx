@@ -53,7 +53,7 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
     {
       name: localize('com_subscription_basic'),
       price: localize('com_subscription_basic_price'),
-      priceId: 'price_1QkT0nDtQYIReEjO4aVJG32s',
+      priceId: 'price_1QldvlDtQYIReEjOqushTtME',
       features: [
         <div key="tokens" className="flex items-center gap-1">
           <span>{localize('com_subscription_token_credits').replace('{0}', localize('com_subscription_basic_tokens'))}</span>
@@ -69,7 +69,7 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
     {
       name: localize('com_subscription_pro'),
       price: localize('com_subscription_pro_price'),
-      priceId: 'price_1QkQOfDtQYIReEjOTS7477RR',
+      priceId: 'price_1QldxzDtQYIReEjOXx8aNtXX',
       features: [
         <div key="tokens" className="flex items-center gap-1">
           <span>{localize('com_subscription_token_credits').replace('{0}', localize('com_subscription_pro_tokens'))}</span>
@@ -86,7 +86,7 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
     {
       name: localize('com_subscription_proplus'),
       price: localize('com_subscription_proplus_price'),
-      priceId: 'price_1QkQQFDtQYIReEjOH0lpN4qx',
+      priceId: 'price_1Qle5DDtQYIReEjOg395QNMO',
       features: [
         <div key="tokens" className="flex items-center gap-1">
           <span>{localize('com_subscription_token_credits').replace('{0}', localize('com_subscription_proplus_tokens'))}</span>

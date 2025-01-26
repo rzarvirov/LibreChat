@@ -995,4 +995,5 @@ export default {
   com_ui_typewriter_solve_problems: 'plan trips',
   com_ui_typewriter_make_decisions: 'make decisions',
   com_ui_typewriter_create_better_world: 'create things that make the world a better place',
+  com_auth_or: 'or',
 };
