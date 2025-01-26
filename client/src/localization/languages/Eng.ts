@@ -456,13 +456,13 @@ export default {
   com_ui_shared_link_bulk_delete_success: 'Successfully deleted shared links',
   com_ui_search: 'Search',
   com_auth_error_login:
-    'Unable to login with the information provided. Please check your credentials and try again.',
+    'Unable to login with the information provided. Please check your credentials and try again or request a password reset.',
   com_auth_error_login_rl:
     'Too many login attempts in a short amount of time. Please try again later.',
   com_auth_error_login_ban:
     'Your account has been temporarily banned due to violations of our service.',
   com_auth_error_login_server:
-    'There was an internal server error. Please wait a few moments and try again.',
+    'Unable to login with the information provided. Please check your credentials and try again or request a password reset.',
   com_auth_error_login_unverified:
     'Your account has not been verified. Please check your email for a verification link.',
   com_auth_no_account: 'Don\'t have an account?',
