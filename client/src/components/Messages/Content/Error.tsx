@@ -76,9 +76,12 @@ const errorMessages = {
       String(promptTokens), 
       String(tokenCost)
     );
+    const renewalNote = localize('com_error_token_balance_note');
+    
     return (
       <div className="flex flex-col items-start gap-4">
         <div>{message}</div>
+        <div className="text-token-text-secondary">{renewalNote}</div>
         <SubscriptionButton />
         {generations && (
           <>
