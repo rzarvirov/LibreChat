@@ -65,8 +65,8 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/oauth/],
       },
       manifest: {
-        name: 'LibreChat',
-        short_name: 'LibreChat',
+        name: 'AiBuddy',
+        short_name: 'AiBuddy',
         start_url: '/',
         display: 'standalone',
         background_color: '#000000',
