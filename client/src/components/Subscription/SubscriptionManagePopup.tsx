@@ -344,6 +344,18 @@ const SubscriptionManagePopup: FC<SubscriptionManagePopupProps> = ({ isOpen, onC
             </button>
           )}
         </div>
+
+        {/* Boosty Link */}
+        <div className="mt-6 text-center">
+          <a
+            href="https://boosty.to/app/settings/subscriptions"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 underline text-sm"
+          >
+            {localize('com_subscription_boosty_manage')}
+          </a>
+        </div>
       </div>
     </div>
   );
