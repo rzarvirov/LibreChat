@@ -134,15 +134,17 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-8 text-gray-900 dark:text-white">
-      <h1 className="text-2xl font-bold mb-6">User Statistics Dashboard</h1>
+    <div className="p-8">
+      <div className="mb-6 bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold">User Statistics Dashboard</h1>
+      </div>
       
-      <div className="mb-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+      <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-2">Total Users</h2>
         <div className="flex items-center">
-          <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{totalUsers.toLocaleString()}</p>
+          <p className="text-4xl font-bold text-blue-600">{totalUsers.toLocaleString()}</p>
           {last24hUsers > 0 && (
-            <span className="ml-4 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded">
+            <span className="ml-4 px-2 py-1 bg-green-100 text-green-800 rounded">
               +{last24hUsers} in last 24h
             </span>
           )}
@@ -150,40 +152,15 @@ const Dashboard = () => {
       </div>
 
       <div className="grid gap-8">
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <Line data={userChartData} options={{
-            ...chartOptions,
-            plugins: {
-              ...chartOptions.plugins,
-              title: {
-                ...chartOptions.plugins.title,
-                color: 'currentColor'
-              },
-              legend: {
-                ...chartOptions.plugins.legend,
-                labels: {
-                  color: 'currentColor'
-                }
-              }
-            },
-            scales: {
-              x: {
-                ticks: { color: 'currentColor' },
-                grid: { color: 'rgba(128, 128, 128, 0.2)' }
-              },
-              y: {
-                ticks: { color: 'currentColor' },
-                grid: { color: 'rgba(128, 128, 128, 0.2)' }
-              }
-            }
-          }} />
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <Line data={userChartData} options={chartOptions} />
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md overflow-x-auto">
+        <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
           <h2 className="text-xl font-semibold mb-4">Token Usage by Model (Last 30 Days)</h2>
           <table className="min-w-full">
             <thead>
-              <tr className="bg-gray-50 dark:bg-gray-700">
+              <tr className="bg-gray-50">
                 <th className="px-4 py-2 text-left">Date</th>
                 {models.map(model => (
                   <th key={model} className="px-4 py-2 text-right">{model}</th>
@@ -196,8 +173,8 @@ const Dashboard = () => {
                 <tr 
                   key={row.date}
                   className={`
-                    ${index === tokenTable.length - 1 ? 'font-bold bg-gray-50 dark:bg-gray-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}
-                    ${index === tokenTable.length - 1 ? 'border-t-2 border-gray-200 dark:border-gray-600' : 'border-t border-gray-200 dark:border-gray-600'}
+                    ${index === tokenTable.length - 1 ? 'font-bold bg-gray-50' : 'hover:bg-gray-50'}
+                    ${index === tokenTable.length - 1 ? 'border-t-2' : 'border-t'}
                   `}
                 >
                   <td className="px-4 py-2">{row.date}</td>
