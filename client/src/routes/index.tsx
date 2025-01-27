@@ -17,6 +17,7 @@ import ShareRoute from './ShareRoute';
 import ChatRoute from './ChatRoute';
 import Search from './Search';
 import Root from './Root';
+import Dashboard from '../components/Dashboard/Dashboard';
 
 const AuthLayout = () => (
   <AuthContextProvider>
@@ -97,5 +98,9 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />,
   },
 ]);
