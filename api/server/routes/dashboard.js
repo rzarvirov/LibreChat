@@ -23,7 +23,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
     // Use the later of startDate or thirtyDaysAgo
     const effectiveStartDate = startDate > thirtyDaysAgo ? startDate : thirtyDaysAgo;
     
-    const [dailyStats, totalUsers, tokenStats, last24hUsers] = await Promise.all([
+    const [dailyStats, totalUsers, tokenStats, last24hUsers, topUsers] = await Promise.all([
       User.aggregate([
         {
           $match: {
@@ -74,7 +74,46 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
       ]),
       User.countDocuments({
         createdAt: { $gte: yesterday }
-      })
+      }),
+      Transaction.aggregate([
+        {
+          $match: {
+            createdAt: { $gte: effectiveStartDate }
+          }
+        },
+        {
+          $group: {
+            _id: '$user',
+            transactionCount: { $sum: 1 },
+            totalTokens: { $sum: { $abs: '$tokenValue' } }
+          }
+        },
+        {
+          $sort: { transactionCount: -1 }
+        },
+        {
+          $limit: 20
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'userDetails'
+          }
+        },
+        {
+          $unwind: '$userDetails'
+        },
+        {
+          $project: {
+            email: '$userDetails.email',
+            tier: '$userDetails.subscriptionTier',
+            transactionCount: 1,
+            totalTokens: 1
+          }
+        }
+      ])
     ]);
 
     // Process token stats into a table format
@@ -115,7 +154,8 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
       totalUsers,
       last24hUsers,
       tokenTable,
-      models
+      models,
+      topUsers
     });
   } catch (error) {
     console.error('Error fetching user stats:', error);
