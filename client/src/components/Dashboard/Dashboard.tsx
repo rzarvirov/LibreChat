@@ -21,70 +21,62 @@ ChartJS.register(
   Legend
 );
 
-interface TokenStat {
-  _id: {
-    date: string;
-    model: string;
-  };
-  totalTokens: number;
+interface TokenTableRow {
+  date: string;
+  total: number;
+  [key: string]: number | string;
 }
+
+const DASHBOARD_PASSWORD_KEY = 'dashboard_password';
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [stats, setStats] = useState<{ _id: string; count: number }[]>([]);
-  const [tokenStats, setTokenStats] = useState<TokenStat[]>([]);
+  const [tokenTable, setTokenTable] = useState<TokenTableRow[]>([]);
+  const [models, setModels] = useState<string[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
+  const [last24hUsers, setLast24hUsers] = useState(0);
   const [error, setError] = useState('');
 
-  const authenticate = async () => {
+  useEffect(() => {
+    const savedPassword = localStorage.getItem(DASHBOARD_PASSWORD_KEY);
+    if (savedPassword) {
+      setPassword(savedPassword);
+      authenticateWithPassword(savedPassword);
+    }
+  }, []);
+
+  const authenticateWithPassword = async (pwd: string) => {
     try {
       const response = await fetch('/api/dashboard/user-stats', {
         headers: {
-          'x-dashboard-password': password
+          'x-dashboard-password': pwd
         }
       });
 
       if (response.ok) {
         const data = await response.json();
         setStats(data.dailyStats);
-        setTokenStats(data.tokenStats);
+        setTokenTable(data.tokenTable);
+        setModels(data.models);
         setTotalUsers(data.totalUsers);
+        setLast24hUsers(data.last24hUsers);
         setIsAuthenticated(true);
         setError('');
+        localStorage.setItem(DASHBOARD_PASSWORD_KEY, pwd);
       } else {
         setError('Invalid password');
+        localStorage.removeItem(DASHBOARD_PASSWORD_KEY);
       }
     } catch (err) {
       setError('Failed to authenticate');
+      localStorage.removeItem(DASHBOARD_PASSWORD_KEY);
     }
   };
 
-  const processTokenStats = () => {
-    // Get unique dates and models
-    const dates = [...new Set(tokenStats.map(stat => stat._id.date))].sort();
-    const models = [...new Set(tokenStats.map(stat => stat._id.model))];
-
-    // Create datasets for each model
-    const datasets = models.map(model => {
-      const modelData = dates.map(date => {
-        const stat = tokenStats.find(s => s._id.date === date && s._id.model === model);
-        return stat ? stat.totalTokens : 0;
-      });
-
-      return {
-        label: model,
-        data: modelData,
-        fill: false,
-        borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
-        tension: 0.1
-      };
-    });
-
-    return {
-      labels: dates,
-      datasets
-    };
+  const authenticate = () => {
+    authenticateWithPassword(password);
   };
 
   const userChartData = {
@@ -108,31 +100,13 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: 'User Growth Over Time (Since Jan 27, 2025)'
+        text: 'User Growth (Last 30 Days)'
       }
     }
   };
 
-  const tokenChartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Token Usage by Model Over Time (Since Jan 27, 2025)'
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: 'Token Usage'
-        }
-      }
-    }
+  const formatNumber = (num: number) => {
+    return num.toLocaleString(undefined, { maximumFractionDigits: 0 });
   };
 
   if (!isAuthenticated) {
@@ -160,21 +134,83 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8 text-gray-900 dark:text-white">
       <h1 className="text-2xl font-bold mb-6">User Statistics Dashboard</h1>
       
-      <div className="mb-8 bg-white p-6 rounded-lg shadow-md">
+      <div className="mb-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-2">Total Users</h2>
-        <p className="text-4xl font-bold text-blue-600">{totalUsers.toLocaleString()}</p>
+        <div className="flex items-center">
+          <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">{totalUsers.toLocaleString()}</p>
+          {last24hUsers > 0 && (
+            <span className="ml-4 px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100 rounded">
+              +{last24hUsers} in last 24h
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-8">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <Line data={userChartData} options={chartOptions} />
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <Line data={userChartData} options={{
+            ...chartOptions,
+            plugins: {
+              ...chartOptions.plugins,
+              title: {
+                ...chartOptions.plugins.title,
+                color: 'currentColor'
+              },
+              legend: {
+                ...chartOptions.plugins.legend,
+                labels: {
+                  color: 'currentColor'
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: 'currentColor' },
+                grid: { color: 'rgba(128, 128, 128, 0.2)' }
+              },
+              y: {
+                ticks: { color: 'currentColor' },
+                grid: { color: 'rgba(128, 128, 128, 0.2)' }
+              }
+            }
+          }} />
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <Line data={processTokenStats()} options={tokenChartOptions} />
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md overflow-x-auto">
+          <h2 className="text-xl font-semibold mb-4">Token Usage by Model (Last 30 Days)</h2>
+          <table className="min-w-full">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-gray-700">
+                <th className="px-4 py-2 text-left">Date</th>
+                {models.map(model => (
+                  <th key={model} className="px-4 py-2 text-right">{model}</th>
+                ))}
+                <th className="px-4 py-2 text-right font-bold">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tokenTable.map((row, index) => (
+                <tr 
+                  key={row.date}
+                  className={`
+                    ${index === tokenTable.length - 1 ? 'font-bold bg-gray-50 dark:bg-gray-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700'}
+                    ${index === tokenTable.length - 1 ? 'border-t-2 border-gray-200 dark:border-gray-600' : 'border-t border-gray-200 dark:border-gray-600'}
+                  `}
+                >
+                  <td className="px-4 py-2">{row.date}</td>
+                  {models.map(model => (
+                    <td key={model} className="px-4 py-2 text-right">
+                      {formatNumber(row[model] as number)}
+                    </td>
+                  ))}
+                  <td className="px-4 py-2 text-right">{formatNumber(row.total)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

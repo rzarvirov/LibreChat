@@ -16,12 +16,18 @@ const authenticateDashboard = (req, res, next) => {
 router.get('/user-stats', authenticateDashboard, async (req, res) => {
   try {
     const startDate = new Date('2025-01-27');
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
     
-    const [dailyStats, totalUsers, tokenStats] = await Promise.all([
+    // Use the later of startDate or thirtyDaysAgo
+    const effectiveStartDate = startDate > thirtyDaysAgo ? startDate : thirtyDaysAgo;
+    
+    const [dailyStats, totalUsers, tokenStats, last24hUsers] = await Promise.all([
       User.aggregate([
         {
           $match: {
-            createdAt: { $gte: startDate }
+            createdAt: { $gte: effectiveStartDate }
           }
         },
         {
@@ -43,7 +49,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
       Transaction.aggregate([
         {
           $match: {
-            createdAt: { $gte: startDate }
+            createdAt: { $gte: effectiveStartDate }
           }
         },
         {
@@ -65,13 +71,51 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
         {
           $sort: { '_id.date': 1 }
         }
-      ])
+      ]),
+      User.countDocuments({
+        createdAt: { $gte: yesterday }
+      })
     ]);
+
+    // Process token stats into a table format
+    const models = [...new Set(tokenStats.map(stat => stat._id.model))].sort();
+    const dates = [...new Set(tokenStats.map(stat => stat._id.date))].sort();
+    
+    const tokenTable = dates.map(date => {
+      const row = { date };
+      let rowTotal = 0;
+      
+      models.forEach(model => {
+        const stat = tokenStats.find(s => s._id.date === date && s._id.model === model);
+        const value = stat ? Math.round(stat.totalTokens) : 0;
+        row[model] = value;
+        rowTotal += value;
+      });
+      
+      row.total = rowTotal;
+      return row;
+    });
+
+    // Calculate totals for each model
+    const modelTotals = { date: 'Total' };
+    let grandTotal = 0;
+    
+    models.forEach(model => {
+      const total = tokenStats
+        .filter(stat => stat._id.model === model)
+        .reduce((sum, stat) => sum + stat.totalTokens, 0);
+      modelTotals[model] = Math.round(total);
+      grandTotal += total;
+    });
+    modelTotals.total = Math.round(grandTotal);
+    tokenTable.push(modelTotals);
 
     res.json({
       dailyStats,
       totalUsers,
-      tokenStats
+      last24hUsers,
+      tokenTable,
+      models
     });
   } catch (error) {
     console.error('Error fetching user stats:', error);
