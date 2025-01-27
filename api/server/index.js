@@ -21,6 +21,7 @@ const AppService = require('./services/AppService');
 const staticCache = require('./utils/staticCache');
 const noIndex = require('./middleware/noIndex');
 const routes = require('./routes');
+const dashboardRoutes = require('./routes/dashboard');
 
 const { PORT, HOST, ALLOW_SOCIAL_LOGIN, DISABLE_COMPRESSION } = process.env ?? {};
 
@@ -130,6 +131,9 @@ const startServer = async () => {
   app.get('/subscription/cancel', (req, res) => {
     res.redirect('/#/subscription/cancel');
   });
+
+  // Add routes before error handling
+  app.use('/api/dashboard', dashboardRoutes);
 
   app.use((req, res) => {
     res.set({
