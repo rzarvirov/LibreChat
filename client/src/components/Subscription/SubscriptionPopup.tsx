@@ -226,12 +226,10 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
                 </span>
                 <a
                   href={tier.name === localize('com_subscription_basic') 
-                    ? 'https://boosty.to/aibuddy/purchase/3188277?ssource=DIRECT&share=subscription_link'
+                    ? `/subscribe/${import.meta.env.VITE_STRIPE_LINK_BASIC}`
                     : tier.name === localize('com_subscription_pro')
-                    ? 'https://boosty.to/aibuddy/purchase/1628030?ssource=DIRECT&share=subscription_link'
-                    : 'https://boosty.to/aibuddy/purchase/1572088?ssource=DIRECT&share=subscription_link'}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    ? `/subscribe/${import.meta.env.VITE_STRIPE_LINK_PRO}`
+                    : `/subscribe/${import.meta.env.VITE_STRIPE_LINK_PROPLUS}`}
                   className="block mt-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors underline"
                 >
                   <span>{localize('com_subscription_via')}</span>{' '}

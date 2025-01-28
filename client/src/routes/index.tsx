@@ -17,11 +17,18 @@ import ChatRoute from './ChatRoute';
 import Search from './Search';
 import Root from './Root';
 import Dashboard from '../components/Dashboard/Dashboard';
+import ManualSubscription from '~/components/Subscription/ManualSubscription';
 
 const AuthLayout = () => (
   <AuthContextProvider>
     <Outlet />
     <ApiErrorWatcher />
+  </AuthContextProvider>
+);
+
+const SubscriptionRoute = () => (
+  <AuthContextProvider>
+    <ManualSubscription />
   </AuthContextProvider>
 );
 
@@ -63,6 +70,10 @@ export const router = createBrowserRouter([
   {
     element: <AuthLayout />,
     children: [
+      {
+        path: 'subscribe/:linkId',
+        element: <SubscriptionRoute />,
+      },
       {
         path: '/',
         element: <LoginLayout />,

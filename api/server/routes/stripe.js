@@ -14,6 +14,9 @@ const jwt = require('jsonwebtoken');
 const { getUserById } = require('~/models');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { logger } = require('~/config');
+const User = require('~/models/User');
+
+const activeSubscriptionRequests = new Map();
 
 const extractToken = (req) => {
   // First try to get token from Authorization header
@@ -143,8 +146,6 @@ mainRouter.post('/cancel-subscription', authenticateUser, async (req, res) => {
     });
 
     // Update user's subscription status in our database
-    const User = require('~/models/User');
-    
     await User.findByIdAndUpdate(req.user.id, {
       subscriptionCanceled: true,
     });
@@ -201,7 +202,6 @@ mainRouter.post('/reactivate-subscription', authenticateUser, async (req, res) =
       });
 
       // Update user's subscription status in our database
-      const User = require('~/models/User');
       await User.findByIdAndUpdate(req.user.id, {
         subscriptionCanceled: false,
       });
@@ -298,7 +298,6 @@ mainRouter.post('/change-subscription', authenticateUser, async (req, res) => {
       });
 
       // Update user's subscription status
-      const User = require('~/models/User');
       await User.findByIdAndUpdate(req.user.id, {
         subscriptionCanceled: false, // Reset cancellation status if it was set
       });
@@ -372,7 +371,6 @@ webhookRouter.post('/', express.raw({ type: 'application/json' }), async (req, r
           sessionId: event.data.object.id,
           customerId: event.data.object.customer
         });
-        // The subscription will be handled by the customer.subscription.created event
         break;
       case 'customer.subscription.created':
         logger.info('Processing subscription created event:', {
@@ -386,23 +384,24 @@ webhookRouter.post('/', express.raw({ type: 'application/json' }), async (req, r
         await handleSubscriptionCanceled(event.data.object);
         break;
       case 'invoice.payment_succeeded':
-        logger.info('Processing invoice payment succeeded event');
+      case 'invoice.paid':
+        logger.info('Processing invoice paid event');
         const invoice = event.data.object;
         // Only handle subscription invoices
         if (invoice.subscription) {
           // Get the subscription details
           const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
-          // Check if this is a renewal (not the first payment)
-          if (invoice.billing_reason === 'subscription_cycle') {
-            await handleSubscriptionRenewal(subscription);
-          }
+          await handleSubscriptionRenewal(subscription);
         }
+        break;
+      case 'invoice.finalized':
+        logger.info('Processing invoice finalized event');
+        // No action needed for finalized invoices in manual payment mode
         break;
       case 'customer.subscription.updated':
         logger.info('Processing subscription updated event');
         const subscription = event.data.object;
         
-        // Check if the subscription is marked for cancellation at period end
         if (subscription.cancel_at_period_end) {
           logger.info('Subscription is marked for cancellation at period end');
           // Don't update the subscription status, as it's already handled by the cancel endpoint
@@ -427,6 +426,244 @@ webhookRouter.post('/', express.raw({ type: 'application/json' }), async (req, r
     logger.error('Error processing webhook:', err);
     logger.error('Event data:', JSON.stringify(event.data, null, 2));
     res.status(500).json({ error: 'Webhook processing failed' });
+  }
+});
+
+// Manual subscription creation routes
+mainRouter.post('/manual-subscribe/:linkId', authenticateUser, async (req, res) => {
+  let userId;
+  let requestKey;
+  let customer;
+  let subscription;
+  
+  try {
+    const { linkId } = req.params;
+    userId = req.user?.id;
+
+    if (!userId) {
+      logger.error('No user ID provided in request');
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    // Check for existing subscription request
+    requestKey = `${userId}:${linkId}`;
+    if (activeSubscriptionRequests.has(requestKey)) {
+      logger.warn(`Duplicate subscription request detected for user ${userId}`);
+      return res.status(429).json({ error: 'Subscription request already in progress' });
+    }
+
+    // Mark this request as in progress
+    activeSubscriptionRequests.set(requestKey, Date.now());
+
+    // Clean up old requests (older than 5 minutes)
+    const fiveMinutesAgo = Date.now() - (5 * 60 * 1000);
+    for (const [key, timestamp] of activeSubscriptionRequests.entries()) {
+      if (timestamp < fiveMinutesAgo) {
+        activeSubscriptionRequests.delete(key);
+      }
+    }
+
+    // Map link IDs to price IDs
+    const linkToPriceMap = {
+      'sub_basic_x7y9z': process.env.STRIPE_PRICE_BASIC_EN,
+      'sub_pro_a2b3c': process.env.STRIPE_PRICE_PRO_EN,
+      'sub_proplus_m4n5p': process.env.STRIPE_PRICE_PROPLUS_EN
+    };
+
+    const priceId = linkToPriceMap[linkId];
+    if (!priceId) {
+      activeSubscriptionRequests.delete(requestKey);
+      return res.status(400).json({ error: 'Invalid subscription link' });
+    }
+
+    // Use findOneAndUpdate with upsert to atomically check and update subscription status
+    const user = await User.findOneAndUpdate(
+      { 
+        _id: userId,
+        $or: [
+          { subscriptionStatus: { $ne: 'ACTIVE' } },
+          { processingSubscription: false },
+          { processingSubscription: { $exists: false } }
+        ]
+      },
+      { 
+        $set: { 
+          processingSubscription: true,
+          processingSubscriptionId: requestKey,
+          processingSubscriptionTimestamp: new Date()
+        }
+      },
+      { new: true }
+    );
+
+    if (!user) {
+      const existingUser = await User.findById(userId);
+      if (!existingUser) {
+        logger.error(`User not found for ID: ${userId}`);
+        return res.status(404).json({ error: 'User not found' });
+      }
+      if (existingUser.subscriptionStatus === 'ACTIVE') {
+        return res.status(400).json({ error: 'User already has an active subscription' });
+      }
+      return res.status(409).json({ error: 'Subscription processing already in progress' });
+    }
+
+    if (!user.email) {
+      logger.error(`User ${userId} has no email address`);
+      return res.status(400).json({ error: 'User has no email address' });
+    }
+
+    try {
+      // First try to get customer by stored ID if exists
+      if (user.stripeCustomerId) {
+        try {
+          customer = await stripe.customers.retrieve(user.stripeCustomerId);
+          if (customer.deleted) {
+            logger.warn('Stored Stripe customer was deleted:', user.stripeCustomerId);
+            await User.findByIdAndUpdate(userId, { $unset: { stripeCustomerId: 1 } });
+            customer = null;
+          }
+        } catch (err) {
+          if (err.code === 'resource_missing') {
+            logger.warn('Stored Stripe customer ID not found, clearing:', user.stripeCustomerId);
+            await User.findByIdAndUpdate(userId, { $unset: { stripeCustomerId: 1 } });
+            customer = null;
+          } else {
+            throw err;
+          }
+        }
+      }
+
+      // If no customer found by ID, try to find by email
+      if (!customer) {
+        const customers = await stripe.customers.list({
+          email: user.email,
+          limit: 1
+        });
+        
+        if (customers.data.length > 0) {
+          customer = customers.data[0];
+          logger.info('Found existing customer by email:', customer.id);
+        } else {
+          // Create new customer if none exists
+          customer = await stripe.customers.create({
+            email: user.email,
+            metadata: { 
+              userId: user.id,
+              requestKey // Store request key in metadata for deduplication
+            }
+          });
+          logger.info('Created new customer:', customer.id);
+        }
+      }
+
+      // Update customer metadata if needed
+      if (!customer.metadata.userId || customer.metadata.userId !== user.id || !customer.metadata.requestKey) {
+        customer = await stripe.customers.update(customer.id, {
+          metadata: { 
+            userId: user.id,
+            requestKey
+          }
+        });
+        logger.info('Updated customer metadata:', customer.id);
+      }
+
+      // Save/update Stripe customer ID in user record if different
+      if (!user.stripeCustomerId || user.stripeCustomerId !== customer.id) {
+        await User.findByIdAndUpdate(userId, { stripeCustomerId: customer.id });
+      }
+
+      // Check for existing subscription with same request key
+      const existingSubscriptions = await stripe.subscriptions.list({
+        customer: customer.id,
+        status: 'active',
+        expand: ['data.latest_invoice']
+      });
+
+      const duplicateSubscription = existingSubscriptions.data.find(
+        sub => sub.metadata.requestKey === requestKey
+      );
+
+      if (duplicateSubscription) {
+        logger.warn(`Found duplicate subscription with request key ${requestKey}`);
+        subscription = duplicateSubscription;
+      } else {
+        // Create new subscription with manual collection
+        subscription = await stripe.subscriptions.create({
+          customer: customer.id,
+          items: [{ price: priceId }],
+          collection_method: 'send_invoice',
+          days_until_due: 365,
+          metadata: { 
+            manualPayment: true,
+            paymentPlatform: 'boosty',
+            requestKey // Store request key in metadata for deduplication
+          },
+          billing_cycle_anchor: Math.floor(Date.now() / 1000) + (60 * 60), // Start billing 1 hour from now
+          proration_behavior: 'none',
+          expand: ['latest_invoice']
+        });
+
+        logger.info('Created subscription:', {
+          subscriptionId: subscription.id,
+          customerId: customer.id,
+          userId: user.id,
+          requestKey
+        });
+      }
+
+      // Mark invoice as paid immediately
+      if (subscription.latest_invoice && subscription.latest_invoice.status !== 'paid') {
+        await stripe.invoices.pay(subscription.latest_invoice.id, {
+          paid_out_of_band: true
+        });
+        logger.info('Marked invoice as paid:', subscription.latest_invoice.id);
+      }
+
+      // Clear processing flags and return success
+      await User.findByIdAndUpdate(userId, {
+        processingSubscription: false,
+        $unset: { 
+          processingSubscriptionId: 1,
+          processingSubscriptionTimestamp: 1
+        }
+      });
+
+      res.json({ success: true, message: 'Subscription activated successfully' });
+    } catch (error) {
+      logger.error('Error in subscription process:', {
+        error: error.message,
+        code: error.code,
+        userId: user.id,
+        customerId: customer?.id,
+        subscriptionId: subscription?.id,
+        requestKey
+      });
+      
+      if (error.code === 'resource_missing' && error.param === 'items[0][price]') {
+        return res.status(400).json({ 
+          error: 'Invalid price ID. Make sure you are using the correct Stripe mode (test/live) price IDs.'
+        });
+      }
+      
+      throw error;
+    }
+  } catch (error) {
+    // Clean up processing flag
+    if (userId) {
+      await User.findByIdAndUpdate(userId, { 
+        processingSubscription: false,
+        $unset: { 
+          processingSubscriptionId: 1,
+          processingSubscriptionTimestamp: 1
+        }
+      });
+    }
+    if (requestKey) {
+      activeSubscriptionRequests.delete(requestKey);
+    }
+    logger.error('Error in manual subscription:', error);
+    res.status(500).json({ error: error.message || 'Failed to process subscription' });
   }
 });
 
