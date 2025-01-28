@@ -12,7 +12,7 @@
     "url": "askyourpdf.yaml",
     "has_user_authentication": false
   },
-  "logo_url": "https://plugin.askyourpdf.com/.well-known/logo.png",
+  "logo_url": "/assets/askyourpdf.png",
   "contact_email": "plugin@askyourpdf.com",
   "legal_info_url": "https://askyourpdf.com/terms"
 }
