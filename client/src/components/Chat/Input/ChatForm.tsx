@@ -42,6 +42,7 @@ const ChatForm = ({ index = 0 }) => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
+  const [shouldAutoFocus, setShouldAutoFocus] = useState(true);
 
   const SpeechToText = useRecoilValue(store.speechToText);
   const TextToSpeech = useRecoilValue(store.textToSpeech);
@@ -129,10 +130,10 @@ const ChatForm = ({ index = 0 }) => {
   });
 
   useEffect(() => {
-    if (!isSearching && textAreaRef.current && !disableInputs) {
+    if (!isSearching && textAreaRef.current && !disableInputs && shouldAutoFocus) {
       textAreaRef.current.focus();
     }
-  }, [isSearching, disableInputs]);
+  }, [isSearching, disableInputs, shouldAutoFocus]);
 
   useEffect(() => {
     if (textAreaRef.current) {
@@ -157,6 +158,7 @@ const ChatForm = ({ index = 0 }) => {
   return (
     <form
       onSubmit={methods.handleSubmit((data) => {
+        setShouldAutoFocus(false);
         submitMessage(data);
         textAreaRef.current?.blur();
       })}
@@ -209,6 +211,10 @@ const ChatForm = ({ index = 0 }) => {
                     onPaste={handlePaste}
                     onKeyDown={handleKeyDown}
                     onKeyUp={handleKeyUp}
+                    onFocus={() => {
+                      setShouldAutoFocus(true);
+                      if (isCollapsed) setIsCollapsed(false);
+                    }}
                     onHeightChange={() => {
                       if (textAreaRef.current) {
                         const scrollable = checkIfScrollable(textAreaRef.current);
@@ -221,8 +227,6 @@ const ChatForm = ({ index = 0 }) => {
                     tabIndex={0}
                     data-testid="text-input"
                     rows={1}
-                    onFocus={() => isCollapsed && setIsCollapsed(false)}
-                    onClick={() => isCollapsed && setIsCollapsed(false)}
                     style={{ height: 44, overflowY: 'auto' }}
                     className={cn(
                       baseClasses,
