@@ -98,14 +98,6 @@ export default function useTextarea({
   }, [conversationId, jailbreak]);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      textAreaRef.current?.focus();
-    }, 100);
-
-    return () => clearTimeout(timeoutId);
-  }, [isSubmitting, textAreaRef]);
-
-  useEffect(() => {
     const currentValue = textAreaRef.current?.value ?? '';
     if (currentValue) {
       return;
