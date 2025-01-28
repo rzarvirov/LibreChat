@@ -9,6 +9,7 @@ import {
   getEntityName,
   getEntity,
   checkIfScrollable,
+  isMobile,
 } from '~/utils';
 import { useAssistantsMapContext } from '~/Providers/AssistantsMapContext';
 import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
@@ -41,6 +42,9 @@ export default function useTextarea({
   const assistantMap = useAssistantsMapContext();
   const checkHealth = useInteractionHealthCheck();
   const enterToSend = useRecoilValue(store.enterToSend);
+  const enterToSendMobile = useRecoilValue(store.enterToSendMobile);
+  const isMobileDevice = isMobile();
+  const shouldEnterToSend = isMobileDevice ? enterToSendMobile : enterToSend;
 
   const { index, conversation, isSubmitting, filesLoading, latestMessage, setFilesLoading } =
     useChatContext();
@@ -69,6 +73,14 @@ export default function useTextarea({
       setActivePrompt(undefined);
     }
   }, [activePrompt, setActivePrompt, textAreaRef]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      textAreaRef.current?.focus();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [isSubmitting, textAreaRef]);
 
   useEffect(() => {
     const currentValue = textAreaRef.current?.value ?? '';
@@ -169,7 +181,7 @@ export default function useTextarea({
 
       if (
         e.key === 'Enter' &&
-        !enterToSend &&
+        !shouldEnterToSend &&
         !isCtrlEnter &&
         textAreaRef.current &&
         !isComposingInput
@@ -193,7 +205,7 @@ export default function useTextarea({
       isSubmitting,
       checkHealth,
       filesLoading,
-      enterToSend,
+      shouldEnterToSend,
       setIsScrollable,
       textAreaRef,
       submitButtonRef,
