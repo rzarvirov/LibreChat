@@ -226,10 +226,10 @@ const SubscriptionPopup: FC<SubscriptionPopupProps> = ({ isOpen, onClose, onPlan
                 </span>
                 <a
                   href={tier.name === localize('com_subscription_basic') 
-                    ? `/subscribe/${import.meta.env.VITE_STRIPE_LINK_BASIC}`
+                    ? '/subscribe/sub_basic_x7y9z'
                     : tier.name === localize('com_subscription_pro')
-                    ? `/subscribe/${import.meta.env.VITE_STRIPE_LINK_PRO}`
-                    : `/subscribe/${import.meta.env.VITE_STRIPE_LINK_PROPLUS}`}
+                    ? '/subscribe/sub_pro_a2b3c'
+                    : '/subscribe/sub_proplus_m4n5p'}
                   className="block mt-1 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors underline"
                 >
                   <span>{localize('com_subscription_via')}</span>{' '}
