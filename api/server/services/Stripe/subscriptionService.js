@@ -37,6 +37,22 @@ async function handleSubscriptionCreated(subscription) {
       throw new Error(`No userId found in customer metadata for customer ${customerId}`);
     }
 
+    const userId = customer.metadata.userId;
+    const requestKey = customer.metadata.requestKey;
+
+    // Check if this subscription event has already been processed
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error(`User not found for ID ${userId}`);
+    }
+
+    // If the user already has an active subscription and this is a duplicate event, skip processing
+    if (user.subscriptionStatus === SUBSCRIPTION_STATUS.ACTIVE && 
+        user.processingSubscriptionId !== requestKey) {
+      logger.info(`Skipping duplicate subscription event for user ${userId}`);
+      return;
+    }
+
     const priceId = items.data[0].price.id;
     const subscriptionConfig = STRIPE_PRODUCT_MAPPING[priceId];
 
@@ -44,10 +60,7 @@ async function handleSubscriptionCreated(subscription) {
       throw new Error(`Unknown price ID: ${priceId}`);
     }
 
-    const userId = customer.metadata.userId;
-
     // Get current user data to check if this is a downgrade
-    const user = await User.findById(userId);
     const currentConfig = Object.values(STRIPE_PRODUCT_MAPPING).find(p => p.tier === user?.subscriptionTier);
     const isDowngrade = currentConfig && currentConfig.tokenCredits > subscriptionConfig.tokenCredits;
 
@@ -61,6 +74,11 @@ async function handleSubscriptionCreated(subscription) {
       subscriptionStartDate: currentDate,
       subscriptionEndDate: endDate,
       subscriptionCanceled: false,
+      processingSubscription: false,
+      $unset: { 
+        processingSubscriptionId: 1,
+        processingSubscriptionTimestamp: 1
+      }
     });
 
     // Only reset balance if it's not a downgrade
