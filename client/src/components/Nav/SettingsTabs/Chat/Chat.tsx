@@ -2,6 +2,7 @@ import { memo } from 'react';
 import MaximizeChatSpace from './MaximizeChatSpace';
 import FontSizeSelector from './FontSizeSelector';
 import SendMessageKeyEnter from './EnterToSend';
+import SendMessageKeyEnterMobile from './EnterToSendMobile';
 import ShowCodeSwitch from './ShowCodeSwitch';
 import { ForkSettings } from './ForkSettings';
 import ChatDirection from './ChatDirection';
@@ -22,6 +23,9 @@ function Chat() {
       </div>
       <div className="pb-3">
         <SendMessageKeyEnter />
+      </div>
+      <div className="pb-3">
+        <SendMessageKeyEnterMobile />
       </div>
       <div className="pb-3">
         <MaximizeChatSpace />
