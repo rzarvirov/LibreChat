@@ -21,6 +21,7 @@ export { default as cleanupPreset } from './cleanupPreset';
 export { default as validateIframe } from './validateIframe';
 export { default as buildDefaultConvo } from './buildDefaultConvo';
 export { default as getDefaultEndpoint } from './getDefaultEndpoint';
+export { default as isMobile } from './isMobile';
 
 export const languages = [
   'java',

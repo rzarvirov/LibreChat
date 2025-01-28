@@ -10,6 +10,7 @@ import {
   getEntityName,
   getEntity,
   checkIfScrollable,
+  isMobile,
 } from '~/utils';
 import { useAssistantsMapContext } from '~/Providers/AssistantsMapContext';
 import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
@@ -42,6 +43,9 @@ export default function useTextarea({
   const assistantMap = useAssistantsMapContext();
   const checkHealth = useInteractionHealthCheck();
   const enterToSend = useRecoilValue(store.enterToSend);
+  const enterToSendMobile = useRecoilValue(store.enterToSendMobile);
+  const isMobileDevice = isMobile();
+  const shouldEnterToSend = isMobileDevice ? enterToSendMobile : enterToSend;
 
   const {
     index,
@@ -96,6 +100,14 @@ export default function useTextarea({
     // setShowBingToneSetting is a recoil setter, so it doesn't need to be in the dependency array
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, jailbreak]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      textAreaRef.current?.focus();
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
+  }, [isSubmitting, textAreaRef]);
 
   useEffect(() => {
     const currentValue = textAreaRef.current?.value ?? '';
@@ -193,7 +205,7 @@ export default function useTextarea({
 
       if (
         e.key === 'Enter' &&
-        !enterToSend &&
+        !shouldEnterToSend &&
         !isCtrlEnter &&
         textAreaRef.current &&
         !isComposing.current
@@ -217,7 +229,7 @@ export default function useTextarea({
       isSubmitting,
       checkHealth,
       filesLoading,
-      enterToSend,
+      shouldEnterToSend,
       setIsScrollable,
       textAreaRef,
       submitButtonRef,

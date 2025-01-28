@@ -776,7 +776,10 @@ export default {
   com_nav_theme_system: 'System',
   com_nav_theme_dark: 'Dark',
   com_nav_theme_light: 'Light',
-  com_nav_enter_to_send: 'Press Enter to send messages',
+  com_nav_enter_to_send: 'Enter to send (desktop)',
+  com_nav_enter_to_send_mobile: 'Enter to send (mobile)',
+  com_nav_info_enter_to_send: 'Use Enter key to send message, Shift+Enter for newline',
+  com_nav_info_enter_to_send_mobile: 'Use Enter key to send message on mobile devices, disabled by default for better mobile experience',
   com_nav_maximize_chat_space: 'Maximize chat space',
   com_nav_user_name_display: 'Display username in messages',
   com_nav_save_drafts: 'Save drafts locally',
@@ -840,8 +843,6 @@ export default {
   com_nav_enable_cache_tts: 'Enable cache TTS',
   com_nav_voice_select: 'Voice',
   com_nav_enable_cloud_browser_voice: 'Use cloud-based voices',
-  com_nav_info_enter_to_send:
-    'When enabled, pressing `ENTER` will send your message. When disabled, pressing Enter will add a new line, and you\'ll need to press `CTRL + ENTER` / `⌘ + ENTER` to send your message.',
   com_nav_info_save_draft:
     'When enabled, the text and attachments you enter in the chat form will be automatically saved locally as drafts. These drafts will be available even if you reload the page or switch to a different conversation. Drafts are stored locally on your device and are deleted once the message is sent.',
   com_nav_info_fork_change_default:
