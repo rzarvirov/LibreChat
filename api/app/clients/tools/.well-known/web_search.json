@@ -12,7 +12,7 @@
     "url": "https://websearch.plugsugar.com/api/openapi_yaml",
     "is_user_authenticated": false
   },
-  "logo_url": "https://websearch.plugsugar.com/200x200.png",
+  "logo_url": "/assets/globeweb.png",
   "contact_email": "support@plugsugar.com",
   "legal_info_url": "https://websearch.plugsugar.com/contact"
 }

@@ -31,6 +31,8 @@ interface:
   multiConvo: false
   agents: true
 
+includedTools: ["web-browser", "BrowserOp", "web_search", "google", "stable-diffusion", "dalle", "calculator"]
+
 # Example Registration Object Structure (optional)
 registration:
   socialLogins: ['github', 'google', 'yandex', 'discord', 'openid', 'facebook']
