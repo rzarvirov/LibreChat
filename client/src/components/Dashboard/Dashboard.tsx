@@ -27,6 +27,14 @@ interface TokenTableRow {
   [key: string]: number | string;
 }
 
+interface ModelStats {
+  model: string;
+  tokens30Days: number;
+  requests30Days: number;
+  tokens24Hours: number;
+  requests24Hours: number;
+}
+
 interface TopUser {
   email: string;
   tier: string;
@@ -41,6 +49,7 @@ const Dashboard = () => {
   const [password, setPassword] = useState('');
   const [stats, setStats] = useState<{ _id: string; count: number }[]>([]);
   const [tokenTable, setTokenTable] = useState<TokenTableRow[]>([]);
+  const [modelStats, setModelStats] = useState<ModelStats[]>([]);
   const [models, setModels] = useState<string[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [last24hUsers, setLast24hUsers] = useState(0);
@@ -55,6 +64,29 @@ const Dashboard = () => {
     }
   }, []);
 
+  const processModelStats = (tokenTable: TokenTableRow[], models: string[]) => {
+    const last30Days = tokenTable.slice(0, -1); // Exclude the total row
+    const last24Hours = tokenTable[tokenTable.length - 2]; // Get the last day's data
+    
+    const stats: ModelStats[] = models.map(model => {
+      const tokens30Days = last30Days.reduce((sum, day) => sum + (day[model] as number || 0), 0);
+      const requests30Days = last30Days.filter(day => (day[model] as number) > 0).length;
+      const tokens24Hours = last24Hours[model] as number || 0;
+      const requests24Hours = tokens24Hours > 0 ? 1 : 0;
+
+      return {
+        model,
+        tokens30Days,
+        requests30Days,
+        tokens24Hours,
+        requests24Hours,
+      };
+    });
+
+    // Sort by 30-day token usage
+    return stats.sort((a, b) => b.tokens30Days - a.tokens30Days);
+  };
+
   const authenticateWithPassword = async (pwd: string) => {
     try {
       const response = await fetch('/api/dashboard/user-stats', {
@@ -68,6 +100,7 @@ const Dashboard = () => {
         setStats(data.dailyStats);
         setTokenTable(data.tokenTable);
         setModels(data.models);
+        setModelStats(processModelStats(data.tokenTable, data.models));
         setTotalUsers(data.totalUsers);
         setLast24hUsers(data.last24hUsers);
         setTopUsers(data.topUsers);
@@ -170,29 +203,24 @@ const Dashboard = () => {
           <table className="min-w-full">
             <thead>
               <tr className="bg-gray-50">
-                <th className="px-4 py-2 text-left">Date</th>
-                {models.map(model => (
-                  <th key={model} className="px-4 py-2 text-right">{model}</th>
-                ))}
-                <th className="px-4 py-2 text-right font-bold">Total</th>
+                <th className="px-4 py-2 text-left">Model</th>
+                <th className="px-4 py-2 text-right">30 Days Tokens</th>
+                <th className="px-4 py-2 text-right">30 Days Requests</th>
+                <th className="px-4 py-2 text-right">24h Tokens</th>
+                <th className="px-4 py-2 text-right">24h Requests</th>
               </tr>
             </thead>
             <tbody>
-              {tokenTable.map((row, index) => (
+              {modelStats.map((stat) => (
                 <tr 
-                  key={row.date}
-                  className={`
-                    ${index === tokenTable.length - 1 ? 'font-bold bg-gray-50' : 'hover:bg-gray-50'}
-                    ${index === tokenTable.length - 1 ? 'border-t-2' : 'border-t'}
-                  `}
+                  key={stat.model}
+                  className="border-t hover:bg-gray-50"
                 >
-                  <td className="px-4 py-2">{row.date}</td>
-                  {models.map(model => (
-                    <td key={model} className="px-4 py-2 text-right">
-                      {formatNumber(row[model] as number)}
-                    </td>
-                  ))}
-                  <td className="px-4 py-2 text-right">{formatNumber(row.total)}</td>
+                  <td className="px-4 py-2 font-medium">{stat.model}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.tokens30Days)}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.requests30Days)}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.tokens24Hours)}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.requests24Hours)}</td>
                 </tr>
               ))}
             </tbody>
