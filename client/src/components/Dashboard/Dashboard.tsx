@@ -24,15 +24,16 @@ ChartJS.register(
 interface TokenTableRow {
   date: string;
   total: number;
-  [key: string]: number | string;
+  transactions: { [key: string]: number };
+  [key: string]: number | string | { [key: string]: number };
 }
 
 interface ModelStats {
   model: string;
   tokens30Days: number;
-  requests30Days: number;
+  transactions30Days: number;
   tokens24Hours: number;
-  requests24Hours: number;
+  transactions24Hours: number;
 }
 
 interface TopUser {
@@ -69,17 +70,23 @@ const Dashboard = () => {
     const last24Hours = tokenTable[tokenTable.length - 2]; // Get the last day's data
     
     const stats: ModelStats[] = models.map(model => {
+      // Calculate total tokens
       const tokens30Days = last30Days.reduce((sum, day) => sum + (day[model] as number || 0), 0);
-      const requests30Days = last30Days.filter(day => (day[model] as number) > 0).length;
       const tokens24Hours = last24Hours[model] as number || 0;
-      const requests24Hours = tokens24Hours > 0 ? 1 : 0;
+
+      // Get actual transaction counts from the API data
+      const transactions30Days = last30Days.reduce((sum, day) => {
+        return sum + ((day.transactions?.[model] as number) || 0);
+      }, 0);
+      
+      const transactions24Hours = last24Hours.transactions?.[model] || 0;
 
       return {
         model,
         tokens30Days,
-        requests30Days,
+        transactions30Days,
         tokens24Hours,
-        requests24Hours,
+        transactions24Hours,
       };
     });
 
@@ -205,9 +212,9 @@ const Dashboard = () => {
               <tr className="bg-gray-50">
                 <th className="px-4 py-2 text-left">Model</th>
                 <th className="px-4 py-2 text-right">30 Days Tokens</th>
-                <th className="px-4 py-2 text-right">30 Days Requests</th>
+                <th className="px-4 py-2 text-right">30 Days Trans.</th>
                 <th className="px-4 py-2 text-right">24h Tokens</th>
-                <th className="px-4 py-2 text-right">24h Requests</th>
+                <th className="px-4 py-2 text-right">24h Trans.</th>
               </tr>
             </thead>
             <tbody>
@@ -218,9 +225,9 @@ const Dashboard = () => {
                 >
                   <td className="px-4 py-2 font-medium">{stat.model}</td>
                   <td className="px-4 py-2 text-right">{formatNumber(stat.tokens30Days)}</td>
-                  <td className="px-4 py-2 text-right">{formatNumber(stat.requests30Days)}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.transactions30Days)}</td>
                   <td className="px-4 py-2 text-right">{formatNumber(stat.tokens24Hours)}</td>
-                  <td className="px-4 py-2 text-right">{formatNumber(stat.requests24Hours)}</td>
+                  <td className="px-4 py-2 text-right">{formatNumber(stat.transactions24Hours)}</td>
                 </tr>
               ))}
             </tbody>
