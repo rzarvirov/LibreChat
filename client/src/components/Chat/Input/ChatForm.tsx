@@ -156,7 +156,10 @@ const ChatForm = ({ index = 0 }) => {
 
   return (
     <form
-      onSubmit={methods.handleSubmit((data) => submitMessage(data))}
+      onSubmit={methods.handleSubmit((data) => {
+        submitMessage(data);
+        textAreaRef.current?.blur();
+      })}
       className={cn(
         'mx-auto flex flex-row gap-3 px-4 transition-all duration-200 last:mb-2',
         'mb-4',
