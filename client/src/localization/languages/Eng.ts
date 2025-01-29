@@ -1001,4 +1001,17 @@ export default {
   com_subscription_via: 'Subscribe via',
   com_subscription_boosty: 'Boosty',
   com_subscription_boosty_manage: 'Subscribed to us on Boosty? Click here to manage',
+  // Carousel translations
+  com_carousel_title_creative_writing: 'Creative Writing',
+  com_carousel_title_problem_solving: 'Problem Solving',
+  com_carousel_title_fitness_coach: 'Fitness Coach',
+  com_carousel_title_code_assistant: 'Code Assistant',
+  com_carousel_story_request: 'Can you help me write a captivating story opening?',
+  com_carousel_story_response: 'The old mansion loomed before her, its weathered windows like hollow eyes staring into the misty twilight. Sarah\'s hand trembled as she reached for the brass doorknob, knowing that beyond this threshold lay the answers she\'d spent a lifetime seeking...',
+  com_carousel_business_request: 'I need help solving a complex business challenge about resource allocation.',
+  com_carousel_business_response: 'Let\'s break this down systematically. First, we\'ll analyze your current resource distribution, then identify bottlenecks, and finally develop an optimization strategy using data-driven decision making...',
+  com_carousel_fitness_request: 'I want to start a workout routine but I\'m a complete beginner. Where should I start?',
+  com_carousel_fitness_response: 'Welcome to your fitness journey! Let\'s start with a balanced routine that includes 2-3 days of strength training and 2 days of light cardio. We\'ll focus on proper form with bodyweight exercises like squats, push-ups, and planks first...',
+  com_carousel_code_request: 'I\'m new to coding and want to create a simple website. Where should I start?',
+  com_carousel_code_response: 'Let\'s start with the basics! We can create a simple personal website using HTML and CSS. I\'ll guide you through creating a beautiful page with your bio, interests, and maybe even a blog section. We\'ll make it step-by-step, no prior experience needed!',
 };

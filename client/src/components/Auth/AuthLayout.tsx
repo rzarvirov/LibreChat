@@ -7,6 +7,7 @@ import { Banner } from '../Banners';
 import Footer from './Footer';
 import { motion, Variants } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Carousel } from './animations/CarouselAnimations';
 
 // Typewriter component implementation
 const Typewriter = ({
@@ -160,59 +161,79 @@ function AuthLayout({
   return (
     <div className="relative flex min-h-screen flex-col bg-white dark:bg-gray-900">
       <Banner />
-      <BlinkAnimation active={isFetching}>
-        <div className="mt-4 h-10 w-full bg-cover">
-          <img
-            src="/assets/logo.svg"
-            className="h-full w-full object-contain"
-            alt={localize('com_ui_logo', startupConfig?.appTitle ?? 'LibreChat')}
-          />
-        </div>
-      </BlinkAnimation>
+      <div className="flex flex-col md:flex-row flex-grow md:min-h-[calc(100vh-8rem)]">
+        {/* Left side - Auth form */}
+        <div className="flex w-full md:w-1/2 flex-col">
+          {/* Logo and Brand Section */}
+          <div className="flex flex-col items-center justify-center p-8">
+            <BlinkAnimation active={isFetching}>
+              <div className="h-16 w-16 bg-cover">
+                <img
+                  src="/assets/logo.svg"
+                  className="h-full w-full object-contain"
+                  alt={localize('com_ui_logo', startupConfig?.appTitle ?? 'LibreChat')}
+                />
+              </div>
+            </BlinkAnimation>
+            <h2 className="mt-4 text-3xl font-semibold text-green-600 dark:text-green-500">
+              AiBuddy
+            </h2>
+          </div>
 
-      <div className="w-full md:text-3xl lg:text-4xl sm:text-2xl text-xl flex flex-row items-start justify-start font-normal overflow-hidden p-6 md:p-12 md:pt-14 pt-8">
-        <p className="whitespace-pre-wrap text-center w-full min-h-[2.5em] md:min-h-[2em] flex flex-col items-center justify-center">
-          <span className="text-black dark:text-white">{localize('com_ui_typewriter_help_me')}</span>
-          <span className="min-h-[1.25em] md:min-h-[1em] flex items-center">
-            <Typewriter
-              text={[
-                localize('com_ui_typewriter_write_text'),
-                localize('com_ui_typewriter_analyze_images'),
-                localize('com_ui_typewriter_solve_problems'),
-                localize('com_ui_typewriter_make_decisions'),
-                localize('com_ui_typewriter_create_better_world'),
-              ]}
-              speed={70}
-              className="text-green-600 dark:text-green-500"
-              waitTime={1500}
-              deleteSpeed={40}
-              cursorChar={"_"}
-            />
-          </span>
-        </p>
+          <div className="w-full md:text-3xl lg:text-4xl sm:text-2xl text-xl flex flex-row items-start justify-start font-normal overflow-hidden p-6 md:p-12 md:pt-4 pt-8">
+            <p className="whitespace-pre-wrap text-center w-full min-h-[2.5em] md:min-h-[2em] flex flex-col items-center justify-center">
+              <span className="text-black dark:text-white">{localize('com_ui_typewriter_help_me')}</span>
+              <span className="min-h-[1.25em] md:min-h-[1em] flex items-center">
+                <Typewriter
+                  text={[
+                    localize('com_ui_typewriter_write_text'),
+                    localize('com_ui_typewriter_analyze_images'),
+                    localize('com_ui_typewriter_solve_problems'),
+                    localize('com_ui_typewriter_make_decisions'),
+                    localize('com_ui_typewriter_create_better_world'),
+                  ]}
+                  speed={70}
+                  className="text-green-600 dark:text-green-500"
+                  waitTime={1500}
+                  deleteSpeed={40}
+                  cursorChar={"_"}
+                />
+              </span>
+            </p>
+          </div>
+
+          <DisplayError />
+
+          <div className="flex flex-grow items-center justify-center px-6">
+            <div className="w-full max-w-md overflow-hidden bg-white px-6 py-4 dark:bg-gray-900 sm:rounded-lg">
+              {!hasStartupConfigError && !isFetching && (
+                <h1
+                  className="mb-4 text-center text-3xl font-semibold text-black dark:text-white"
+                  style={{ userSelect: 'none' }}
+                >
+                  {header}
+                </h1>
+              )}
+              {(pathname.includes('login') || pathname.includes('register')) && (
+                <SocialLoginRender startupConfig={startupConfig} />
+              )}
+              {children}
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - Carousel */}
+        <div className="relative w-full md:w-1/2 mt-8 md:mt-0 pb-16 md:py-8">
+          <div className="h-full">
+            <Carousel />
+          </div>
+        </div>
       </div>
 
-      <DisplayError />
-      <div className="absolute bottom-0 left-0 md:m-4">
+      <div className="absolute bottom-0 left-0 md:m-4 z-10">
         <ThemeSelector />
       </div>
 
-      <div className="flex flex-grow items-center justify-center">
-        <div className="w-authPageWidth overflow-hidden bg-white px-6 py-4 dark:bg-gray-900 sm:max-w-md sm:rounded-lg">
-          {!hasStartupConfigError && !isFetching && (
-            <h1
-              className="mb-4 text-center text-3xl font-semibold text-black dark:text-white"
-              style={{ userSelect: 'none' }}
-            >
-              {header}
-            </h1>
-          )}
-          {(pathname.includes('login') || pathname.includes('register')) && (
-            <SocialLoginRender startupConfig={startupConfig} />
-          )}
-          {children}
-        </div>
-      </div>
       <Footer startupConfig={startupConfig} />
     </div>
   );

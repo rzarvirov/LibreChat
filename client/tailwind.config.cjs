@@ -133,5 +133,16 @@ module.exports = {
     require('tailwindcss-animate'),
     require('tailwindcss-radix')(),
     // require('@tailwindcss/typography'),
+    function({ addUtilities }) {
+      addUtilities({
+        '.no-scrollbar': {
+          '-ms-overflow-style': 'none',
+          'scrollbar-width': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    },
   ],
 };
