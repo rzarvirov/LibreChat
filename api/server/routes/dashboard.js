@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('~/models/User');
 const { Transaction } = require('~/models/Transaction');
+const { Message } = require('~/models/Message');
 
 const authenticateDashboard = (req, res, next) => {
   const dashboardPassword = process.env.DASHBOARD_PASSWORD;
@@ -23,7 +24,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
     // Use the later of startDate or thirtyDaysAgo
     const effectiveStartDate = startDate > thirtyDaysAgo ? startDate : thirtyDaysAgo;
     
-    const [dailyStats, totalUsers, tokenStats, last24hUsers, topUsers] = await Promise.all([
+    const [dailyStats, totalUsers, tokenStats, last24hUsers, topUsers, lastMessages] = await Promise.all([
       User.aggregate([
         {
           $match: {
@@ -113,7 +114,14 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
             totalTokens: 1
           }
         }
-      ])
+      ]),
+      Message.find({
+        sender: 'User',
+        createdAt: { $gte: effectiveStartDate }
+      })
+        .sort({ createdAt: -1 })
+        .limit(30)
+        .lean()
     ]);
 
     // Process token stats into a table format
@@ -149,13 +157,23 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
     modelTotals.total = Math.round(grandTotal);
     tokenTable.push(modelTotals);
 
+    // Format the messages data
+    const formattedMessages = lastMessages.map(msg => ({
+      messageId: msg.messageId,
+      text: msg.text,
+      createdAt: msg.createdAt,
+      conversationId: msg.conversationId,
+      tokenCount: msg.tokenCount || 0
+    }));
+
     res.json({
       dailyStats,
       totalUsers,
       last24hUsers,
       tokenTable,
       models,
-      topUsers
+      topUsers,
+      lastMessages: formattedMessages
     });
   } catch (error) {
     console.error('Error fetching user stats:', error);

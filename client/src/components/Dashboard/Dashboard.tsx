@@ -27,6 +27,15 @@ interface TokenTableRow {
   [key: string]: number | string;
 }
 
+interface Message {
+  messageId: string;
+  text: string;
+  createdAt: string;
+  conversationId: string;
+  model: string;
+  tokenCount: number;
+}
+
 interface ModelStats {
   model: string;
   tokens30Days: number;
@@ -52,6 +61,7 @@ const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [last24hUsers, setLast24hUsers] = useState(0);
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
+  const [lastMessages, setLastMessages] = useState<Message[]>([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -100,6 +110,7 @@ const Dashboard = () => {
         setTotalUsers(data.totalUsers);
         setLast24hUsers(data.last24hUsers);
         setTopUsers(data.topUsers);
+        setLastMessages(data.lastMessages || []);
         setIsAuthenticated(true);
         setError('');
         localStorage.setItem(DASHBOARD_PASSWORD_KEY, pwd);
@@ -250,6 +261,35 @@ const Dashboard = () => {
                   </td>
                   <td className="px-4 py-2 text-right">{formatNumber(user.transactionCount)}</td>
                   <td className="px-4 py-2 text-right">{formatNumber(Math.round(user.totalTokens))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
+          <h2 className="text-xl font-semibold mb-4">Last 30 User Messages</h2>
+          <table className="min-w-full">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-4 py-2 text-left">Message</th>
+                <th className="px-4 py-2 text-right">Tokens</th>
+                <th className="px-4 py-2 text-right">Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lastMessages.map((message) => (
+                <tr 
+                  key={message.messageId}
+                  className="border-t hover:bg-gray-50"
+                >
+                  <td className="px-4 py-2">
+                    <div className="whitespace-pre-wrap">{message.text}</div>
+                  </td>
+                  <td className="px-4 py-2 text-right">{formatNumber(message.tokenCount)}</td>
+                  <td className="px-4 py-2 text-right">
+                    {new Date(message.createdAt).toLocaleString()}
+                  </td>
                 </tr>
               ))}
             </tbody>
