@@ -6,6 +6,7 @@ import {
   ResetPassword,
   VerifyEmail,
   ApiErrorWatcher,
+  AboutPage,
 } from '~/components/Auth';
 import { PrivacyPolicy, PrivacyPolicyRu } from '~/components/Privacy';
 import { AuthContextProvider } from '~/hooks/AuthContext';
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
   {
     path: 'share/:shareId',
     element: <ShareRoute />,
+  },
+  {
+    path: 'about',
+    element: <AboutPage />,
   },
   {
     path: 'privacy-policy',
