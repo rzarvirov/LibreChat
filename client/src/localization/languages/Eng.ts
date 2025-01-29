@@ -999,8 +999,30 @@ export default {
   com_carousel_story_response: 'The old mansion loomed before her, its weathered windows like hollow eyes staring into the misty twilight. Sarah\'s hand trembled as she reached for the brass doorknob, knowing that beyond this threshold lay the answers she\'d spent a lifetime seeking...',
   com_carousel_business_request: 'I need help solving a complex business challenge about resource allocation.',
   com_carousel_business_response: 'Let\'s break this down systematically. First, we\'ll analyze your current resource distribution, then identify bottlenecks, and finally develop an optimization strategy using data-driven decision making...',
-  com_carousel_fitness_request: 'I want to start a workout routine but I\'m a complete beginner. Where should I start?',
-  com_carousel_fitness_response: 'Welcome to your fitness journey! Let\'s start with a balanced routine that includes 2-3 days of strength training and 2 days of light cardio. We\'ll focus on proper form with bodyweight exercises like squats, push-ups, and planks first...',
+  com_carousel_fitness_request: 'How can I optimize my workouts and nutrition with a busy schedule?',
+  com_carousel_fitness_response: 'Here is your plan, based on your 50-hour work week and muscle gain goal: 3 intense 30-minute workouts, focusing on compound exercises. Meals: 7:00 - protein smoothie, 10:00 - nuts/yogurt, 13:00 - chicken with rice, 16:00 - protein bar, 19:00 - fish with vegetables...',
   com_carousel_code_request: 'I\'m new to coding and want to create a simple website. Where should I start?',
   com_carousel_code_response: 'Let\'s start with the basics! We can create a simple personal website using HTML and CSS. I\'ll guide you through creating a beautiful page with your bio, interests, and maybe even a blog section. We\'ll make it step-by-step, no prior experience needed!',
+  // AIModelsInfo translations
+  com_aibuddy_title: 'Meet AiBuddy - Your Gateway to Advanced AI Models',
+  com_aibuddy_why_choose: 'Why Choose Us?',
+  com_aibuddy_why_choose_content: 'AiBuddy provides seamless access to the world\'s leading AI models, each with unique strengths and capabilities. Our platform lets you harness the power of ChatGPT, Google Gemini, DeepSeek, Claude, and more - all in one place.',
+  com_aibuddy_power_choice: 'The Power of Choice',
+  com_aibuddy_power_choice_content: 'Different AI models excel at different tasks. Having access to multiple models means you can always use the best tool for your specific needs, whether it\'s creative writing, coding, analysis, or problem-solving.',
+  com_aibuddy_featured_models: 'Featured Models',
+  com_aibuddy_faq: 'Frequently Asked Questions',
+  
+  // Model descriptions
+  com_model_chatgpt_description: 'Excels at natural conversations and creative tasks. Perfect for content creation and brainstorming.',
+  com_model_gemini_description: 'Powerful multimodal capabilities, great for tasks involving both text and images.',
+  com_model_claude_description: 'Known for accuracy and detailed analysis. Ideal for research and complex problem-solving.',
+  com_model_deepseek_description: 'Specialized in technical tasks and coding. Great for developers and technical projects.',
+  
+  // FAQ items
+  com_faq_what_is: 'What is AiBuddy and how does it work?',
+  com_faq_what_is_content: 'AiBuddy is your unified platform for accessing multiple AI models. We provide a simple, intuitive interface to interact with various AI assistants, each bringing their unique capabilities to help you achieve your goals.',
+  com_faq_what_use: 'What can I use AiBuddy for?',
+  com_faq_what_use_content: 'From writing and coding to analysis and creative projects, AiBuddy can help with virtually any task. Each AI model brings its strengths, allowing you to choose the perfect assistant for your specific needs.',
+  com_faq_how_much: 'How much does it cost?',
+  com_faq_how_much_content: 'AiBuddy offers flexible pricing plans including a free tier for basic access. Premium plans unlock additional features and higher usage limits, catering to both individual users and teams.',
 };

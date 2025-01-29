@@ -92,7 +92,7 @@ export const ChatBubble = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5 + index * 0.3, duration: 0.6, ease: "easeOut" }}
-            className="relative -mt-3 ml-8 w-3/4"
+            className="relative mt-4 md:-mt-3 ml-8 w-4/5 md:w-3/4"
           >
             <div className="relative">
               <div className="rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800">
@@ -239,15 +239,6 @@ export const Carousel = () => {
       <div className="relative mx-4 md:mx-8 h-full">
         <div className="h-full w-full overflow-hidden rounded-xl bg-white/10 dark:bg-black/10 p-6 pb-16 md:p-8 md:pb-16">
           <div className="h-full flex flex-col justify-center">
-            <motion.h3 
-              initial={animationConfig.titleAnimation.initial}
-              animate={animationConfig.titleAnimation.animate}
-              transition={animationConfig.titleAnimation.transition}
-              className="mb-8 text-2xl font-semibold text-gray-800 dark:text-white"
-            >
-              {getLocalizedText(carouselSlides[currentSlide].title)}
-            </motion.h3>
-
             <motion.div
               key={page}
               variants={carouselVariants}
