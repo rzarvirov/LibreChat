@@ -152,6 +152,10 @@ const AIModelsInfo = () => {
       content: localize('com_faq_what_use_content')
     },
     {
+      title: localize('com_faq_what_tokens'),
+      content: localize('com_faq_what_tokens_content')
+    },
+    {
       title: localize('com_faq_how_much'),
       content: localize('com_faq_how_much_content')
     }
