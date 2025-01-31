@@ -42,6 +42,11 @@ async function createCheckoutSession(priceId, userId, userEmail) {
       mode: 'subscription',
       payment_method_types: ['card'],
       customer: customer.id,
+      discounts: [
+        {
+          coupon: '3Sswn7wI'
+        }
+      ],
       line_items: [
         {
           price: priceId,
