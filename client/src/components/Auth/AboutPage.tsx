@@ -22,13 +22,22 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-16">
+        <h1 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-8">
+          {localize('com_ui_about_title')}
+        </h1>
+        
         <CallToAction />
         
         <div className="h-[600px]">
           <Carousel />
         </div>
 
-        <AIModelsInfo />
+        <section>
+          <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-8">
+            {localize('com_ui_about_models_title')}
+          </h2>
+          <AIModelsInfo />
+        </section>
 
         <CallToAction className="mt-16" />
       </div>
