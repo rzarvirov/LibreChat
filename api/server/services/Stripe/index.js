@@ -44,7 +44,7 @@ async function createCheckoutSession(priceId, userId, userEmail) {
       customer: customer.id,
       discounts: [
         {
-          coupon: '3Sswn7wI'
+          promotion_code: 'promo_1QnI9ZDtQYIReEjO5U0L6Opm'
         }
       ],
       line_items: [

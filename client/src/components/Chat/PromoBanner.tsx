@@ -116,7 +116,8 @@ export default function PromoBanner() {
         </div>
         
         <div className="mt-1 text-sm">
-          {isRussian ? 'Дарим PRO доступ на 30 дней' : 'Get 30 days of PRO access with code: 30DAYS'}
+          {isRussian ? 'Дарим PRO доступ на 30 дней' : 'Get 30 days of PRO access with code: '}
+          {!isRussian && <strong>30DAYS</strong>}
         </div>
 
         <button
