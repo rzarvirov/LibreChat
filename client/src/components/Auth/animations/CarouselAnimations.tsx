@@ -71,19 +71,19 @@ export const ChatBubble = ({
   >
     {!isAI ? (
       <motion.div className="flex justify-end mb-6">
-        <div className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-2xl max-w-[80%]">
+        <div className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-2xl max-w-[80%] shadow-lg hover:shadow-xl transition-shadow duration-200 border border-teal-500/20">
           {avatar && (
             <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
               <img src={avatar} alt="User Avatar" className="w-full h-full object-cover" />
             </div>
           )}
-          <span className="text-sm">{message}</span>
+          <span className="text-sm md:text-lg font-medium">{message}</span>
         </div>
       </motion.div>
     ) : (
       <div>
         <div className="flex justify-start">
-          <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2.5 rounded-2xl max-w-[85%] text-sm relative z-10">
+          <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2.5 rounded-2xl max-w-[85%] text-sm md:text-base relative z-10 shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
             {message}
           </div>
         </div>
@@ -95,7 +95,7 @@ export const ChatBubble = ({
             className="relative mt-4 md:-mt-3 ml-8 w-4/5 md:w-3/4"
           >
             <div className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800">
+              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-200 bg-white dark:bg-gray-800">
                 <img 
                   src={responseImage} 
                   alt="Response visualization" 
