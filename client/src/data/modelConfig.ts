@@ -21,6 +21,21 @@ interface ModelConfig {
 
 export const modelConfig: ModelConfig = {
   // OpenAI Models
+  'o3-mini': {
+    provider: 'OpenAI',
+    shortName: 'ChatGPT o3 Mini',
+    features: {
+      speed: 'fast',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 128000,
+    },
+    description: 'Brand New ChatGPT o3 Mini',
+    descriptions: {
+      'ru-RU': 'Новейшая модель ChatGPT o3 Mini'
+    }
+  },
   'gpt-4o-mini': {
     provider: 'OpenAI',
     shortName: 'ChatGPT 4o Mini',
