@@ -52,13 +52,15 @@ export const ChatBubble = ({
   isAI = false, 
   index = 0, 
   avatar,
-  responseImage 
+  responseImage,
+  attachmentIcon 
 }: { 
   message: string; 
   isAI?: boolean; 
   index?: number;
   avatar?: string;
   responseImage?: string;
+  attachmentIcon?: string;
 }) => (
   <motion.div
     initial={animationConfig.bubbleAnimation.initial}
@@ -70,7 +72,7 @@ export const ChatBubble = ({
     className="relative"
   >
     {!isAI ? (
-      <motion.div className="flex justify-end mb-6">
+      <motion.div className="flex justify-end mb-6 relative">
         <div className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-2xl max-w-[80%] shadow-lg hover:shadow-xl transition-shadow duration-200 border border-teal-500/20">
           {avatar && (
             <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
@@ -79,6 +81,11 @@ export const ChatBubble = ({
           )}
           <span className="text-sm md:text-lg font-medium">{message}</span>
         </div>
+        {attachmentIcon && (
+          <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-teal-700 flex items-center justify-center shadow-lg border-2 border-white dark:border-gray-800">
+            <img src={attachmentIcon} alt="Attachment" className="w-7 h-7" />
+          </div>
+        )}
       </motion.div>
     ) : (
       <div>
@@ -124,6 +131,23 @@ export const NavigationDot = ({ isActive, onClick }: { isActive: boolean; onClic
 
 // Carousel slide data
 export const carouselSlides = [
+  {
+    title: "com_carousel_title_contract_analysis",
+    messages: [
+      { 
+        text: "com_carousel_contract_request", 
+        isAI: false,
+        avatar: "/assets/carousel/avatars/lawyer.png",
+        attachmentIcon: "/assets/carousel/icons/pdf.png"
+      },
+      { 
+        text: "com_carousel_contract_response", 
+        isAI: true,
+        avatar: "/assets/carousel/avatars/lawyer.png",
+        responseImage: "/assets/carousel/responses/contract.png"
+      },
+    ],
+  },
   {
     title: "com_carousel_title_creative_writing",
     messages: [
@@ -269,6 +293,7 @@ export const Carousel = () => {
                       index={idx}
                       avatar={message.avatar}
                       responseImage={message.responseImage}
+                      attachmentIcon={message.attachmentIcon}
                     />
                   ))}
                 </div>

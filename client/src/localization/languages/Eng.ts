@@ -1002,6 +1002,9 @@ export default {
   com_subscription_boosty: 'Boosty',
   com_subscription_boosty_manage: 'Subscribed to us on Boosty? Click here to manage',
   // Carousel translations
+  com_carousel_title_contract_analysis: 'Contract Analysis',
+  com_carousel_contract_request: 'Could you analyze this employment contract and identify any potential risks or concerning clauses?',
+  com_carousel_contract_response: 'I\'ve reviewed the contract and found several concerns. The non-compete clause is overly broad, and the IP section needs clarification. The termination notice period should also be renegotiated.',
   com_carousel_title_creative_writing: 'Creative Writing',
   com_carousel_title_problem_solving: 'Problem Solving',
   com_carousel_title_fitness_coach: 'Fitness Coach',
