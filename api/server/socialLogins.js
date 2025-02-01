@@ -19,6 +19,28 @@ const { logger } = require('~/config');
  * @param {Express.Application} app
  */
 const configureSocialLogins = (app) => {
+  const sessionOptions = {
+    secret: process.env.OPENID_SESSION_SECRET || process.env.JWT_SECRET || 'default_secret',
+    resave: false,
+    saveUninitialized: false,
+  };
+
+  if (isEnabled(process.env.USE_REDIS)) {
+    const client = new Redis(process.env.REDIS_URI);
+    client
+      .on('error', (err) => logger.error('ioredis error:', err))
+      .on('ready', () => logger.info('ioredis successfully initialized.'))
+      .on('reconnecting', () => logger.info('ioredis reconnecting...'));
+    sessionOptions.store = new RedisStore({ client, prefix: 'librechat' });
+  } else {
+    sessionOptions.store = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
+  }
+
+  app.use(session(sessionOptions));
+  app.use(passport.session());
+
   if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     passport.use(googleLogin());
   }
@@ -41,25 +63,6 @@ const configureSocialLogins = (app) => {
     process.env.OPENID_SCOPE &&
     process.env.OPENID_SESSION_SECRET
   ) {
-    const sessionOptions = {
-      secret: process.env.OPENID_SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-    };
-    if (isEnabled(process.env.USE_REDIS)) {
-      const client = new Redis(process.env.REDIS_URI);
-      client
-        .on('error', (err) => logger.error('ioredis error:', err))
-        .on('ready', () => logger.info('ioredis successfully initialized.'))
-        .on('reconnecting', () => logger.info('ioredis reconnecting...'));
-      sessionOptions.store = new RedisStore({ client, prefix: 'librechat' });
-    } else {
-      sessionOptions.store = new MemoryStore({
-        checkPeriod: 86400000, // prune expired entries every 24h
-      });
-    }
-    app.use(session(sessionOptions));
-    app.use(passport.session());
     setupOpenId();
   }
 };
