@@ -123,5 +123,73 @@ export const promptExamples: PromptExample[] = [
   {
     en: "This Python code is giving me an error - I've attached a screenshot of the output. What's wrong?",
     ru: "Этот код на Python выдает ошибку - я прикрепил скриншот вывода. В чем проблема?"
+  },
+  {
+    en: "Analyze this historical document scan and help me transcribe the handwritten notes in the margins",
+    ru: "Проанализируй скан этого исторического документа и помоги расшифровать рукописные заметки на полях"
+  },
+  {
+    en: "I've attached photos of my garden - can you identify any plant diseases or nutrient deficiencies?",
+    ru: "Я прикрепил фотографии моего сада - можешь определить болезни растений или недостаток питательных веществ?"
+  },
+  {
+    en: "Look at these architectural blueprints and suggest energy-efficient improvements",
+    ru: "Посмотри на эти архитектурные чертежи и предложи энергоэффективные улучшения"
+  },
+  {
+    en: "Can you analyze this MRI scan and explain what the different areas indicate?",
+    ru: "Можешь проанализировать этот МРТ-снимок и объяснить, на что указывают различные области?"
+  },
+  {
+    en: "I've shared my company's financial statements - what trends do you notice in the quarterly results?",
+    ru: "Я поделился финансовой отчетностью моей компании - какие тенденции ты замечаешь в квартальных результатах?"
+  },
+  {
+    en: "Review these product photos and suggest improvements for my e-commerce listings",
+    ru: "Просмотри эти фотографии товаров и предложи улучшения для моих листингов в интернет-магазине"
+  },
+  {
+    en: "Analyze this legal contract and highlight any potential risks or unclear clauses",
+    ru: "Проанализируй этот юридический контракт и выдели потенциальные риски или неясные пункты"
+  },
+  {
+    en: "Look at my child's artwork and suggest age-appropriate art activities to develop their skills",
+    ru: "Посмотри на рисунок моего ребенка и предложи подходящие по возрасту занятия для развития навыков"
+  },
+  {
+    en: "Can you examine these skin lesion photos and suggest if I should see a dermatologist?",
+    ru: "Можешь изучить эти фотографии поражений кожи и посоветовать, стоит ли обратиться к дерматологу?"
+  },
+  {
+    en: "I've attached a recording of my sleep patterns - can you identify why I might be waking up at 3 AM?",
+    ru: "Я прикрепил запись моих паттернов сна - можешь определить, почему я просыпаюсь в 3 часа ночи?"
+  },
+  {
+    en: "Look at this spectrogram of whale songs I recorded - what behaviors or communications do you notice?",
+    ru: "Посмотри на эту спектрограмму записанных мной китовых песен - какое поведение или коммуникацию ты замечаешь?"
+  },
+  {
+    en: "I've recorded my child's first words over time - can you analyze their speech development progress?",
+    ru: "Я записывал первые слова своего ребенка - можешь проанализировать прогресс развития его речи?"
+  },
+  {
+    en: "Compose a lullaby that combines elements of jazz and traditional Celtic music for modern parents",
+    ru: "Сочини колыбельную, сочетающую элементы джаза и традиционной кельтской музыки для современных родителей"
+  },
+  {
+    en: "Design a zero-gravity workout routine for future space tourists staying in orbital hotels",
+    ru: "Разработай программу тренировок в невесомости для будущих космических туристов в орбитальных отелях"
+  },
+  {
+    en: "Create a fictional endangered species by combining features of existing animals and describe its ecosystem",
+    ru: "Создай вымышленный исчезающий вид, объединив особенности существующих животных, и опиши его экосистему"
+  },
+  {
+    en: "Develop a meditation technique that incorporates quantum physics concepts for tech entrepreneurs",
+    ru: "Разработай технику медитации, включающую концепции квантовой физики для технологических предпринимателей"
+  },
+  {
+    en: "Design a universal sign language for interspecies communication between humans and dolphins",
+    ru: "Разработай универсальный язык жестов для межвидовой коммуникации между людьми и дельфинами"
   }
 ]; 
