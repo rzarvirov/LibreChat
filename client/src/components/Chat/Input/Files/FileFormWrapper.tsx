@@ -52,12 +52,18 @@ function FileFormWrapper({
     return modelConfig[model]?.features?.imageSupport ?? false;
   }, [model]);
 
+  // Check if current model supports documents
+  const modelSupportsDocuments = useMemo(() => {
+    if (!model) return false;
+    return modelConfig[model]?.features?.documentSupport ?? false;
+  }, [model]);
+
   // Calculate if file upload is active
   const isUploadActive = useMemo(() => {
-    if (!modelSupportsImages) return false;
+    if (!modelSupportsImages && !modelSupportsDocuments) return false;
     if (isAgents) return true;
     return endpointSupportsFiles && !isUploadDisabled;
-  }, [modelSupportsImages, isAgents, endpointSupportsFiles, isUploadDisabled]);
+  }, [modelSupportsImages, modelSupportsDocuments, isAgents, endpointSupportsFiles, isUploadDisabled]);
 
   // Notify parent of upload active state changes
   useEffect(() => {

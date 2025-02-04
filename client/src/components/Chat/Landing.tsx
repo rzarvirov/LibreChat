@@ -28,12 +28,12 @@ function ModelInfo({ model }: { model: string }) {
   const description = modelData.descriptions?.[lang] || modelData.description;
 
   return (
-    <div className="mt-6 max-w-2xl px-6 flex flex-col items-center">
-      <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+    <div className="mt-2 max-w-2xl px-4 flex flex-col items-center">
+      <p className="text-center text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
         {description}
       </p>
-      <div className="h-32 w-full relative mt-4">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
+      <div className="h-28 w-full relative mt-2">
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 scale-90">
           <ModelDock features={modelData.features} />
         </div>
       </div>
@@ -120,7 +120,7 @@ export default function Landing({ Header }: { Header?: ReactNode }) {
     <div className="relative h-full">
       <div className="absolute left-0 right-0">{Header != null ? Header : null}</div>
       <div className="flex h-full flex-col items-center justify-center">
-        <div className={cn('relative h-12 w-12', name && avatar ? 'mb-0' : 'mb-3')}>
+        <div className={cn('relative h-10 w-10 sm:h-12 sm:w-12', name && avatar ? 'mb-0' : 'mb-2')}>
           <ConvoIcon
             agentsMap={agentsMap}
             assistantMap={assistantMap}
@@ -133,7 +133,7 @@ export default function Landing({ Header }: { Header?: ReactNode }) {
           />
           {startupConfig?.showBirthdayIcon === true ? (
             <TooltipAnchor
-              className="absolute bottom-8 right-2.5"
+              className="absolute bottom-6 right-2.5 scale-75 sm:bottom-8 sm:scale-100"
               description={localize('com_ui_happy_birthday')}
             >
               <BirthdayIcon />
@@ -141,19 +141,19 @@ export default function Landing({ Header }: { Header?: ReactNode }) {
           ) : null}
         </div>
         {name ? (
-          <div className="flex flex-col items-center gap-0 p-2">
-            <div className="text-center text-2xl font-medium dark:text-white">{name}</div>
-            <div className="max-w-md text-center text-sm font-normal text-text-primary ">
+          <div className="flex flex-col items-center gap-0 p-1 sm:p-2">
+            <div className="text-center text-xl font-medium dark:text-white sm:text-2xl">{name}</div>
+            <div className="max-w-md text-center text-xs font-normal text-text-primary sm:text-sm">
               {description ? description : localize('com_nav_welcome_message')}
             </div>
           </div>
         ) : (
-          <h2 className="mb-5 max-w-[75vh] px-12 text-center text-lg font-medium dark:text-white md:px-0 md:text-2xl">
+          <h2 className="mb-2 max-w-[75vh] px-4 text-center text-base font-medium dark:text-white sm:mb-5 sm:px-12 md:px-0 md:text-2xl">
             {getWelcomeMessage()}
           </h2>
         )}
         {conversation?.model && <ModelInfo model={conversation.model} />}
-        <div className="mt-8 flex flex-wrap justify-center gap-3 px-4">
+        <div className="mt-4 flex flex-wrap justify-center gap-2 px-2 sm:mt-8 sm:gap-3 sm:px-4">
           {conversation_starters.length > 0 &&
             conversation_starters
               .slice(0, Constants.MAX_CONVO_STARTERS)

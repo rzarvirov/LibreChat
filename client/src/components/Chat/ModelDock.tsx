@@ -22,6 +22,7 @@ import {
     Image as ImageIcon,
     Gauge,
     ScrollText,
+    FileText,
   } from 'lucide-react';
   import { useLocalize } from '~/hooks';
   
@@ -33,6 +34,7 @@ import {
   interface ModelFeatures {
     speed: 'fast' | 'medium' | 'slow';
     imageSupport: boolean;
+    documentSupport: boolean;
     intelligence: 'basic' | 'medium' | 'high' | 'very high';
     contextWindow: number;
   }
@@ -233,6 +235,10 @@ import {
       ...(features.imageSupport ? [{
         title: localize('com_model_features_image_support'),
         icon: <ImageIcon className="h-full w-full text-blue-500 dark:text-blue-400" />,
+      }] : []),
+      ...(features.documentSupport ? [{
+        title: localize('com_model_features_document_support'),
+        icon: <FileText className="h-full w-full text-yellow-500 dark:text-yellow-400" />,
       }] : []),
       {
         title: `${localize('com_model_features_intelligence')}: ${localize(`com_model_features_intelligence_${features.intelligence.replace(' ', '_')}`)}`,

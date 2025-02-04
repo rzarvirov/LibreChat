@@ -2,6 +2,7 @@ interface ModelFeatures {
   speed: 'fast' | 'medium' | 'slow';
   tiers: ('FREE' | 'BASIC' | 'PRO' | 'PROPLUS' | 'UNLIMITED')[];
   imageSupport: boolean;
+  documentSupport: boolean;
   intelligence: 'basic' | 'medium' | 'high' | 'very high';
   contextWindow: number;
   maxTokens?: number;
@@ -29,13 +30,14 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'high',
       contextWindow: 128000,
       isLegacy: false
     },
     description: 'Fast and efficient GPT-4 model optimized for quick responses',
     descriptions: {
-      'ru-RU': 'Умная и динамичная версия GPT-4, созданная для моментальных и точных ответов'
+      'ru-RU': 'Умная и динамичная базовая версия ChatGPT 4, созданная для моментальных и точных ответов'
     }
   },
   'o3-mini': {
@@ -45,6 +47,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 200000,
     },
@@ -60,6 +63,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 128000,
     },
@@ -75,6 +79,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'high',
       contextWindow: 128000,
     },
@@ -90,6 +95,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 128000,
     },
@@ -105,6 +111,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
       isLegacy: true
@@ -121,6 +128,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'medium',
       contextWindow: 4096,
       isLegacy: true
@@ -139,6 +147,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'medium',
       contextWindow: 200000,
     },
@@ -154,6 +163,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'high',
       contextWindow: 200000,
     },
@@ -169,6 +179,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 200000,
       isLegacy: true
@@ -187,6 +198,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 1000000,
     },
@@ -202,6 +214,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['BASIC','PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'high',
       contextWindow: 1000000,
     },
@@ -217,6 +230,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'medium',
       contextWindow: 1000000,
     },
@@ -232,6 +246,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO','PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 1000000,
     },
@@ -249,6 +264,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'medium',
       contextWindow: 8192,
     },
@@ -264,6 +280,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
       maxTokens: 32768,
@@ -280,6 +297,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'medium',
       contextWindow: 128000,
       maxTokens: 8192,
@@ -297,6 +315,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'high',
       contextWindow: 8192,
     },
@@ -312,6 +331,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 8192,
     },
@@ -327,6 +347,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'medium',
       contextWindow: 8192,
     },
@@ -344,6 +365,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'medium',
       contextWindow: 32000,
     },
@@ -359,6 +381,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 32000,
     },
@@ -374,6 +397,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 32000,
     },
@@ -389,6 +413,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'high',
       contextWindow: 32000,
     },
@@ -404,6 +429,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE','BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'high',
       contextWindow: 32000,
     },
@@ -421,6 +447,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'high',
       contextWindow: 32000,
     },
@@ -436,6 +463,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 32000,
     },
@@ -453,6 +481,7 @@ export const modelConfig: ModelConfig = {
       speed: 'fast',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: false,
+      documentSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
     },
@@ -468,6 +497,7 @@ export const modelConfig: ModelConfig = {
       speed: 'medium',
       tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
+      documentSupport: true,
       intelligence: 'very high',
       contextWindow: 128000,
     },
@@ -549,5 +579,12 @@ export const getModelDisplayName = (modelName: string): string => {
 export const getModelsByLegacyStatus = (isLegacy: boolean) => {
   return Object.entries(modelConfig)
     .filter(([_, config]) => config.features.isLegacy === isLegacy)
+    .map(([modelName]) => modelName);
+};
+
+// Helper function to get models with document support
+export const getModelsWithDocumentSupport = () => {
+  return Object.entries(modelConfig)
+    .filter(([_, config]) => config.features.documentSupport)
     .map(([modelName]) => modelName);
 }; 

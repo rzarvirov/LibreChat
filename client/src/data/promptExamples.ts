@@ -203,5 +203,25 @@ export const promptExamples: PromptExample[] = [
   {
     en: "Help me organize my small closet space more efficiently",
     ru: "Помоги более эффективно организовать пространство в моем маленьком шкафу - фото прикреплено"
+  },
+  {
+    en: "Explain this complex paragraph about quantum computing in simpler terms",
+    ru: "Объясни этот сложный параграф о квантовых вычислениях более простыми словами"
+  },
+  {
+    en: "Help me brainstorm 10 creative blog post ideas about sustainable living",
+    ru: "Помоги придумать 10 креативных идей для блога об экологичном образе жизни"
+  },
+  {
+    en: "Summarize the main points of this long email thread about the project timeline",
+    ru: "Обобщи основные моменты этой длинной переписки о сроках проекта"
+  },
+  {
+    en: "Compare and contrast these two product descriptions to help me make a decision",
+    ru: "Сравни эти два описания товаров, чтобы помочь мне принять решение"
+  },
+  {
+    en: "Proofread this important work email and suggest improvements for clarity",
+    ru: "Проверь это важное рабочее письмо и предложи улучшения для ясности"
   }
 ]; 
