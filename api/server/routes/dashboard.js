@@ -20,10 +20,18 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
     const startDate = new Date('2025-01-27');
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
     
     // Use the later of startDate or thirtyDaysAgo
     const effectiveStartDate = startDate > thirtyDaysAgo ? startDate : thirtyDaysAgo;
+
+    const period = req.query.period || '30d';
+    const periodStartDate = period === '24h' ? last24Hours : 
+                          period === '7d' ? sevenDaysAgo : 
+                          effectiveStartDate;
     
     const [dailyStats, totalUsers, tokenStats, last24hUsers, topUsers, lastMessages] = await Promise.all([
       User.aggregate([
@@ -80,7 +88,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
       Transaction.aggregate([
         {
           $match: {
-            createdAt: { $gte: effectiveStartDate }
+            createdAt: { $gte: periodStartDate }
           }
         },
         {
@@ -94,7 +102,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
           $sort: { transactionCount: -1 }
         },
         {
-          $limit: 30
+          $limit: 50
         },
         {
           $lookup: {

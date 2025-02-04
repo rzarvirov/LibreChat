@@ -19,6 +19,7 @@ const UserManagement = ({ initialEmail = '' }: UserManagementProps) => {
   const [newBalance, setNewBalance] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (initialEmail) {
@@ -29,6 +30,7 @@ const UserManagement = ({ initialEmail = '' }: UserManagementProps) => {
 
   const handleSearch = async (emailToSearch = searchEmail) => {
     try {
+      setIsLoading(true);
       setError('');
       setSuccess('');
       setUserData(null);
@@ -52,11 +54,14 @@ const UserManagement = ({ initialEmail = '' }: UserManagementProps) => {
       setNewBalance(data.balance.toString());
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to find user');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleUpdate = async () => {
     try {
+      setIsLoading(true);
       setError('');
       setSuccess('');
 
@@ -81,80 +86,108 @@ const UserManagement = ({ initialEmail = '' }: UserManagementProps) => {
       handleSearch(); // Refresh user data
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update user');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-semibold mb-4">User Management</h2>
-      
-      <div className="flex gap-4 mb-6">
-        <input
-          type="email"
-          placeholder="Enter user email"
-          value={searchEmail}
-          onChange={(e) => setSearchEmail(e.target.value)}
-          className="flex-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <button
-          onClick={() => handleSearch(searchEmail)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-        >
-          Search
-        </button>
-      </div>
+    <div className="max-w-2xl mx-auto">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="p-6 sm:p-8">
+          <h2 className="text-2xl font-bold mb-6">User Management</h2>
+          
+          <div className="space-y-6">
+            {/* Search Section */}
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  type="email"
+                  placeholder="Enter user email"
+                  value={searchEmail}
+                  onChange={(e) => setSearchEmail(e.target.value)}
+                  className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                />
+                <button
+                  onClick={() => handleSearch(searchEmail)}
+                  disabled={isLoading}
+                  className={`px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors ${
+                    isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                >
+                  {isLoading ? 'Searching...' : 'Search'}
+                </button>
+              </div>
 
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-          {error}
-        </div>
-      )}
+              {error && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-red-600">{error}</p>
+                </div>
+              )}
 
-      {success && (
-        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">
-          {success}
-        </div>
-      )}
-
-      {userData && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Current Tier: {userData.tier}
-              </label>
-              <select
-                value={newTier}
-                onChange={(e) => setNewTier(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {TIERS.map((tier) => (
-                  <option key={tier} value={tier}>
-                    {tier}
-                  </option>
-                ))}
-              </select>
+              {success && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                  <p className="text-green-600">{success}</p>
+                </div>
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Current Balance: {userData.balance}
-              </label>
-              <input
-                type="number"
-                value={newBalance}
-                onChange={(e) => setNewBalance(e.target.value)}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+
+            {/* User Details Section */}
+            {userData && (
+              <div className="space-y-6 pt-6 border-t">
+                <h3 className="text-lg font-semibold">User Details</h3>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Subscription Tier
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {TIERS.map((tier) => (
+                        <button
+                          key={tier}
+                          onClick={() => setNewTier(tier)}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                            newTier === tier
+                              ? 'bg-blue-100 text-blue-800 border-2 border-blue-300'
+                              : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:border-gray-300'
+                          }`}
+                        >
+                          {tier}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Token Balance
+                    </label>
+                    <input
+                      type="number"
+                      value={newBalance}
+                      onChange={(e) => setNewBalance(e.target.value)}
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-6">
+                  <button
+                    onClick={handleUpdate}
+                    disabled={isLoading}
+                    className={`w-full px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors ${
+                      isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {isLoading ? 'Updating...' : 'Update User'}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-          <button
-            onClick={handleUpdate}
-            className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
-          >
-            Update User
-          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };

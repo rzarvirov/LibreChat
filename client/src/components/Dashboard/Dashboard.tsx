@@ -47,6 +47,8 @@ const Dashboard = () => {
   const [topUsers, setTopUsers] = useState<TopUser[]>([]);
   const [lastMessages, setLastMessages] = useState<Message[]>([]);
   const [error, setError] = useState('');
+  const [selectedTiers, setSelectedTiers] = useState<string[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<'24h' | '7d' | '30d'>('30d');
 
   useEffect(() => {
     const savedPassword = localStorage.getItem(DASHBOARD_PASSWORD_KEY);
@@ -78,7 +80,7 @@ const Dashboard = () => {
 
   const authenticateWithPassword = async (pwd: string) => {
     try {
-      const response = await fetch('/api/dashboard/user-stats', {
+      const response = await fetch(`/api/dashboard/user-stats?period=${selectedPeriod}`, {
         headers: {
           'x-dashboard-password': pwd
         }
@@ -107,6 +109,29 @@ const Dashboard = () => {
       localStorage.removeItem(DASHBOARD_PASSWORD_KEY);
     }
   };
+
+  const refreshTopUsers = async () => {
+    try {
+      const response = await fetch(`/api/dashboard/user-stats?period=${selectedPeriod}`, {
+        headers: {
+          'x-dashboard-password': localStorage.getItem(DASHBOARD_PASSWORD_KEY) || ''
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTopUsers(data.topUsers);
+      }
+    } catch (err) {
+      console.error('Failed to refresh top users:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      refreshTopUsers();
+    }
+  }, [selectedPeriod, isAuthenticated]);
 
   const authenticate = () => {
     authenticateWithPassword(password);
@@ -216,7 +241,53 @@ const Dashboard = () => {
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-              <h2 className="text-xl font-semibold mb-4">Top 30 Users</h2>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                  <h2 className="text-xl font-semibold">Top 50 Users</h2>
+                  <div className="flex gap-2">
+                    {[
+                      { value: '24h', label: 'Last 24h' },
+                      { value: '7d', label: 'Last Week' },
+                      { value: '30d', label: 'Last 30 Days' }
+                    ].map((period) => (
+                      <button
+                        key={period.value}
+                        onClick={() => setSelectedPeriod(period.value as '24h' | '7d' | '30d')}
+                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                          selectedPeriod === period.value
+                            ? 'bg-blue-100 text-blue-800 border-2 border-blue-300'
+                            : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:border-gray-300'
+                        }`}
+                      >
+                        {period.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="relative w-full sm:w-auto">
+                  <div className="flex flex-wrap gap-2">
+                    {['FREE', 'BASIC', 'PRO', 'PROPLUS'].map((tier) => (
+                      <button
+                        key={tier}
+                        onClick={() => {
+                          setSelectedTiers(prev => 
+                            prev.includes(tier)
+                              ? prev.filter(t => t !== tier)
+                              : [...prev, tier]
+                          );
+                        }}
+                        className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                          selectedTiers.includes(tier)
+                            ? 'bg-blue-100 text-blue-800 border-2 border-blue-300'
+                            : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:border-gray-300'
+                        }`}
+                      >
+                        {tier}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
               <table className="min-w-full">
                 <thead>
                   <tr className="bg-gray-50">
@@ -228,35 +299,38 @@ const Dashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {topUsers.map((user, index) => (
-                    <tr 
-                      key={user.email}
-                      className="border-t hover:bg-gray-50"
-                    >
-                      <td className="px-4 py-2">
-                        <button
-                          onClick={() => handleEmailClick(user.email)}
-                          className="text-blue-600 hover:text-blue-800 hover:underline text-left"
-                        >
-                          {user.email}
-                        </button>
-                      </td>
-                      <td className="px-4 py-2 text-center">
-                        <span className={`px-2 py-1 rounded text-sm ${
-                          user.tier === 'FREE' ? 'bg-gray-100 text-gray-800' :
-                          user.tier === 'BASIC' ? 'bg-blue-100 text-blue-800' :
-                          user.tier === 'PRO' ? 'bg-purple-100 text-purple-800' :
-                          user.tier === 'PROPLUS' ? 'bg-indigo-100 text-indigo-800' :
-                          'bg-green-100 text-green-800'
-                        }`}>
-                          {user.tier}
-                        </span>
-                      </td>
-                      <td className="px-4 py-2 text-right">{formatNumber(user.transactionCount)}</td>
-                      <td className="px-4 py-2 text-right">{formatNumber(Math.round(user.totalTokens))}</td>
-                      <td className="px-4 py-2 text-right">{formatNumber(Math.round(user.balance))}</td>
-                    </tr>
-                  ))}
+                  {topUsers
+                    .filter(user => selectedTiers.length === 0 || selectedTiers.includes(user.tier))
+                    .slice(0, 50)
+                    .map((user, index) => (
+                      <tr 
+                        key={user.email}
+                        className="border-t hover:bg-gray-50"
+                      >
+                        <td className="px-4 py-2">
+                          <button
+                            onClick={() => handleEmailClick(user.email)}
+                            className="text-blue-600 hover:text-blue-800 hover:underline text-left"
+                          >
+                            {user.email}
+                          </button>
+                        </td>
+                        <td className="px-4 py-2 text-center">
+                          <span className={`px-2 py-1 rounded text-sm ${
+                            user.tier === 'FREE' ? 'bg-gray-100 text-gray-800' :
+                            user.tier === 'BASIC' ? 'bg-blue-100 text-blue-800' :
+                            user.tier === 'PRO' ? 'bg-purple-100 text-purple-800' :
+                            user.tier === 'PROPLUS' ? 'bg-indigo-100 text-indigo-800' :
+                            'bg-green-100 text-green-800'
+                          }`}>
+                            {user.tier}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2 text-right">{formatNumber(user.transactionCount)}</td>
+                        <td className="px-4 py-2 text-right">{formatNumber(Math.round(user.totalTokens))}</td>
+                        <td className="px-4 py-2 text-right">{formatNumber(Math.round(user.balance))}</td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

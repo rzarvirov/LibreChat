@@ -1,5 +1,7 @@
+"use client";
+
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis, ResponsiveContainer } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 interface ChartData {
   date: string;
@@ -23,6 +25,27 @@ const UserGrowthChart = ({ data }: UserGrowthChartProps) => {
   const trend = previousMonth ? ((currentMonth - previousMonth) / previousMonth) * 100 : 0;
   const isTrendingUp = trend >= 0;
 
+  // Custom tooltip component
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-3 border rounded shadow-lg">
+          <p className="text-sm font-medium">{formatDate(label)}</p>
+          <p className="text-sm text-gray-600">
+            <span className="font-medium">{payload[0].value}</span> new users
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Format date to dd-mm
+  const formatDate = (dateStr: string) => {
+    const [year, month, day] = dateStr.split('-');
+    return `${day}-${month}`;
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="mb-4">
@@ -38,24 +61,37 @@ const UserGrowthChart = ({ data }: UserGrowthChartProps) => {
             margin={{
               top: 10,
               right: 30,
-              left: 0,
+              left: 40,
               bottom: 0,
             }}
           >
+            <defs>
+              <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--chart-1))" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="hsl(var(--chart-1))" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(5)} // Show only MM-DD
+              tickFormatter={formatDate}
             />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tickFormatter={(value) => value.toLocaleString()}
+            />
+            <Tooltip content={<CustomTooltip />} />
             <Area
               type="natural"
               dataKey="users"
-              stroke="#3b82f6"
-              fill="#3b82f6"
-              fillOpacity={0.2}
+              stroke="hsl(var(--chart-1))"
+              fill="url(#colorUsers)"
+              fillOpacity={1}
             />
           </AreaChart>
         </ResponsiveContainer>
