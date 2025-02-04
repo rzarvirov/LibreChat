@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('~/models/User');
 const { Transaction } = require('~/models/Transaction');
 const { Message } = require('~/models/Message');
+const Balance = require('~/models/Balance');
 
 const authenticateDashboard = (req, res, next) => {
   const dashboardPassword = process.env.DASHBOARD_PASSWORD;
@@ -107,11 +108,26 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
           $unwind: '$userDetails'
         },
         {
+          $lookup: {
+            from: 'balances',
+            localField: '_id',
+            foreignField: 'user',
+            as: 'balanceDetails'
+          }
+        },
+        {
+          $unwind: {
+            path: '$balanceDetails',
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
           $project: {
             email: '$userDetails.email',
             tier: '$userDetails.subscriptionTier',
             transactionCount: 1,
-            totalTokens: 1
+            totalTokens: 1,
+            balance: { $ifNull: ['$balanceDetails.tokenCredits', 0] }
           }
         }
       ]),
@@ -177,6 +193,62 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching user stats:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.post('/user-lookup', authenticateDashboard, async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    const user = await User.findOne({ email }).lean();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const balance = await Balance.findOne({ user: user._id }).lean();
+
+    res.json({
+      email: user.email,
+      tier: user.subscriptionTier,
+      balance: balance?.tokenCredits || 0
+    });
+  } catch (error) {
+    console.error('Error looking up user:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.post('/update-user', authenticateDashboard, async (req, res) => {
+  try {
+    const { email, tier, balance } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Update user tier
+    await User.updateOne(
+      { _id: user._id },
+      { 
+        $set: { 
+          subscriptionTier: tier,
+          subscriptionStatus: tier === 'FREE' ? 'EXPIRED' : 'ACTIVE'
+        } 
+      }
+    );
+
+    // Update or create balance
+    await Balance.findOneAndUpdate(
+      { user: user._id },
+      { $set: { tokenCredits: balance } },
+      { upsert: true }
+    );
+
+    res.json({ message: 'User updated successfully' });
+  } catch (error) {
+    console.error('Error updating user:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
