@@ -143,6 +143,7 @@ const Dashboard = () => {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
@@ -202,7 +203,9 @@ const Dashboard = () => {
 
       <div className="grid gap-8">
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <Line data={userChartData} options={chartOptions} />
+          <div className="h-[60vh]">
+            <Line data={userChartData} options={chartOptions} />
+          </div>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
@@ -231,7 +234,7 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-          <h2 className="text-xl font-semibold mb-4">Top 20 Users</h2>
+          <h2 className="text-xl font-semibold mb-4">Top 30 Users</h2>
           <table className="min-w-full">
             <thead>
               <tr className="bg-gray-50">

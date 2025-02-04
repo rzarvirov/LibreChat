@@ -93,7 +93,7 @@ router.get('/user-stats', authenticateDashboard, async (req, res) => {
           $sort: { transactionCount: -1 }
         },
         {
-          $limit: 20
+          $limit: 30
         },
         {
           $lookup: {
