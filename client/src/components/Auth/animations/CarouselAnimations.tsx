@@ -61,61 +61,74 @@ export const ChatBubble = ({
   avatar?: string;
   responseImage?: string;
   attachmentIcon?: string;
-}) => (
-  <motion.div
-    initial={animationConfig.bubbleAnimation.initial}
-    animate={animationConfig.bubbleAnimation.animate}
-    transition={{
-      ...animationConfig.bubbleAnimation.transition,
-      delay: isAI ? 1 + index * 0.3 : index * 0.3
-    }}
-    className="relative"
-  >
-    {!isAI ? (
-      <motion.div className="flex justify-end mb-6 relative">
-        <div className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-2xl max-w-[80%] shadow-lg hover:shadow-xl transition-shadow duration-200 border border-teal-500/20">
-          {avatar && (
-            <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
-              <img src={avatar} alt="User Avatar" className="w-full h-full object-cover" />
+}) => {
+  const [useContain, setUseContain] = useState(true);
+
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.target as HTMLImageElement;
+    const aspectRatio = img.naturalWidth / img.naturalHeight;
+    // Check if the image is close to 16:9 (allowing for small rounding differences)
+    const is16by9 = Math.abs(aspectRatio - 16/9) < 0.1;
+    setUseContain(!is16by9);
+  };
+
+  return (
+    <motion.div
+      initial={animationConfig.bubbleAnimation.initial}
+      animate={animationConfig.bubbleAnimation.animate}
+      transition={{
+        ...animationConfig.bubbleAnimation.transition,
+        delay: isAI ? 1 + index * 0.3 : index * 0.3
+      }}
+      className="relative"
+    >
+      {!isAI ? (
+        <motion.div className="flex justify-end mb-6 relative">
+          <div className="flex items-center gap-2 bg-teal-600 text-white px-4 py-2.5 rounded-2xl max-w-[80%] shadow-lg hover:shadow-xl transition-shadow duration-200 border border-teal-500/20">
+            {avatar && (
+              <div className="flex-shrink-0 w-6 h-6 rounded-full overflow-hidden">
+                <img src={avatar} alt="User Avatar" className="w-full h-full object-cover" />
+              </div>
+            )}
+            <span className="text-sm md:text-lg font-medium">{message}</span>
+          </div>
+          {attachmentIcon && (
+            <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-teal-700 flex items-center justify-center shadow-lg border-2 border-white dark:border-gray-800">
+              <img src={attachmentIcon} alt="Attachment" className="w-7 h-7" />
             </div>
           )}
-          <span className="text-sm md:text-lg font-medium">{message}</span>
-        </div>
-        {attachmentIcon && (
-          <div className="absolute -bottom-3 -right-3 w-12 h-12 rounded-full bg-teal-700 flex items-center justify-center shadow-lg border-2 border-white dark:border-gray-800">
-            <img src={attachmentIcon} alt="Attachment" className="w-7 h-7" />
-          </div>
-        )}
-      </motion.div>
-    ) : (
-      <div>
-        <div className="flex justify-start">
-          <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2.5 rounded-2xl max-w-[85%] text-sm md:text-base relative z-10 shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
-            {message}
-          </div>
-        </div>
-        {responseImage && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.5 + index * 0.3, duration: 0.6, ease: "easeOut" }}
-            className="relative mt-4 md:-mt-3 ml-8 w-4/5 md:w-3/4"
-          >
-            <div className="relative">
-              <div className="rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-200 bg-white dark:bg-gray-800">
-                <img 
-                  src={responseImage} 
-                  alt="Response visualization" 
-                  className="w-full h-auto"
-                />
-              </div>
+        </motion.div>
+      ) : (
+        <div>
+          <div className="flex justify-start">
+            <div className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-4 py-2.5 rounded-2xl max-w-[85%] text-sm md:text-base relative z-10 shadow-lg hover:shadow-xl transition-shadow duration-200 border border-gray-200 dark:border-gray-700">
+              {message}
             </div>
-          </motion.div>
-        )}
-      </div>
-    )}
-  </motion.div>
-);
+          </div>
+          {responseImage && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 + index * 0.3, duration: 0.6, ease: "easeOut" }}
+              className="relative mt-4 md:-mt-3 ml-8 w-4/5 md:w-3/4"
+            >
+              <div className="relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-200 bg-white dark:bg-gray-800">
+                <div className="aspect-[16/9] relative bg-gray-50 dark:bg-gray-900">
+                  <img 
+                    src={responseImage} 
+                    alt="Response visualization" 
+                    onLoad={handleImageLoad}
+                    className={`absolute inset-0 w-full h-full ${useContain ? 'object-contain' : 'object-cover'}`}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      )}
+    </motion.div>
+  );
+};
 
 // Navigation Components
 export const NavigationDot = ({ isActive, onClick }: { isActive: boolean; onClick: () => void }) => (
@@ -281,7 +294,7 @@ export const Carousel = () => {
                   paginate(-1);
                 }
               }}
-              className="flex-1 min-h-0 -mx-2 px-2 flex items-center"
+              className="flex-1 min-h-[500px] sm:min-h-[600px] -mx-2 px-2 flex items-center overflow-y-auto"
             >
               <div className="w-full">
                 <div className="space-y-6">

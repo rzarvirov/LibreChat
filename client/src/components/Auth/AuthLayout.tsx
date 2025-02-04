@@ -144,7 +144,7 @@ const ScrollIndicator = () => {
 
   return (
     <motion.div
-      className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden md:block"
+      className="fixed bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-20"
       initial={{ opacity: 1 }}
       animate={{ 
         opacity: isVisible ? 1 : 0,
@@ -162,12 +162,12 @@ const ScrollIndicator = () => {
       }}
     >
       <button 
-        className="p-2 rounded-full bg-white/80 dark:bg-gray-800/80 shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-colors"
+        className="p-2 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-700 transition-colors backdrop-blur-sm"
         onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         aria-label="Scroll down"
       >
         <svg 
-          className="w-6 h-6 text-gray-600 dark:text-gray-300" 
+          className="w-5 h-5 md:w-6 md:h-6 text-gray-600 dark:text-gray-300" 
           fill="none" 
           viewBox="0 0 24 24" 
           stroke="currentColor"
@@ -246,9 +246,9 @@ function AuthLayout({
           </div>
 
           <div className="w-full md:text-3xl lg:text-4xl sm:text-2xl text-xl flex flex-row items-start justify-start font-normal overflow-hidden p-6 md:p-12 md:pt-4 pt-8">
-            <p className="whitespace-pre-wrap text-center w-full min-h-[2.5em] md:min-h-[2em] flex flex-col items-center justify-center">
+            <p className="whitespace-pre-wrap text-center w-full flex flex-col items-center justify-center">
               <span className="text-black dark:text-white">{localize('com_ui_typewriter_help_me')}</span>
-              <span className="min-h-[1.25em] md:min-h-[1em] flex items-center">
+              <span className="h-8 md:h-12 flex items-center">
                 <Typewriter
                   text={[
                     localize('com_ui_typewriter_write_text'),
@@ -258,7 +258,7 @@ function AuthLayout({
                     localize('com_ui_typewriter_create_better_world'),
                   ]}
                   speed={70}
-                  className="text-green-600 dark:text-green-500"
+                  className="text-green-600 dark:text-green-500 text-base sm:text-xl md:text-2xl lg:text-3xl"
                   waitTime={1500}
                   deleteSpeed={40}
                   cursorChar={"_"}

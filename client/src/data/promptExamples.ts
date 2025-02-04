@@ -191,5 +191,41 @@ export const promptExamples: PromptExample[] = [
   {
     en: "Design a universal sign language for interspecies communication between humans and dolphins",
     ru: "Разработай универсальный язык жестов для межвидовой коммуникации между людьми и дельфинами"
+  },
+  {
+    en: "Create a personalized learning algorithm for a dyslexic student using AI and gamification",
+    ru: "Создай персонализированный алгоритм обучения для ученика с дислексией, используя ИИ и геймификацию"
+  },
+  {
+    en: "Help me organize my messy garage - I've attached photos of the current state",
+    ru: "Помоги организовать мой беспорядочный гараж - я прикрепил фотографии текущего состояния"
+  },
+  {
+    en: "Create a weekly meal prep plan for a busy single parent with two picky eaters",
+    ru: "Составь план приготовления еды на неделю для занятого родителя-одиночки с двумя привередливыми едоками"
+  },
+  {
+    en: "Draft a polite email to my noisy upstairs neighbors about their late-night footsteps",
+    ru: "Составь вежливое письмо моим шумным соседям сверху по поводу их поздних вечеринок"
+  },
+  {
+    en: "Look at my electricity bills from the past year and suggest ways to reduce consumption",
+    ru: "Посмотри на мои счета за электричество за прошлый год и предложи способы снизить потребление"
+  },
+  {
+    en: "Create a simple stretching routine to help with my desk job back pain",
+    ru: "Создай простой комплекс упражнений на растяжку, чтобы помочь с болью в спине от сидячей работы"
+  },
+  {
+    en: "Plan a kid's birthday party for 10 children under $200 with DIY decorations",
+    ru: "Спланируй детский день рождения для 10 детей до $200 с самодельными украшениями"
+  },
+  {
+    en: "Help me plan a 3-day weekend road trip within 300 miles - here's a map of my location",
+    ru: "Помоги спланировать трехдневное путешествие на машине в радиусе 500 км - вот карта моего местоположения"
+  },
+  {
+    en: "Plan a budget-friendly day in Tokyo using this metro map - I'm near Shinjuku station",
+    ru: "Спланируй бюджетный день в Токио, используя эту карту метро - я рядом со станцией Синдзюку"
   }
 ]; 

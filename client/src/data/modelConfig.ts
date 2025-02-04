@@ -5,6 +5,7 @@ interface ModelFeatures {
   intelligence: 'basic' | 'medium' | 'high' | 'very high';
   contextWindow: number;
   maxTokens?: number;
+  isLegacy?: boolean;
 }
 
 interface ModelConfig {
@@ -21,21 +22,6 @@ interface ModelConfig {
 
 export const modelConfig: ModelConfig = {
   // OpenAI Models
-  'o3-mini': {
-    provider: 'OpenAI',
-    shortName: 'ChatGPT o3 Mini',
-    features: {
-      speed: 'fast',
-      tiers: ['PRO', 'PROPLUS'],
-      imageSupport: true,
-      intelligence: 'very high',
-      contextWindow: 128000,
-    },
-    description: 'Brand New ChatGPT o3 Mini',
-    descriptions: {
-      'ru-RU': 'Новейшая модель ChatGPT o3 Mini'
-    }
-  },
   'gpt-4o-mini': {
     provider: 'OpenAI',
     shortName: 'ChatGPT 4o Mini',
@@ -45,10 +31,26 @@ export const modelConfig: ModelConfig = {
       imageSupport: true,
       intelligence: 'high',
       contextWindow: 128000,
+      isLegacy: false
     },
     description: 'Fast and efficient GPT-4 model optimized for quick responses',
     descriptions: {
       'ru-RU': 'Умная и динамичная версия GPT-4, созданная для моментальных и точных ответов'
+    }
+  },
+  'o3-mini': {
+    provider: 'OpenAI',
+    shortName: 'ChatGPT o3 Mini',
+    features: {
+      speed: 'fast',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      intelligence: 'very high',
+      contextWindow: 200000,
+    },
+    description: 'Brand New ChatGPT o3 Mini',
+    descriptions: {
+      'ru-RU': 'Новейшая модель ChatGPT o3 Mini'
     }
   },
   'chatgpt-4o-latest': {
@@ -71,7 +73,7 @@ export const modelConfig: ModelConfig = {
     shortName: 'ChatGPT o1 Mini',
     features: {
       speed: 'fast',
-      tiers: ['PRO', 'PROPLUS'],
+      tiers: ['BASIC', 'PRO', 'PROPLUS'],
       imageSupport: true,
       intelligence: 'high',
       contextWindow: 128000,
@@ -105,6 +107,7 @@ export const modelConfig: ModelConfig = {
       imageSupport: false,
       intelligence: 'very high',
       contextWindow: 128000,
+      isLegacy: true
     },
     description: 'Latest GPT-4 Turbo model with improved speed and capabilities',
     descriptions: {
@@ -120,6 +123,7 @@ export const modelConfig: ModelConfig = {
       imageSupport: false,
       intelligence: 'medium',
       contextWindow: 4096,
+      isLegacy: true
     },
     description: 'Fast and reliable model for general-purpose chat and text generation',
     descriptions: {
@@ -148,7 +152,7 @@ export const modelConfig: ModelConfig = {
     shortName: 'Claude 3.5 Sonnet',
     features: {
       speed: 'fast',
-      tiers: ['BASIC', 'PRO', 'PROPLUS'],
+      tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
       intelligence: 'high',
       contextWindow: 200000,
@@ -167,6 +171,7 @@ export const modelConfig: ModelConfig = {
       imageSupport: false,
       intelligence: 'very high',
       contextWindow: 200000,
+      isLegacy: true
     },
     description: 'Most capable Claude model with highest reasoning and analysis capabilities',
     descriptions: {
@@ -278,6 +283,7 @@ export const modelConfig: ModelConfig = {
       intelligence: 'medium',
       contextWindow: 128000,
       maxTokens: 8192,
+      isLegacy: true
     },
     description: 'Fast and efficient Llama 3.1 model optimized for quick responses',
     descriptions: {
@@ -521,10 +527,27 @@ export const shouldShowProBadge = (modelName: string): boolean => {
   return !model.features.tiers.includes('FREE') && !model.features.tiers.includes('BASIC');
 };
 
+// Helper function to determine if a model is legacy
+export const isModelLegacy = (modelName: string): boolean => {
+  // If model is not in config, consider it non-legacy
+  if (!modelConfig[modelName]) {
+    return false;
+  }
+
+  return !!modelConfig[modelName].features.isLegacy;
+};
+
 // Helper function to get the display name for a model
 export const getModelDisplayName = (modelName: string): string => {
   if (!modelConfig[modelName]) {
     return modelName;
   }
   return modelConfig[modelName].shortName;
+};
+
+// Helper function to get models by legacy status
+export const getModelsByLegacyStatus = (isLegacy: boolean) => {
+  return Object.entries(modelConfig)
+    .filter(([_, config]) => config.features.isLegacy === isLegacy)
+    .map(([modelName]) => modelName);
 }; 

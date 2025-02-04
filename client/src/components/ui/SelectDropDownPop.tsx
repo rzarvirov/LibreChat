@@ -5,7 +5,7 @@ import type { Option } from '~/common';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils/';
 import { useMultiSearch } from './MultiSearch';
-import { shouldShowProBadge, getModelDisplayName } from '~/data/modelConfig';
+import { shouldShowProBadge, getModelDisplayName, isModelLegacy } from '~/data/modelConfig';
 import ProBadge, { proBadgeStyles } from './ProBadge';
 
 type SelectDropDownProps = {
@@ -21,6 +21,9 @@ type SelectDropDownProps = {
   iconSide?: 'left' | 'right';
   renderOption?: () => React.ReactNode;
 };
+
+// Legacy styling with more pronounced visual treatment
+const legacyStyles = 'opacity-60 italic text-gray-400 dark:text-gray-500 border-l-2 border-gray-300 dark:border-gray-600 pl-2';
 
 function SelectDropDownPop({
   title: _title,
@@ -57,6 +60,7 @@ function SelectDropDownPop({
 
   const currentValue = typeof value !== 'string' && value ? value.label ?? '' : value ?? '';
   const showBadge = shouldShowProBadge(String(currentValue));
+  const isLegacy = isModelLegacy(String(currentValue));
 
   return (
     <Root open={open} onOpenChange={setOpen}>
@@ -79,14 +83,12 @@ function SelectDropDownPop({
               <span className="inline-flex w-full items-center gap-1.5">
                 <span
                   className={cn(
-                    'flex h-6 items-center gap-1  text-sm text-gray-800 dark:text-white',
+                    'flex h-6 items-center gap-1 text-sm text-gray-800 dark:text-white',
                     !showLabel ? 'text-xs' : '',
                     'min-w-[75px] font-normal',
+                    isLegacy && 'text-gray-400 dark:text-gray-500'
                   )}
                 >
-                  {/* {!showLabel && !emptyTitle && (
-                    <span className="text-xs text-gray-700 dark:text-gray-500">{title}:</span>
-                  )} */}
                   {getModelDisplayName(currentValue)}
                 </span>
                 {showBadge && <ProBadge className="ml-2" />}
@@ -123,10 +125,11 @@ function SelectDropDownPop({
               {options.map((option) => {
                 const optionValue = typeof option !== 'string' ? option.label ?? '' : option;
                 const showOptionBadge = shouldShowProBadge(String(optionValue));
+                const isOptionLegacy = isModelLegacy(String(optionValue));
                 return (
                   <MenuItem
                     key={option}
-                    title={typeof option === 'string' ? getModelDisplayName(option) : getModelDisplayName(option.label ?? '')}
+                    title={getModelDisplayName(typeof option === 'string' ? option : option.label ?? '')}
                     value={option}
                     selected={!!(value && value === option)}
                     onClick={() => {
@@ -135,6 +138,9 @@ function SelectDropDownPop({
                     }}
                     badge={showOptionBadge ? 'PRO' : undefined}
                     badgeClassName={showOptionBadge ? proBadgeStyles : undefined}
+                    className={cn(
+                      isOptionLegacy && legacyStyles
+                    )}
                   />
                 );
               })}
