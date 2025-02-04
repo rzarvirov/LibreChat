@@ -14,7 +14,7 @@ export const promptExamples: PromptExample[] = [
   },
   {
     en: "Create a monthly budget spreadsheet for a family of 4 with a $6000 income",
-    ru: "Создай таблицу месячного бюджета для семьи из 4 человек с доходом $6000"
+    ru: "Создай таблицу месячного бюджета для семьи из 4 человек с доходом 200.000 рублей"
   },
   {
     en: "Here's a photo of my 8th grader's algebra homework - could you point out any mistakes?",
@@ -70,7 +70,7 @@ export const promptExamples: PromptExample[] = [
   },
   {
     en: "I've taken screenshots of my Shopify store's checkout process - what UX improvements would you suggest?",
-    ru: "Я сделал скриншоты процесса оформления заказа в моем магазине Shopify - какие улучшения UX ты бы предложил?"
+    ru: "Я сделал скриншоты процесса оформления заказа в моем онлайн-магазине - какие улучшения интерфейса ты бы предложил?"
   },
   {
     en: "Based on these lab results [Report attached], what do my elevated liver enzymes indicate?",
@@ -81,10 +81,6 @@ export const promptExamples: PromptExample[] = [
     ru: "Составь график подготовки к экзамену CFA Level 1 по 4 часа в день"
   },
   {
-    en: "Suggest ways to reduce my restaurant's food waste by 30%",
-    ru: "Предложи способы уменьшить пищевые отходы моего ресторана на 30%"
-  },
-  {
     en: "Write a maid of honor speech highlighting our 15-year friendship",
     ru: "Напиши речь подружки невесты, отражающую нашу 15-летнюю дружбу"
   },
@@ -92,17 +88,9 @@ export const promptExamples: PromptExample[] = [
     en: "Design a virtual team building escape room for remote developers",
     ru: "Разработай виртуальную командную игру-квест для удаленных разработчиков"
   },
-  {
-    en: "Here's the script for my TED talk on urban farming - how can I improve it?",
-    ru: "Вот сценарий моего выступления TED о городском фермерстве - как я могу его улучшить?"
-  },
-  {
+    {
     en: "Create a 5am morning routine for training for a marathon",
     ru: "Создай утренний распорядок с 5 утра для подготовки к марафону"
-  },
-  {
-    en: "Design a 10-minute mindfulness exercise for high school students",
-    ru: "Разработай 10-минутное упражнение по осознанности для старшеклассников"
   },
   {
     en: "Could you examine these chest X-rays and explain what you observe? [Medical images attached]",
@@ -112,15 +100,7 @@ export const promptExamples: PromptExample[] = [
     en: "I'm sending photos of an antique vase from multiple angles - can you help identify it and estimate its value?",
     ru: "Я отправляю фотографии антикварной вазы с разных ракурсов - можешь помочь определить ее и оценить стоимость?"
   },
-  {
-    en: "Take a look at my sustainable home design blueprints and provide feedback",
-    ru: "Посмотри мои чертежи проекта экологичного дома и предоставь обратную связь"
-  },
-  {
-    en: "I've attached some sheet music - could you suggest ways to improve the arrangement?",
-    ru: "Я прикрепил ноты - можешь предложить способы улучшить аранжировку?"
-  },
-  {
+   {
     en: "This Python code is giving me an error - I've attached a screenshot of the output. What's wrong?",
     ru: "Этот код на Python выдает ошибку - я прикрепил скриншот вывода. В чем проблема?"
   },
@@ -141,10 +121,6 @@ export const promptExamples: PromptExample[] = [
     ru: "Можешь проанализировать этот МРТ-снимок и объяснить, на что указывают различные области?"
   },
   {
-    en: "I've shared my company's financial statements - what trends do you notice in the quarterly results?",
-    ru: "Я поделился финансовой отчетностью моей компании - какие тенденции ты замечаешь в квартальных результатах?"
-  },
-  {
     en: "Review these product photos and suggest improvements for my e-commerce listings",
     ru: "Просмотри эти фотографии товаров и предложи улучшения для моих листингов в интернет-магазине"
   },
@@ -161,10 +137,6 @@ export const promptExamples: PromptExample[] = [
     ru: "Можешь изучить эти фотографии поражений кожи и посоветовать, стоит ли обратиться к дерматологу?"
   },
   {
-    en: "I've attached a recording of my sleep patterns - can you identify why I might be waking up at 3 AM?",
-    ru: "Я прикрепил запись моих паттернов сна - можешь определить, почему я просыпаюсь в 3 часа ночи?"
-  },
-  {
     en: "Look at this spectrogram of whale songs I recorded - what behaviors or communications do you notice?",
     ru: "Посмотри на эту спектрограмму записанных мной китовых песен - какое поведение или коммуникацию ты замечаешь?"
   },
@@ -173,32 +145,12 @@ export const promptExamples: PromptExample[] = [
     ru: "Я записывал первые слова своего ребенка - можешь проанализировать прогресс развития его речи?"
   },
   {
-    en: "Compose a lullaby that combines elements of jazz and traditional Celtic music for modern parents",
-    ru: "Сочини колыбельную, сочетающую элементы джаза и традиционной кельтской музыки для современных родителей"
-  },
-  {
-    en: "Design a zero-gravity workout routine for future space tourists staying in orbital hotels",
-    ru: "Разработай программу тренировок в невесомости для будущих космических туристов в орбитальных отелях"
-  },
-  {
     en: "Create a fictional endangered species by combining features of existing animals and describe its ecosystem",
     ru: "Создай вымышленный исчезающий вид, объединив особенности существующих животных, и опиши его экосистему"
   },
   {
-    en: "Develop a meditation technique that incorporates quantum physics concepts for tech entrepreneurs",
-    ru: "Разработай технику медитации, включающую концепции квантовой физики для технологических предпринимателей"
-  },
-  {
-    en: "Design a universal sign language for interspecies communication between humans and dolphins",
-    ru: "Разработай универсальный язык жестов для межвидовой коммуникации между людьми и дельфинами"
-  },
-  {
     en: "Create a personalized learning algorithm for a dyslexic student using AI and gamification",
     ru: "Создай персонализированный алгоритм обучения для ученика с дислексией, используя ИИ и геймификацию"
-  },
-  {
-    en: "Help me organize my messy garage - I've attached photos of the current state",
-    ru: "Помоги организовать мой беспорядочный гараж - я прикрепил фотографии текущего состояния"
   },
   {
     en: "Create a weekly meal prep plan for a busy single parent with two picky eaters",
@@ -209,16 +161,12 @@ export const promptExamples: PromptExample[] = [
     ru: "Составь вежливое письмо моим шумным соседям сверху по поводу их поздних вечеринок"
   },
   {
-    en: "Look at my electricity bills from the past year and suggest ways to reduce consumption",
-    ru: "Посмотри на мои счета за электричество за прошлый год и предложи способы снизить потребление"
-  },
-  {
     en: "Create a simple stretching routine to help with my desk job back pain",
     ru: "Создай простой комплекс упражнений на растяжку, чтобы помочь с болью в спине от сидячей работы"
   },
   {
     en: "Plan a kid's birthday party for 10 children under $200 with DIY decorations",
-    ru: "Спланируй детский день рождения для 10 детей до $200 с самодельными украшениями"
+    ru: "Спланируй детский день рождения для 10 детей до 20.000 рублей с самодельными украшениями"
   },
   {
     en: "Help me plan a 3-day weekend road trip within 300 miles - here's a map of my location",
@@ -227,5 +175,33 @@ export const promptExamples: PromptExample[] = [
   {
     en: "Plan a budget-friendly day in Tokyo using this metro map - I'm near Shinjuku station",
     ru: "Спланируй бюджетный день в Токио, используя эту карту метро - я рядом со станцией Синдзюку"
+  },
+  {
+    en: "What's a quick and healthy breakfast I can make with eggs, spinach, and bread?",
+    ru: "Какой быстрый и полезный завтрак я могу приготовить из яиц, шпината и хлеба?"
+  },
+  {
+    en: "Help me draft a professional out-of-office email for my two-week vacation",
+    ru: "Помоги составить профессиональное сообщение об отсутствии в офисе на время моего двухнедельного отпуска"
+  },
+  {
+    en: "Suggest some indoor activities for my energetic 5-year-old on this rainy weekend",
+    ru: "Предложи несколько занятий дома для моего энергичного 5-летнего ребенка на этот дождливый выходной"
+  },
+  {
+    en: "How can I remove this coffee stain from my white cotton shirt?",
+    ru: "Как мне удалить это кофейное пятно с белой хлопковой рубашки?"
+  },
+  {
+    en: "Create a simple weekly cleaning schedule that I can actually stick to",
+    ru: "Создай простой еженедельный график уборки, которого я действительно смогу придерживаться"
+  },
+  {
+    en: "What's the best way to store these leftover vegetables to make them last longer?",
+    ru: "Как лучше хранить эти оставшиеся овощи, чтобы они дольше сохранились?"
+  },
+  {
+    en: "Help me organize my small closet space more efficiently",
+    ru: "Помоги более эффективно организовать пространство в моем маленьком шкафу - фото прикреплено"
   }
 ]; 
