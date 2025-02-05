@@ -216,10 +216,30 @@ router.post('/user-lookup', authenticateDashboard, async (req, res) => {
 
     const balance = await Balance.findOne({ user: user._id }).lean();
 
+    // Get user's last 10 messages
+    const messages = await Message.find({ 
+      sender: 'User',
+      user: user._id 
+    })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+
+    // Format messages
+    const formattedMessages = messages.map(msg => ({
+      messageId: msg.messageId,
+      text: msg.text,
+      createdAt: msg.createdAt,
+      conversationId: msg.conversationId,
+      model: msg.model,
+      tokenCount: msg.tokenCount || 0
+    }));
+
     res.json({
       email: user.email,
       tier: user.subscriptionTier,
-      balance: balance?.tokenCredits || 0
+      balance: balance?.tokenCredits || 0,
+      messages: formattedMessages
     });
   } catch (error) {
     console.error('Error looking up user:', error);

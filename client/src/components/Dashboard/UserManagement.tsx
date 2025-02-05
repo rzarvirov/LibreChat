@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 
+interface Message {
+  messageId: string;
+  text: string;
+  createdAt: string;
+  conversationId: string;
+  model: string;
+  tokenCount: number;
+}
+
 interface UserData {
   email: string;
   tier: string;
   balance: number;
+  messages?: Message[];
 }
 
 interface UserManagementProps {
@@ -183,6 +193,42 @@ const UserManagement = ({ initialEmail = '' }: UserManagementProps) => {
                     {isLoading ? 'Updating...' : 'Update User'}
                   </button>
                 </div>
+
+                {/* User Messages Section */}
+                {userData.messages && userData.messages.length > 0 && (
+                  <div className="pt-6 border-t">
+                    <h3 className="text-lg font-semibold mb-4">Last 10 Messages</h3>
+                    <div className="bg-white rounded-lg shadow-sm border overflow-x-auto">
+                      <table className="min-w-full">
+                        <thead>
+                          <tr className="bg-gray-50">
+                            <th className="px-4 py-2 text-left">Message</th>
+                            <th className="px-4 py-2 text-right">Tokens</th>
+                            <th className="px-4 py-2 text-right">Created At</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {userData.messages.map((message) => (
+                            <tr 
+                              key={message.messageId}
+                              className="border-t hover:bg-gray-50"
+                            >
+                              <td className="px-4 py-2">
+                                <div className="whitespace-pre-wrap">{message.text}</div>
+                              </td>
+                              <td className="px-4 py-2 text-right">
+                                {message.tokenCount.toLocaleString()}
+                              </td>
+                              <td className="px-4 py-2 text-right">
+                                {new Date(message.createdAt).toLocaleString()}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
