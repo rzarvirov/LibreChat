@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import UserManagement from './UserManagement';
 import UserGrowthChart from './UserGrowthChart';
+import TokenUsagePieChart from './TokenUsagePieChart';
 
 interface TokenTableRow {
   date: string;
@@ -212,33 +213,8 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid gap-8">
+          <div className="grid grid-cols-1 gap-8">
             <UserGrowthChart data={stats} />
-
-            <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
-              <h2 className="text-xl font-semibold mb-4">Token Usage by Model</h2>
-              <table className="min-w-full">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="px-4 py-2 text-left">Model</th>
-                    <th className="px-4 py-2 text-right">30 Days Tokens</th>
-                    <th className="px-4 py-2 text-right">24h Tokens</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {modelStats.map((stat) => (
-                    <tr 
-                      key={stat.model}
-                      className="border-t hover:bg-gray-50"
-                    >
-                      <td className="px-4 py-2 font-medium">{stat.model}</td>
-                      <td className="px-4 py-2 text-right">{formatNumber(stat.tokens30Days)}</td>
-                      <td className="px-4 py-2 text-right">{formatNumber(stat.tokens24Hours)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
@@ -334,6 +310,8 @@ const Dashboard = () => {
                 </tbody>
               </table>
             </div>
+
+            <TokenUsagePieChart tokenTable={tokenTable} models={models} />
 
             <div className="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
               <h2 className="text-xl font-semibold mb-4">Last 30 User Messages</h2>

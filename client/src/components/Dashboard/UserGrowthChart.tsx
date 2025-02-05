@@ -54,14 +54,14 @@ const UserGrowthChart = ({ data }: UserGrowthChartProps) => {
           Showing new users over the last 30 days
         </p>
       </div>
-      <div className="h-[60vh]">
+      <div className="h-[300px] sm:h-[60vh] w-full">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={chartData}
             margin={{
               top: 10,
-              right: 30,
-              left: 40,
+              right: 0,
+              left: 0,
               bottom: 0,
             }}
           >
