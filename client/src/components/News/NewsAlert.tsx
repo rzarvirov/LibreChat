@@ -4,6 +4,7 @@ import { useLocalize } from '~/hooks';
 import { useAuthContext } from '~/hooks/AuthContext';
 import { useRecoilValue } from 'recoil';
 import store from '~/store';
+import ReactMarkdown from 'react-markdown';
 
 interface News {
   _id: string;
@@ -98,12 +99,12 @@ export default function NewsAlert() {
             <div className="flex flex-col items-center text-center">
               <div className="w-full">
                 <h3 className="text-lg font-semibold leading-6 text-gray-900 dark:text-gray-100 mb-2">
-                  {news.title[contentLang]}
+                  <ReactMarkdown>{news.title[contentLang]}</ReactMarkdown>
                 </h3>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap text-left">
-                    {news.content[contentLang]}
-                  </p>
+                  <div className="prose prose-sm dark:prose-invert max-w-none text-left text-gray-600 dark:text-gray-300">
+                    <ReactMarkdown>{news.content[contentLang]}</ReactMarkdown>
+                  </div>
                 </div>
               </div>
               <div className="mt-5">
