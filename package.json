@@ -131,6 +131,7 @@
     ]
   },
   "dependencies": {
+    "@googleapis/youtube": "^20.0.0",
     "framer-motion": "^12.0.6",
     "lucide-react": "^0.474.0",
     "mongodb": "^6.12.0",

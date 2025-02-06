@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import useLocalize from '~/hooks/useLocalize';
 import { useAuthContext } from '~/hooks/AuthContext';
-import { useGetUserBalance, useGetStartupConfig } from 'librechat-data-provider/react-query';
+import { useGetUserBalance, useGetStartupConfig } from '~/data-provider';
 import SubscriptionPopup from './SubscriptionPopup';
 import SubscriptionManagePopup from './SubscriptionManagePopup';
 

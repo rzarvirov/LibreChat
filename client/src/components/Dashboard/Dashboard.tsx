@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import UserManagement from './UserManagement';
 import UserGrowthChart from './UserGrowthChart';
 import TokenUsagePieChart from './TokenUsagePieChart';
+import NewsManagement from '../News/NewsManagement';
 
 interface TokenTableRow {
   date: string;
@@ -196,6 +197,16 @@ const Dashboard = () => {
           >
             User Management
           </button>
+          <button
+            onClick={() => setActiveTab('news')}
+            className={`px-4 py-2 rounded transition-colors ${
+              activeTab === 'news'
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+          >
+            News Management
+          </button>
         </div>
       </div>
 
@@ -343,9 +354,11 @@ const Dashboard = () => {
             </div>
           </div>
         </>
-      ) : (
+      ) : activeTab === 'users' ? (
         <UserManagement initialEmail={selectedEmail} />
-      )}
+      ) : activeTab === 'news' ? (
+        <NewsManagement />
+      ) : null}
     </div>
   );
 };

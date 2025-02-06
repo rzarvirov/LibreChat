@@ -1337,6 +1337,7 @@ export default {
   com_carousel_title_contract_analysis: 'Анализ контрактов',
   com_carousel_contract_request: 'Проанализируй этот файл договора и определи потенциальные риски или проблемные пункты',
   com_carousel_contract_response: 'Я проанализировал договор и нашел несколько проблем. Положение о неконкуренции слишком широкое, раздел об интеллектуальной собственности требует уточнения. Также рекомендую пересмотреть срок уведомления о расторжении.',
-  com_model_features_document_support: 'Работа с документами'
+  com_model_features_document_support: 'Работа с документами',
+  com_ui_dismiss: 'Закрыть'
 };
 

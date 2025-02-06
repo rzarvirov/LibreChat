@@ -191,6 +191,22 @@ export const modelConfig: ModelConfig = {
   },
 
   // Google Models
+  'gemini-2.0-flash-001': {
+    provider: 'Google',
+    shortName: 'Gemini 2.0 Flash',
+    features: {
+      speed: 'fast',
+      tiers: ['BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: true,
+      documentSupport: true,
+      intelligence: 'high',
+      contextWindow: 1000000,
+    },
+    description: 'Latest Gemini Flash model with advanced capabilities and massive context window',
+    descriptions: {
+      'ru-RU': 'Передовая модель Gemini Flash с огромным контекстным окном и продвинутыми возможностями'
+    }
+  },
   'gemini-1.5-pro': {
     provider: 'Google',
     shortName: 'Gemini 1.5 Pro',
@@ -217,6 +233,7 @@ export const modelConfig: ModelConfig = {
       documentSupport: true,
       intelligence: 'high',
       contextWindow: 1000000,
+      isLegacy: true
     },
     description: 'Ultra-fast Gemini model optimized for quick responses',
     descriptions: {
@@ -233,26 +250,11 @@ export const modelConfig: ModelConfig = {
       documentSupport: true,
       intelligence: 'medium',
       contextWindow: 1000000,
+      isLegacy: true
     },
     description: 'Lightweight and fast Gemini model for efficient processing',
     descriptions: {
       'ru-RU': 'Лёгкая и быстрая модель Gemini для эффективной обработки задач'
-    }
-  },
-  'gemini-2.0-flash-exp': {
-    provider: 'Google',
-    shortName: 'Gemini 2.0',
-    features: {
-      speed: 'fast',
-      tiers: ['PRO','PROPLUS'],
-      imageSupport: true,
-      documentSupport: true,
-      intelligence: 'very high',
-      contextWindow: 1000000,
-    },
-    description: 'Experimental next-gen Gemini model with enhanced speed and capabilities',
-    descriptions: {
-      'ru-RU': 'Экспериментальная модель нового поколения Gemini с улучшенной скоростью и возможностями'
     }
   },
 

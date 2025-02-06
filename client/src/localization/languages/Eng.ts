@@ -1043,4 +1043,5 @@ export default {
   com_faq_how_much: 'How does the pricing work?',
   com_faq_how_much_content: 'Our flexible token-based system offers several tiers: Start with a free plan to explore basic features, upgrade to Professional for higher limits and advanced capabilities, or choose Enterprise solutions for teams and businesses. Each tier includes refreshing token allowances, with options to purchase more as needed.',
   com_ui_about_cta: 'Start Your AI Journey',
+  com_ui_dismiss: 'Dismiss',
 };

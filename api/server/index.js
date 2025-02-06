@@ -117,10 +117,12 @@ const startServer = async () => {
   app.use('/api/share', routes.share);
   app.use('/api/roles', routes.roles);
   app.use('/api/agents', routes.agents);
+  app.use('/api/stripe', routes.stripe);
+  app.use('/api/categories', routes.categories);
   app.use('/api/banner', routes.banner);
   app.use('/api/bedrock', routes.bedrock);
-  app.use('/api/stripe', routes.stripe);
-
+  app.use('/api/news', routes.news);
+  app.use('/api/dashboard', dashboardRoutes);
   app.use('/api/tags', routes.tags);
 
   // Stripe subscription redirect handlers

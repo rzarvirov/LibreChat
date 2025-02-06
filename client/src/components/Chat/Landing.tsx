@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { EModelEndpoint, Constants } from 'librechat-data-provider';
-import { useGetEndpointsQuery, useGetStartupConfig } from 'librechat-data-provider/react-query';
+import { useGetEndpointsQuery, useGetStartupConfig } from '~/data-provider';
 import { modelConfig } from '~/data/modelConfig';
 import type * as t from 'librechat-data-provider';
 import type { ReactNode } from 'react';
