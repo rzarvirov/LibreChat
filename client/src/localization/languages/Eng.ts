@@ -455,6 +455,7 @@ export default {
   com_ui_shared_link_delete_success: 'Successfully deleted shared link',
   com_ui_shared_link_bulk_delete_success: 'Successfully deleted shared links',
   com_ui_search: 'Search',
+  com_ui_temporary_chat: 'Temporary Chat',
   com_auth_error_login:
     'Unable to login with the information provided. Please check your credentials and try again or request a password reset.',
   com_auth_error_login_rl:
