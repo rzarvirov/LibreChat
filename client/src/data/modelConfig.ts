@@ -189,14 +189,13 @@ export const modelConfig: ModelConfig = {
       'ru-RU': 'Самая мощная модель Claude с непревзойдёнными способностями к рассуждению и анализу'
     }
   },
-
   // Google Models
   'gemini-2.0-flash-001': {
     provider: 'Google',
     shortName: 'Gemini 2.0 Flash',
     features: {
       speed: 'fast',
-      tiers: ['BASIC', 'PRO', 'PROPLUS'],
+      tiers: ['PRO', 'PROPLUS'],
       imageSupport: true,
       documentSupport: true,
       intelligence: 'high',
@@ -205,6 +204,22 @@ export const modelConfig: ModelConfig = {
     description: 'Latest Gemini Flash model with advanced capabilities and massive context window',
     descriptions: {
       'ru-RU': 'Передовая модель Gemini Flash с огромным контекстным окном и продвинутыми возможностями'
+    }
+  },
+  'gemini-2.0-flash-lite-preview-02-05': {
+    provider: 'Google',
+    shortName: 'Gemini 2.0 Flash Lite',
+    features: {
+      speed: 'fast',
+      tiers: ['FREE', 'BASIC', 'PRO', 'PROPLUS'],
+      imageSupport: true,
+      documentSupport: true,
+      intelligence: 'medium',
+      contextWindow: 1000000,
+    },
+    description: 'Gemini 2.0 Flash Lite is a preview model with limited capabilities',
+    descriptions: {
+      'ru-RU': 'Gemini 2.0 Flash Lite - еще более быстрая чем Gemini 2.0 Flash'
     }
   },
   'gemini-1.5-pro': {
