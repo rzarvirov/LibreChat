@@ -14,7 +14,7 @@ function CountdownTimer({ onExpired, lang }: { onExpired: () => void; lang: stri
   const localize = useLocalize();
 
   useEffect(() => {
-    const targetDate = new Date('2025-02-05T23:59:59');
+    const targetDate = new Date('2025-02-14T23:59:59');
 
     const calculateTimeLeft = () => {
       const now = new Date();
@@ -82,18 +82,14 @@ export default function PromoBanner() {
   };
 
   const handlePromoClick = () => {
-    if (lang === 'ru-RU') {
-      window.open('https://boosty.to/aibuddy/subscription-level/1628030/promo/84163?linkId=5bc49dc3f2d7118b794c1f712a43b676', '_blank');
-    } else {
-      setShowSubscriptionPopup(true);
-    }
+    window.open('https://boosty.to/aibuddy/subscription-level/1572088/promo/86317?linkId=3cd4bcf0dee2834bf4df673c35251f54', '_blank');
   };
 
   const isRussian = lang === 'ru-RU';
 
   return (
     <>
-      <div className="relative flex flex-col items-center py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-center">
+      <div className="relative flex flex-col items-center py-3 bg-gradient-to-r from-pink-600 to-red-600 text-white text-center">
         <button
           type="button"
           className="absolute right-2 top-2 text-white/80 hover:text-white transition-colors"
@@ -106,8 +102,8 @@ export default function PromoBanner() {
         </button>
         
         <div className="flex items-center gap-2 text-lg font-medium">
-          <span>🎁</span>
-          <span>{isRussian ? 'Специальное предложение!' : 'Special Offer!'}</span>
+          <span>❤️</span>
+          <span>{isRussian ? 'Подарок ко Дню Святого Валентина!' : 'Valentine\'s Day Special!'}</span>
         </div>
         
         <div className="mt-1 text-sm">
@@ -116,15 +112,14 @@ export default function PromoBanner() {
         </div>
         
         <div className="mt-1 text-sm">
-          {isRussian ? 'Дарим PRO доступ на 30 дней' : 'Get 30 days of PRO access with code: '}
-          {!isRussian && <strong>30DAYS</strong>}
+          {isRussian ? 'Дарим PRO+ доступ на 15 дней' : 'Get 15 days of PRO+ access'}
         </div>
 
         <button
           onClick={handlePromoClick}
           className="mt-2 inline-block rounded-full bg-white/10 hover:bg-white/20 px-6 py-1.5 text-sm font-medium text-white transition-colors"
         >
-          {isRussian ? 'Получить PRO доступ' : 'Get PRO Access'}
+          {isRussian ? 'Получить PRO+ доступ' : 'Get PRO+ Access'}
         </button>
       </div>
 
