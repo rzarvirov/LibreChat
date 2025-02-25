@@ -9,6 +9,7 @@ const prompts = require('./prompts');
 const balance = require('./balance');
 const plugins = require('./plugins');
 const bedrock = require('./bedrock');
+const actions = require('./actions');
 const search = require('./search');
 const models = require('./models');
 const convos = require('./convos');
@@ -49,6 +50,7 @@ module.exports = {
   config,
   models,
   plugins,
+  actions,
   presets,
   balance,
   messages,

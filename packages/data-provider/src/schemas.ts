@@ -155,6 +155,7 @@ export const defaultAgentFormValues = {
   tools: [],
   provider: {},
   projectIds: [],
+  artifacts: '',
   isCollaborative: false,
   [Tools.execute_code]: false,
   [Tools.file_search]: false,
@@ -255,7 +256,11 @@ const ANTHROPIC_MAX_OUTPUT = 8192;
 const LEGACY_ANTHROPIC_MAX_OUTPUT = 4096;
 export const anthropicSettings = {
   model: {
+<<<<<<< HEAD
     default: 'claude-3-5-haiku-latest',
+=======
+    default: 'claude-3-5-sonnet-latest',
+>>>>>>> f362f18870b842a060bf11c20ea6ffd8c8fc8a59
   },
   temperature: {
     min: 0,
@@ -266,13 +271,22 @@ export const anthropicSettings = {
   promptCache: {
     default: true,
   },
+  thinking: {
+    default: true,
+  },
+  thinkingBudget: {
+    min: 1024,
+    step: 100,
+    max: 200000,
+    default: 2000,
+  },
   maxOutputTokens: {
     min: 1,
     max: ANTHROPIC_MAX_OUTPUT,
     step: 1,
     default: ANTHROPIC_MAX_OUTPUT,
     reset: (modelName: string) => {
-      if (modelName.includes('claude-3-5-sonnet')) {
+      if (modelName.includes('claude-3-5-sonnet') || modelName.includes('claude-3-7-sonnet')) {
         return ANTHROPIC_MAX_OUTPUT;
       }
 
@@ -555,6 +569,8 @@ export const tConversationSchema = z.object({
   /* Anthropic */
   promptCache: z.boolean().optional(),
   system: z.string().optional(),
+  thinking: z.boolean().optional(),
+  thinkingBudget: coerceNumber.optional(),
   /* artifacts */
   artifacts: z.string().optional(),
   /* google */
@@ -671,6 +687,8 @@ export const tQueryParamsSchema = tConversationSchema
     maxOutputTokens: true,
     /** @endpoints anthropic */
     promptCache: true,
+    thinking: true,
+    thinkingBudget: true,
     /** @endpoints bedrock */
     region: true,
     /** @endpoints bedrock */
@@ -877,12 +895,18 @@ export const gptPluginsSchema = tConversationSchema
     maxContextTokens: undefined,
   }));
 
-export function removeNullishValues<T extends Record<string, unknown>>(obj: T): Partial<T> {
+export function removeNullishValues<T extends Record<string, unknown>>(
+  obj: T,
+  removeEmptyStrings?: boolean,
+): Partial<T> {
   const newObj: Partial<T> = { ...obj };
 
   (Object.keys(newObj) as Array<keyof T>).forEach((key) => {
     const value = newObj[key];
     if (value === undefined || value === null) {
+      delete newObj[key];
+    }
+    if (removeEmptyStrings && typeof value === 'string' && value === '') {
       delete newObj[key];
     }
   });
@@ -935,8 +959,7 @@ export const compactAssistantSchema = tConversationSchema
     greeting: true,
     spec: true,
   })
-  // will change after adding temperature
-  .transform(removeNullishValues)
+  .transform((obj) => removeNullishValues(obj))
   .catch(() => ({}));
 
 export const agentsSchema = tConversationSchema
@@ -1061,6 +1084,8 @@ export const anthropicSchema = tConversationSchema
     topK: true,
     resendFiles: true,
     promptCache: true,
+    thinking: true,
+    thinkingBudget: true,
     artifacts: true,
     iconURL: true,
     greeting: true,
@@ -1138,7 +1163,7 @@ export const compactPluginsSchema = tConversationSchema
   })
   .catch(() => ({}));
 
-const tBannerSchema = z.object({
+export const tBannerSchema = z.object({
   bannerId: z.string(),
   message: z.string(),
   displayFrom: z.string(),
@@ -1160,5 +1185,5 @@ export const compactAgentsSchema = tConversationSchema
     instructions: true,
     additional_instructions: true,
   })
-  .transform(removeNullishValues)
+  .transform((obj) => removeNullishValues(obj))
   .catch(() => ({}));
