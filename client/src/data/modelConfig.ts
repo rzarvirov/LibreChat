@@ -140,6 +140,22 @@ export const modelConfig: ModelConfig = {
   },
 
   // Anthropic Models
+  'claude-3-7-sonnet-latest': {
+    provider: 'Anthropic',
+    shortName: 'Claude 3.7 Sonnet',
+    features: {
+      speed: 'fast',
+      tiers: ['PRO', 'PROPLUS'],
+      imageSupport: true,
+      documentSupport: true,
+      intelligence: 'high',
+      contextWindow: 200000,
+    },
+    description: 'Anthropic newest model optimized for advanced coding assistance with rapid code generation, debugging, and refactoring capabilities. Excels at understanding complex programming requirements while maintaining high performance across multiple languages and frameworks.',
+    descriptions: {
+      'ru-RU': 'Новейшая модель Claude от Anthropic, оптимизированная для продвинутой помощи в программировании с быстрой генерацией кода, отладкой и возможностями рефакторинга. Отлично понимает сложные требования к программированию, сохраняя высокую производительность на разных языках и фреймворках.'
+    }
+  },
   'claude-3-5-haiku-latest': {
     provider: 'Anthropic',
     shortName: 'Claude 3.5 Haiku',
@@ -166,6 +182,7 @@ export const modelConfig: ModelConfig = {
       documentSupport: true,
       intelligence: 'high',
       contextWindow: 200000,
+      isLegacy: true
     },
     description: 'Balanced Claude model optimized for both performance and speed',
     descriptions: {

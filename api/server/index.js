@@ -59,19 +59,8 @@ const startServer = async () => {
   app.use(staticCache(app.locals.paths.dist));
   app.use(staticCache(app.locals.paths.fonts));
   app.use(staticCache(app.locals.paths.assets));
-<<<<<<< HEAD
-  app.set('trust proxy', 1); /* trust first proxy */
-  app.use(cors({
-    origin: [
-      process.env.CLIENT_URL,
-      'https://librechat-production-c728.up.railway.app'
-    ],
-    credentials: true
-  }));
-=======
   app.set('trust proxy', trusted_proxy);
   app.use(cors());
->>>>>>> f362f18870b842a060bf11c20ea6ffd8c8fc8a59
   app.use(cookieParser());
 
   if (!isEnabled(DISABLE_COMPRESSION)) {

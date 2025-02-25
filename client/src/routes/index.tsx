@@ -6,11 +6,8 @@ import {
   ResetPassword,
   VerifyEmail,
   ApiErrorWatcher,
-<<<<<<< HEAD
   AboutPage,
-=======
   TwoFactorScreen,
->>>>>>> f362f18870b842a060bf11c20ea6ffd8c8fc8a59
 } from '~/components/Auth';
 import { PrivacyPolicy, PrivacyPolicyRu } from '~/components/Privacy';
 import { AuthContextProvider } from '~/hooks/AuthContext';

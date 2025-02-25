@@ -26,7 +26,7 @@ export default [
     output: [
       {
         file: pkg.main,
-        format: 'cjs',
+        format: 'es',
         sourcemap: true,
         exports: 'named',
       },
